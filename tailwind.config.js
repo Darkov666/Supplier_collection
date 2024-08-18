@@ -30,7 +30,7 @@ module.exports = {
     logs: true,
     rtl: false,
     prefix: "",
-    darkTheme: 'true',
+    darkTheme: 'false',
     themes: [
       "light",
       "dark",
