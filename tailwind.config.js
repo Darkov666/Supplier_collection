@@ -1,0 +1,71 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './templates/**/*.html',
+    './collection_app/templates/**/*.html',
+    './static/js/**/*.js',
+    './collection_app/**/*.py',
+    './node_modules/flowbite/**/*.js',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        newlime: '#dee720', 
+        newlimel: '#f8ffdf',
+        newlimes: '#f7febe',
+      },
+    },
+  },
+  plugins: [
+    require('daisyui'),
+    require('flowbite/plugin'),
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('flowbite/plugin'),
+  ],
+  daisyui: {
+    styled: true,
+    base: true,
+    utils: true,
+    logs: true,
+    rtl: false,
+    prefix: "",
+    darkTheme: 'true',
+    themes: [
+      "light",
+      "dark",
+      "cupcake",
+      "bumblebee",
+      "emerald",
+      "corporate",
+      "synthwave",
+      "retro",
+      "cyberpunk",
+      "valentine",
+      "halloween",
+      "garden",
+      "forest",
+      "aqua",
+      "lofi",
+      "pastel",
+      "fantasy",
+      "wireframe",
+      "black",
+      "luxury",
+      "dracula",
+      "cmyk",
+      "autumn",
+      "business",
+      "acid",
+      "lemonade",
+      "night",
+      "coffee",
+      "winter",
+      "dim",
+      "nord",
+      "sunset",
+    ]    
+  },
+};
+
+

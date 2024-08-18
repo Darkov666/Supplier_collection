@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Barra lateral -->
+<aside class="w-1/4 bg-gray-800 text-white p-10">
+    <h2 class="text-lg font-bold">Reservación de catamaran</h2>
+    <form id="reservation-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div id="additional-people"></div>
+        <button type="button" onclick="addPersonField()">Agregar Persona</button>
+        <button type="submit" class="btn btn-primary">Reservar</button>
+    </form>
+</aside>
+<!-- Contenido principal -->
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!--inicia columna 1-->
+    <main class= "container mx-auto py-10 px-10 sm:px-10 max-w-7xl lg:px-9">
+        <section class="card shadow-lg rounded-lg p-10">
+        <div class="container mx-auto rounded-lg p-10 bg-newlimes"> <!--Contenedor del form de cotizador-->            
+                <h1 class="text-3xl font-bold text-center mb-3">Formulario de Contacto</h1>
+                <form method="post" class="card card-body">
+                    {% csrf_token %}
+                    <div class="form-control text-center px-10">
+                        <label for="contact_name" class="label">Nombre:</label>
+                        <input type="text" name="contact_name" id="contact_namename" 
+                        class="form-control" placeholder="Escribe tu nombre"></input>
+                    </div>
+                    
+                    <div class="form-control text-center px-10">                             
+                        <label for="email" class="label">Correo electronico:</label>
+                        <input type="text" name="email" id="email" 
+                        class="form-control" placeholder="Escribe correo electronico"></input>
+                        
+                    </div>
+
+                    <div class="form-control text-center px-10">
+                        <label for="phone_number" class="label">Numero telefonico:</label>
+                        <input type="text" name="phone_number" id="phone_number" 
+                        class="form-control" placeholder="Escribe tu numero telefonico"></textarea>
+                    </div>
+                    
+                    <div class="form-control text-center px-10">
+                        <label for="message" class="label">mensage:</label>
+                        <textarea type="text-are" name="message" id="message" 
+                        class="form-control textarea textarea-bordered w-full" rows="10" placeholder="Escribe tu mensage"></textarea>
+                    </div>
+
+                    <div class="form-control text-center px-10">
+                        <!--label for="newss_later" class="label">Quieres recibir notificaciones?:</label>
+                        <input type="checkbox" name="newss_later" id="newss_later" class="form-control checkbox checkbox-primary"></checkbox-->
+                        <div>
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </div>  
+                </div> 
+                </form>
+
+        </div>  
+    </section>
+        <!-- termina columna 1-->               
+</section>
+{% endblock %}

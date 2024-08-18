@@ -1,0 +1,39 @@
+"""
+URL configuration for Collection project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.shortcuts import render, redirect
+from django.urls import path
+from collection_app import views
+#from .views import Transportacion
+ 
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('tours_grupos/', views.tours, name='tours_grupos'),
+    path('transportacion/', views.Transportacion, name='transportacion'),
+    path('contacto/', views.contacto, name='contacto'),
+    #path('catamaran/', views.catamaran, name='catamaran'),
+    #path('hospedaje/', views.hospedaje, name='hospedaje'),
+    #path('nocturna/', views.nocturna, name='nocturna'),
+    #path('parques/', views.parques, name='parques'),
+    #path('aboutus/', views.aboutus, name='about_us'),
+    #path('aviso_privacidad/', views.privacidad, name='aviso_privacidad'),
+    #path('contacto/gracias', views.contacto, name='contacto'),
+    #path('legal/', views.legal, name='legal'),
+    #path('politicas_cookies/', views.politicas_cookies, name='politicas_cookies'),
+    #path('exito_transp/', lambda request: render(request, 'exito_transportacion.html'), name='exito_transp'),  # Vista de éxito simple 
+    ] 

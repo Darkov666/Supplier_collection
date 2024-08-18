@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="bg-gray-800">
+<!--div class="container p-6 mt-2 mb-2">
+<h1 class="text-5xl font-bold text-center mb-4 py-2">Collectionsdfsdfsd Experience</h1> 
+</div-->
+</section>
+<div class="px-3 py-10 bg-newlimel"> <!--Contenedor principal del contenido-->
+    <!--inicia columna 1-->
+    <div class="flex">
+        <div class="rounded-lg p-4 bg-newlimes"> <!--Contenedor del form de cotizador-->
+            <div class="rounded-lg shadow-lg p-10 bg-newlimel">
+                <form classa="flex rounded-lg text-black shadow-lg bg-newlimel">
+                    <form id="reservation-form" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div id="additional-people"></div>
+                        <button type="button" onclick="addPersonField()">Agregar Persona</button>
+                        <button type="submit" class="btn btn-primary">Reservar</button>
+                    </form>
+            </div>
+            <!-- Otros elementos -->
+            <div class="mt-8 bg-grey-700 p-6 rounded-lg shadow-lg">
+                <h3 class="text-2xl text-white font-bold mb-4">Te puede interesar</h3>
+                <ul class="menu rounded-lg font-bold text-xl">
+                    <li><a href="/tours_grupos" class="text-white">Enlace 1</a></li>
+                    <li><a href="/transportacion" class="text-white">Enlace 2</a></li>
+                    <li><a href="#" class="text-white">Enlace 3</a></li>
+                </ul>
+            </div>
+        
+        </div>  
+        <!-- termina columna 1-->
+
+        <!-- inicia columna 2-->
+        <div class="flex-1 rounded-lg shadow-lg p-4 ml-3 mr-1 bg-newlimes" >
+            <div class="flex-1 rounded-lg shadow-lg p-4 ml-3 mr-1 bg-newlimel bg-newlimel" >
+                <h1 class="text-5xl font-bold text-black text-center mb-4 py-2">Tu siguiente aventura inicia aquí</h1>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-5">
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="static/img/holbox.png" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="static/img/holbox2.png" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg" alt="">
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg" alt="">
+                    </div>
+                    </div>
+                <!-- Fin de prueba  de galeria -->
+                <section class="card bg-base-200 shadow-lg rounded-lg p-6 text-2xl">
+                <p>
+                En Collection Experience, nos especializamos en crear experiencias únicas y emocionantes para viajeros audaces como tú. 
+                Nuestro enfoque está en combinar la adrenalina de las actividades extremas con el lujo y la belleza incomparable de las 
+                playas del Caribe.
+                </p>
+                <br>
+                <p>
+                    Entendemos que buscas más que un simple viaje; anhelas una colección de momentos extraordinarios. 
+                    Por eso, nos dedicamos a ofrecerte:
+                </p>
+                    <br>
+                    <!--iv class="justify-end  p-10 rounded-lg bg-base-100">
+                        <ul class="list-disc ml-10">
+                            <br>
+                            <li>
+                                <P>
+                                    Itinerarios personalizados que se ajustan a tu nivel de adrenalina
+                                </p>
+                            </li>
+                            <br>
+                            <li>
+                                <P>
+                                    Acceso a lugares exclusivos y poco explorados del Caribe      
+                                </p>
+                            </li>
+                            <br>
+                            <li>
+                                <P>
+                                    Equipamiento de última generación para todas las actividades
+                                </p>
+                            </li>
+                            <br>
+                            <li>
+                                <P>
+                                    Guías certificados y experimentados en cada destino
+                                </p>
+                            </li>
+                            <br>
+                            <li>
+                                <P>
+                                    Opciones de alojamiento cuidadosamente seleccionadas
+                                </p>
+                            </li>
+                            <br>
+                        </ul>
+                    </div-->
+                    <br>
+                </p>
+                <P>
+                    En Collection Experience, no solo vendemos viajes; creamos historias que contarás por años. 
+                    Nuestra reputación se basa en la excelencia, la atención al detalle y un servicio al cliente incomparable.
+                </p>
+                    <br>
+                <P>
+                    Prepárate para vivir el Caribe como nunca antes. Tu próxima gran aventura comienza aquí, con Collection Experience.
+                </p>
+                    <br>
+                <p>
+                    Descubre. Explora. Vive.
+                </p>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

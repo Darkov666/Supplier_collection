@@ -1,0 +1,50 @@
+node_modules/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.so
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+*.sqlite3-journal
+__pycache__/
+
+# Static and media files
+/static/
+/media/
+
+# Backup files
+*.bak
+
+# Environment variables
+.env
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Virtual environment
+venv/
+ENV/
+env/
+venv.bak/
+
+# Python package files
+*.egg
+*.egg-info/
+dist/
+build/
