@@ -21,7 +21,6 @@ module.exports = {
     require('flowbite/plugin'),
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    require('flowbite/plugin'),
   ],
   daisyui: {
     styled: true,
@@ -30,7 +29,7 @@ module.exports = {
     logs: true,
     rtl: false,
     prefix: "",
-    darkTheme: 'false',
+    darkTheme: false,  // Cambiado a booleano
     themes: [
       "light",
       "dark",
@@ -67,5 +66,3 @@ module.exports = {
     ]    
   },
 };
-
-

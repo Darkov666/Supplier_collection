@@ -13,9 +13,15 @@ class Transportacion(models.Model):
     destination_start = models.CharField(max_length=100)
     pickup_end = models.CharField(max_length=100)
     destination_end = models.CharField(max_length=100)
+    email = models.EmailField(max_length=254, default="-")  # Campo para el correo electrónico
+    contact_phone = models.CharField(max_length=15, default="-")  # Campo para el número de celular de contacto
+    passenger_names = models.TextField(blank=True)  # Campo para los nombres de los pasajeros, puede estar en blanco
 
     def __str__(self):
-        return f"Reservation by {self.holder_name} for {self.num_people} people"
+        return f'{self.holder_name} - {self.start_date} to {self.end_date}'
+
+   # def __str__(self):
+    #    return f"Reservation by {self.holder_name} for {self.num_people} people"
     
 class Tours(models.Model):
     holder_name = models.CharField(max_length=100)

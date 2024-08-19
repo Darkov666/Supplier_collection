@@ -9,6 +9,7 @@
                     <div class="mb-4 ">
                         {% csrf_token %}
                         {{ form.as_p }}
+                        <br>
                         <div class="mb-4" id="additional-people">
                             <button class="btn btn-primary mb-2" type="button" onclick="addPersonField()">Agregar Persona</button>
                             <br>
