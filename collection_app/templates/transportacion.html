@@ -3,20 +3,140 @@
 {% block content %}
 <div class="flex flex-col sm:flex-row sm:space-x-4 p-4">
     <!-- Inicia columna 1 -->
-    <div class="sm:w-full md:w-1/4 bg-newlimes rounded-lg p-4 mb-4 sm:mb-0">
-        <form class="rounded-lg text-black shadow-lg bg-transparent">
-            <h2 class="text-2xl font-bold text-black mb-4 py-5 px-10">Cotizador</h2>
-                    <div class="mb-4 ">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <br>
-                        <div class="mb-4" id="additional-people">
-                            <button class="btn btn-primary mb-2" type="button" onclick="addPersonField()">Agregar Persona</button>
-                            <br>
+    <div class="sm:w-full md:w-1/4 bg-newlimes rounded-lg mb-4 sm:mb-0">
+        <form method="POST" class="rounded-lg text-black shadow-lg bg-newlimes">
+            <h2 class="text-2xl font-bold text-black text-center mb-4 py-5">Reservar</h2>
+                    <div class="mb-4 font-bold m-5">
+                        
+                      {% csrf_token %}
+
+                      {{ form.as_p }}
+                
+                        <div class="flex justify-center items-center">
                             <button type="submit" class="btn btn-primary mb-8">Reservar</button>
                         </div> 
-                    </div>
+                  </div>
                 </form>
+
+                {# Ventana emergente #}
+                <div id="infoModal" class="modal">
+                    <div class="modal-box p-0 bg-transparent max-w-2xl"> <!-- Aumentamos el ancho máximo -->
+                        <div class="bg-blue-600 bg-opacity-40 rounded-lg text-center p-6 shadow-lg"> <!-- Usamos bg-opacity-40 y añadimos shadow-lg -->
+                            <h3 class="font-bold text-xl text-white mb-4">Información de Servicio</h3>
+                            <p class="py-2 font-semibold text-lg text-white">El servicio es únicamente Aeropuerto - Hotel y puede ser servicio Redondo.</p>
+                            <p class="py-2 font-semibold text-lg text-white">Si desea un servicio diferente, por favor solicite una cotización en la página de inicio.</p>
+                            <div class="modal-action mt-6">
+                                <button id="okButton" class="btn btn-primary">OK</button>
+                                <a href="{% url 'home' %}" class="btn btn-secondary">Ir a Inicio</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const pickupStartField = document.getElementById('pickup_start');
+  const modal = document.getElementById('infoModal');
+  const okButton = document.getElementById('okButton');
+
+  pickupStartField.addEventListener('focus', function(event) {
+      event.preventDefault();
+      modal.classList.add('modal-open');
+  });
+
+  okButton.addEventListener('click', function() {
+      modal.classList.remove('modal-open');
+  });
+
+  // Cerrar el modal si se hace clic fuera de él
+  window.addEventListener('click', function(event) {
+      if (event.target == modal) {
+          modal.classList.remove('modal-open');
+      }
+  });
+});
+</script>
+{% endblock %}
+                <!-- Script de la api de google-->
+                <script>
+                  function initAutocomplete() {
+                      var options = {
+                          types: ['establishment'],
+                          componentRestrictions: {country: 'mx'},
+                          bounds: {
+                              north: 21.6082,
+                              south: 19.5823,
+                              east: -86.7069,
+                              west: -90.4096
+                          },
+                          strictBounds: true
+                      };
+          
+                      var pickup = new google.maps.places.Autocomplete(
+                          document.getElementById('pickup_start'),
+                          options
+                      );
+          
+                      var destination = new google.maps.places.Autocomplete(
+                          document.getElementById('destination_start'),
+                          options
+                      );
+                  }
+          
+                  google.maps.event.addDomListener(window, 'load', initAutocomplete);
+              </script>
+                        
+              
+              <!--Script para validar el checkbox-->
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                const roundTripCheckbox = document.getElementById('id_round_trip');
+                const endDateField = document.getElementById('id_end_date');
+                const flightNumberDepartureField = document.getElementById('flight_number_departure');
+                const airlineDepartureField = document.getElementById('airline_departure');
+                const terminalDepartureField = document.getElementById('terminal_departure'); 
+            
+                // Verifica que los elementos existan antes de continuar
+                if (roundTripCheckbox && endDateField && flightNumberDepartureField && airlineDepartureField && terminalDepartureField) {
+                    const endDateContainer = endDateField.parentElement;
+                    const flightNumberDepartureContainer = flightNumberDepartureField.parentElement;
+                    const airlineDepartureContainer = airlineDepartureField.parentElement;
+                    const terminalDepartureContainer = terminalDepartureField.parentElement;
+            
+                    // Función para mostrar u ocultar los campos end_date y flight_number_departure
+                    function toggleFields() {
+                        if (roundTripCheckbox.checked) {
+                            endDateContainer.style.display = 'block';
+                            endDateField.disabled = false;
+                            flightNumberDepartureContainer.style.display = 'block';
+                            flightNumberDepartureField.disabled = false;
+                            airlineDepartureContainer.style.display = 'block';
+                            airlineDepartureField.disabled = false;
+                            terminalDepartureContainer.style.display = 'block';
+                            terminalDepartureField.disabled = false;
+                        } else {
+                            endDateContainer.style.display = 'none';
+                            endDateField.disabled = true;
+                            flightNumberDepartureContainer.style.display = 'none';
+                            flightNumberDepartureField.disabled = true;
+                            airlineDepartureContainer.style.display = 'none';
+                            airlineDepartureField.disabled = true;
+                            terminalDepartureContainer.style.display = 'none';
+                            terminalDepartureField.disabled = true;
+                        }
+                    }
+            
+                    // Escuchar el evento de cambio en el checkbox y ejecutar la función
+                    roundTripCheckbox.addEventListener('change', toggleFields);
+                    
+                    // Ejecutar la función al cargar la página
+                    toggleFields();
+                }
+            });
+                </script>
+                
+                
                   <!-- Otros elementos -->
         <div class="mt-8 bg-lime p-6 rounded-lg shadow-lg">
             <h3 class="text-2xl text-black font-bold mb-4">Te puede interesar</h3>
@@ -30,9 +150,16 @@
     <!-- Termina columna 1 -->
 
        <!-- Inicia columna 2 -->
+       {% if messages %}
+       <ul class="messages">
+           {% for message in messages %}
+           <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+           {% endfor %}
+       </ul>
+       {% endif %}
     <div class="flex-1 rounded-lg shadow-lg p-4 bg-newlimes">
-        <h1 class="text-5xl font-bold text-black text-center mb-4 py-2">Tu siguiente aventura inicia aquí</h1>
-        <div id="custom-controls-gallery" class="relative h-full w-full" data-carousel="slide">
+        <h1 class="text-5xl font-font-semibold text-cyan-700 text-center mb-4 py-2">Tu siguiente aventura inicia aquí</h1>
+        <div id="custom-controls-gallery" class="bg-bg-newlimes relative h-full w-full z-[10]" data-carousel="slide">
             <!-- Carousel wrapper -->
             <div class="relative h-56 mb-4 overflow-hidden rounded-lg w-full md:h-96">
                 <!-- Items del carrusel -->
@@ -54,24 +181,62 @@
             </div>
 
             <!-- Galería de imágenes -->
-            <div class="shadow-lg rounded-lg p-6 text-2xl grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="/static/img/flamingos.webp" alt="">
+            <div class="shadow-lg rounded-lg p-0 text-2xl grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="card bg-base-100 w-45 shadow-xl">
+                    <figure>
+                      <img
+                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                        alt="Shoes" />
+                    </figure>
+                    <div class="card-body">
+                      <h2 class="card-title">Shoes!</h2>
+                      <p>If a dog chews shoes whose shoes does he choose?</p>
+                      <div class="card-actions justify-end">
+                        <button class="btn btn-primary">Buy Now</button>
+                      </div>
+                    </div>
                 </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="/static/img/image-3.webp" alt="">
+                <div class="card bg-base-100 w-45 shadow-xl">
+                    <figure>
+                      <img
+                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                        alt="Shoes" />
+                    </figure>
+                    <div class="card-body">
+                      <h2 class="card-title">Shoes!</h2>
+                      <p>If a dog chews shoes whose shoes does he choose?</p>
+                      <div class="card-actions justify-end">
+                        <button class="btn btn-primary">Buy Now</button>
+                      </div>
+                    </div>
                 </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="/static/img/holbox.png" alt="">
+                <div class="card bg-base-100 w-45 shadow-xl">
+                    <figure>
+                      <img
+                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                        alt="Shoes" />
+                    </figure>
+                    <div class="card-body">
+                      <h2 class="card-title">Shoes!</h2>
+                      <p>If a dog chews shoes whose shoes does he choose?</p>
+                      <div class="card-actions justify-end">
+                        <button class="btn btn-primary">Buy Now</button>
+                      </div>
+                    </div>
                 </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="/static/img/holbox2.png" alt="">
-                </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg" alt="">
-                </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg" alt="">
+                <div class="card bg-base-100 w-45 shadow-xl">
+                    <figure>
+                      <img
+                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                        alt="Shoes" />
+                    </figure>
+                    <div class="card-body">
+                      <h2 class="card-title">Shoes!</h2>
+                      <p>If a dog chews shoes whose shoes does he choose?</p>
+                      <div class="card-actions justify-end">
+                        <button class="btn btn-primary">Buy Now</button>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>

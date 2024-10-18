@@ -1,22 +1,131 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="es">
     <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>SUPPLIER COLLECTION</title>
-      <meta name="description" content="">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
-      <link href="{% static 'css/daisyui.css' %}" rel="stylesheet">
-      <script src="{% static 'js/flowbite.min.js' %}"></script>
-      
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Experience Collections</title>
+        <!--Aplicar el tema inmediatamente-->
+        <script>
+          (function() {
+              var savedTheme = localStorage.getItem('theme') || 'light';
+              document.documentElement.setAttribute('data-theme', savedTheme);
+          })();
+  
+          function applyTheme(theme) {
+              document.documentElement.setAttribute('data-theme', theme);
+              localStorage.setItem('theme', theme);
+          }
+  
+          window.addEventListener('DOMContentLoaded', function() {
+              var savedTheme = localStorage.getItem('theme') || 'light';
+              var themeController = document.querySelector('.theme-controller');
+              if (themeController) {
+                  themeController.checked = savedTheme === 'synthwave';
+                  themeController.addEventListener('change', function() {
+                      applyTheme(this.checked ? 'synthwave' : 'light');
+                  });
+              }
+          });
+      </script>
+        <!--Termina script para aplicar el manejo de tema-->
+        <link href="{% static 'css/tailwind.css' %}" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css" rel="stylesheet">
+        <link rel="icon" href="/static/img/EC_logo_.png" type="image/wep">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--link href="{% static 'css/daisyui.css' %}" rel="stylesheet"-->
+        <script src="{% static 'js/flowbite.min.js' %}"></script>
+        <!--link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet"-->
+        <script src="https://cdn.jsdelivr.net/npm/places.js@1.19.0"></script>    
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYl_NwV6wULkAF1EC2NKkTPQdCg7giawY&libraries=places"></script>
+ 
+    </head>
 
-  <body>
- <!--Inicio de menu-->     
 <header>
-  <div class="navbar bg-newlime font-bold text-black">
-    <div class="navbar-start">
+  <!--Top menu 1-->
+  <div class="p-5">
+    <div class="flex flex-col sm:flex-row justify-between items-center">
+      <!--Top menu 1-->
+      <div class="w-full sm:w-auto mb-4 sm:mb-0">
+        <div class="flex justify-center ml-3 sm:justify-start space-x-5"> 
+        <a>
+          <svg xmlns="http://www.w3.org/2000/svg" 
+          width="1.5em" 
+          height="1.5em" 
+          viewBox="0 0 512 512" 
+          class="fill-current"><path d="M389.2 48h70.6L305.6 224.2L487 464H345L233.7 318.6L106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+        </a>
+        <a>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            class="fill-current">
+            <path
+              d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
+          </svg>
+        </a>
+        <a>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            class="fill-current">
+            <path
+              d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+          </svg>
+        </a>
+      </div>
+    </div> 
+   <!--Top menu 2-->
+   <div class="w-full sm:w-auto mr-3">
+    <div class="flex flex-col sm:flex-row justify-center sm:justify-end items-center space-y-2 sm:space-y-0 sm:space-x-6">
+      <!-- Correo electrónico (siempre visible) -->
+      <div class="flex items-center">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="1.5em" 
+          height="1.5em" 
+          viewBox="0 0 16 16" 
+          class="fill-current mr-2">
+          <path 
+          d="M7.732 1.078a.5.5 0 0 1 .536 0l4.806 3.058a2 2 0 0 1 .843 1.118L8 8.432L2.086 5.244a2 2 0 0 1 .84-1.108zM2 6.334V11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.344L8.237 9.44a.5.5 0 0 1-.474 0z"/>
+        </svg>
+        <span>correo@ejemplo.com</span>
+      </div>
+      <div class="hidden md:flex items-center">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="1.5em" 
+          height="1.5em" 
+          viewBox="0 0 24 24"
+          class="fill-current mr-2">
+          <path 
+          d="M19.5 22a1.5 1.5 0 0 0 1.5-1.5V17a1.5 1.5 0 0 0-1.5-1.5c-1.17 0-2.32-.18-3.42-.55a1.51 1.51 0 0 0-1.52.37l-1.44 1.44a14.77 14.77 0 0 1-5.89-5.89l1.43-1.43c.41-.39.56-.97.38-1.53c-.36-1.09-.54-2.24-.54-3.41A1.5 1.5 0 0 0 7 3H3.5A1.5 1.5 0 0 0 2 4.5C2 14.15 9.85 22 19.5 22M3.5 4H7a.5.5 0 0 1 .5.5c0 1.28.2 2.53.59 3.72c.05.14.04.34-.12.5L6 10.68c1.65 3.23 4.07 5.65 7.31 7.32l1.95-1.97c.14-.14.33-.18.51-.13c1.2.4 2.45.6 3.73.6a.5.5 0 0 1 .5.5v3.5a.5.5 0 0 1-.5.5C10.4 21 3 13.6 3 4.5a.5.5 0 0 1 .5-.5"/>
+        </svg>
+        <span>+52 (998) 322 9771</span>
+      </div>
+      <div class="hidden md:flex items-center">
+          <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="1.8em" 
+          height="1.85em" 
+          viewBox="0 0 64 64"
+          class="mr-10">
+          <path fill="#ec1c24" d="M26 17.76v3.38h37.965c-.053-1.09-.167-2.468-.575-3.38"/><path fill="#e6e7e8" d="M61.6 14.38H26v3.38h37.39c-.406-1.261-1.01-2.411-1.79-3.38"/><path fill="#ec1c24" d="M54 11H26v3.38h35.6C59.931 12.29 57.184 11 54 11"/><path fill="#e6e7e8" d="M63.965 21.14H26v3.38h38v-2.253c0-.201-.013-.397-.019-.594c-.004-.054-.01-.193-.016-.533"/><path fill="#ec1c24" d="M26 27.9h38v-3.38H26z"/><path fill="#e6e7e8" d="M26 31.28h38V27.9H26z"/><path fill="#ec1c24" d="M26 31.28h38v3.38H26z"/><path fill="#e6e7e8" d="M0 34.66v3.38h64v-3.38H26z"/><path fill="#ec1c24" d="M0 38.04h64v3.38H0z"/><path fill="#e6e7e8" d="M.005 43.499s-.009.819.015 1.301h63.96c.028-.494.015-1.301.015-1.301L64 41.42H0z"/><path fill="#ec1c24" d="M10 55h44c3.193 0 5.847-1.16 7.66-3.44H2.33C4.202 53.89 6.906 55 9.995 55"/><path fill="#e6e7e8" d="M2.335 51.56h59.33a10 10 0 0 0 1.74-3.38H.605a10.4 10.4 0 0 0 1.735 3.38"/><path fill="#ec1c24" d="M.6 48.18h62.8a14.4 14.4 0 0 0 .58-3.38H.02c.099 1.156.191 2.029.58 3.38"/><path fill="#176496" d="M26 11H10C3.373 11 0 15.925 0 22v12.66h26z"/><path fill="#fff" d="m2.798 16.976l.544-.418l.543.418l-.211-.672l.541-.411h-.668l-.207-.675l-.206.675h-.667l.543.411zm3.594 0l.544-.418l.543.418l-.21-.672l.54-.411h-.667l-.207-.675l-.206.675H6.06l.543.411zm3.965 0l.543-.418l.544.418l-.211-.672l.54-.411h-.663l-.21-.675l-.207.675h-.663l.537.411zm3.936 0l.543-.418l.544.418l-.21-.672l.54-.411h-.67l-.204-.675l-.206.675h-.668l.542.411zm3.95 0l.544-.418l.543.418l-.21-.672l.541-.411h-.669l-.206-.675l-.206.675h-.667l.54.411zM4.711 18.731l.543-.417l.543.417l-.209-.671l.54-.411H5.46l-.207-.674l-.203.674h-.67l.541.411zm3.595 0l.543-.417l.543.417l-.21-.671l.54-.411H9.05l-.201-.674l-.207.674h-.667l.541.411zm3.965 0l.542-.417l.543.417l-.21-.671l.541-.411h-.667l-.207-.674l-.207.674h-.668l.541.411zm3.934 0l.544-.417l.544.417l-.213-.671l.542-.411h-.667l-.207-.674l-.205.674h-.668l.541.411zm3.955 0l.539-.417l.543.417l-.212-.671l.542-.411h-.666l-.208-.674l-.205.674h-.668l.541.411zm2.227-1.755l.543-.418l.544.418l-.211-.672l.54-.411h-.663l-.211-.675l-.206.675h-.673l.547.411zM2.745 31.02l.544-.413l.543.413l-.21-.666l.54-.412l-.667.002l-.208-.674l-.204.674l-.669-.002l.541.412zm3.595 0l.543-.413l.544.413l-.211-.666l.54-.412l-.666.002l-.208-.674l-.205.674l-.667-.002l.54.412zm3.965 0l.543-.413l.544.413l-.211-.666l.54-.412l-.671.002l-.203-.674l-.206.674l-.667-.002l.541.412zm3.936 0l.543-.413l.543.413l-.207-.666l.537-.412l-.668.002l-.206-.674l-.206.674l-.667-.002l.54.412zm3.949 0l.544-.413l.544.413l-.208-.666l.537-.412l-.667.002l-.207-.674l-.205.674l-.668-.002l.54.412zm4.144 0l.543-.413l.544.413l-.211-.666l.541-.412l-.671.002l-.204-.674l-.206.674l-.67-.002l.544.412zM2.798 20.488l.544-.418l.543.418l-.211-.672l.541-.411l-.668.002l-.207-.676l-.206.676l-.667-.002l.543.411zm3.594 0l.544-.418l.543.418l-.21-.672l.54-.411l-.667.002l-.207-.676l-.206.676l-.669-.002l.543.411zm3.965 0l.543-.418l.544.418l-.211-.672l.54-.411l-.663.002l-.21-.676l-.207.676l-.663-.002l.537.411zm3.936 0l.543-.418l.544.418l-.21-.672l.54-.411l-.67.002l-.204-.676l-.206.676l-.668-.002l.542.411zm3.95 0l.544-.418l.543.418l-.21-.672l.541-.411l-.669.002l-.206-.676l-.206.676l-.667-.002l.54.411zM4.711 22.244l.543-.417l.543.417l-.209-.671l.54-.413H5.46l-.207-.672l-.203.672h-.67l.541.413zm3.595 0l.543-.417l.543.417l-.21-.671l.54-.413H9.05l-.201-.672l-.207.672h-.667l.541.413zm3.965 0l.542-.417l.543.417l-.21-.671l.541-.413h-.667l-.207-.672l-.207.672h-.668l.541.413zm3.934 0l.544-.417l.544.417l-.213-.671l.542-.413h-.667l-.207-.672l-.205.672h-.668l.541.413zm3.955 0l.539-.417l.543.417l-.212-.671l.542-.413h-.666l-.208-.672l-.205.672h-.668l.541.413zm2.227-1.756l.543-.418l.544.418l-.211-.672l.54-.411l-.663.002l-.211-.676l-.206.676l-.673-.002l.547.411zM2.745 24l.544-.417l.543.417l-.211-.67l.541-.412l-.668.002l-.207-.676l-.204.676l-.669-.002l.541.412zm3.595 0l.543-.417l.544.417l-.211-.67l.54-.412l-.666.002l-.208-.676l-.205.676l-.667-.002l.539.412zm3.965 0l.543-.417l.543.417l-.21-.67l.54-.412l-.671.002l-.203-.676l-.206.676l-.667-.002l.541.412zm3.936 0l.542-.417l.544.417l-.207-.67l.537-.412l-.668.002l-.206-.676l-.206.676l-.667-.002l.54.412zm3.949 0l.544-.417l.543.417l-.207-.67l.537-.412l-.668.002l-.206-.676l-.205.676l-.668-.002l.54.412zM4.658 25.756l.543-.416l.543.416l-.209-.666l.539-.414h-.668L5.2 24l-.205.676h-.668l.541.414zm3.595 0l.543-.416l.543.416l-.21-.666l.54-.414H9L8.795 24l-.206.676h-.668l.542.414zm3.966 0l.541-.416l.544.416l-.214-.666l.544-.414h-.667L12.76 24l-.206.676h-.668l.541.414zm3.931 0l.546-.416l.544.416l-.21-.666l.539-.414h-.667L16.695 24l-.205.676h-.668l.541.414zm3.95 0l.546-.416l.544.416l-.211-.666l.542-.414h-.667L20.646 24l-.206.676h-.668l.541.414zM22.334 24l.543-.417l.543.417l-.21-.67l.541-.412l-.671.002l-.204-.676l-.206.676l-.67-.002l.544.412zM2.745 27.513l.544-.413l.543.413l-.211-.671l.541-.412l-.668.002l-.207-.676l-.204.676l-.669-.002l.541.412zm3.595 0l.543-.413l.544.413l-.211-.671l.54-.412l-.666.002l-.208-.676l-.205.676l-.667-.002l.539.412zm3.965 0l.543-.413l.543.413l-.21-.671l.54-.412l-.671.002l-.203-.676l-.206.676l-.667-.002l.541.412zm3.936 0l.542-.413l.544.413l-.207-.671l.537-.412l-.668.002l-.206-.676l-.206.676l-.667-.002l.54.412zm3.949 0l.544-.413l.543.413l-.207-.671l.537-.412l-.668.002l-.206-.676l-.205.676l-.668-.002l.54.412zM4.658 29.27l.543-.418l.543.418l-.209-.672l.539-.408h-.668l-.206-.677l-.205.677h-.668l.541.408zm3.595 0l.543-.418l.543.418l-.21-.672l.54-.408H9l-.205-.677l-.206.677h-.668l.542.408zm3.966 0l.541-.418l.544.418l-.214-.672l.544-.408h-.667l-.207-.677l-.206.677h-.668l.541.408zm3.931 0l.546-.418l.544.418l-.21-.672l.539-.408h-.667l-.207-.677l-.205.677h-.668l.541.408zm3.95 0l.546-.418l.544.418l-.211-.672l.542-.408h-.667l-.208-.677l-.206.677h-.668l.541.408zm2.234-1.757l.543-.413l.543.413l-.21-.671l.541-.412l-.671.002l-.204-.676l-.206.676l-.67-.002l.544.412z"/>
+          </svg>
+      </div>
+    </div>
+  </div>
+</div>
+</div> 
+<!--Inicio de menu principal-->     
+  <div class="navbar bg-newlime font-bold text-cyan-700/85">
+    <div class="navbar-start mt-8 mb-8">
       <div class="dropdown">
         <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -24,32 +133,33 @@
               stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
           </svg>
         </div>
-        <ul tabindex="0" class="menu menu-sm dropdown-content bg-newlime fot-semibold rounded-box z-[1] mt-3 w-52 p-2 shadow">
-          <li><a href="/transportacion">Transportación</a></li>
-          <li><a href="/tours_grupos">Tours y Grupos</a></li>
-            <!--ul class="p-2">
+        <ul tabindex="0" class="menu menu-sm dropdown-content text-cyan-700/85 bg-newlime font-semibold rounded-box z-[1] mt-3 w-52 p-2">
+          <li class="hover:text-sky-400"><a href="/transportacion">Transportación</a></li>
+          <!--li class="hover:text-sky-400"><a href="/tours_grupos">Tours y Grupos</a></li>
+            <ul class="p-2">
               <li><a>Submenu 1</a></li>
               <li><a>Submenu 2</a></li>
             </ul>
           </li-->
-          <li><a href="/Contacto">Contacto</a></li>
+          <li class="hover:text-sky-400"><a href="/"Contacto>Contacto</a></li>
         </ul>
       </div>
-      <a class="btn btn-ghost text-3xl" href="/">Experience Collection</a>
+        <img src="/static/img/EC_logo_.png" class="hidden sm:block w-12 h-12 object-cover ml-3" alt="Logo esperience collections">
+        <a class="btn btn-ghost font-sans text-cyan-700 text-3xl mr-5 hover:text-sky-400" href="/">Experience Collection</a>
     </div>
     <div class="navbar-center hidden lg:flex">
-      <ul class="menu menu-horizontal px-1">
-        <li><a href="/transportacion">Transportación</a></li>
-        <li>
+      <ul class="menu menu-horizontal font-semibold text-3xl px-1">
+        <li class="hover:text-sky-400"><a href="/transportacion">Transportación</a></li>
+        <li class="hover:text-sky-400">
           <!--details-->
-            <a href="/tours_grupos">Tours y grupos</a>
-            <!--ul class="p-2">
+            <!--a href="/tours_grupos">Tours y grupos</a>
+            <ul class="p-2">
               <li><a>Submenu 1</a></li>
               <li><a>Submenu 2</a></li>
             </ul-->
           <!--/details-->
         </li>
-        <li><a href="/contacto">Contacto</a></li>
+        <li class="hover:text-sky-400"><a href="/contacto">Contacto</a></li>
       </ul>
     </div>
     <div class="navbar-end">
@@ -72,9 +182,7 @@
               <span class="badge badge-sm indicator-item">8</span>
             </div>
           </div>
-          <div
-            tabindex="0"
-            class="card card-compact dropdown-content bg-newlime z-[1] mt-3 w-52 shadow">
+          <div tabindex="0" class="card card-compact dropdown-content bg-newlime z-[1] mt-3 w-52 shadow">
             <div class="card-body">
               <span class="text-lg font-bold">8 Items</span>
               <span class="text-info">Subtotal: $999</span>
@@ -85,38 +193,56 @@
           </div>
         </div>
       </div>
-      <label class="ml-4 mr-2 swap swap-rotate">
+      <label class="mr-2 swap swap-rotate">
         <!-- this hidden checkbox controls the state -->
-        <input type="checkbox" class="theme-controller hidden" value="synthwave" />
+        <input type="checkbox" class="theme-controller hidden" />
       
         <!-- sun icon -->
-        <svg
-          class="swap-off h-10 w-10 fill-current"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24">
-          <path
-            d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
+        <svg class="swap-off h-10 w-10 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
         </svg>
       
         <!-- moon icon -->
-        <svg
-          class="swap-on h-10 w-10 fill-current"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24">
-          <path
-            d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
+        <svg class="swap-on h-10 w-10 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05A1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
         </svg>
-      </label>
+    </label>
+    
+    
       <!--a class="btn">Button</a-->
     </div>
   </div>       
 </header>
+
   <!--Fin del menu-->     
+ <body>
+  <script>
+    // Script para manejar el tema
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        const themeController = document.querySelector('.theme-controller');
+        themeController.checked = savedTheme === 'synthwave';
+
+        themeController.addEventListener('change', function() {
+            if (this.checked) {
+                applyTheme('synthwave');
+            } else {
+                applyTheme('light');
+            }
+        });
+    });
+</script>
       <div class="px-3 py-3"> 
                     {% block content %}
                     {% endblock %}
       </div>
-        <footer class="footer bg-newlime text-black font-semibold p-10">
+</body>
+        <footer class="footer bg-newlime text-cyan-700 font-semibold p-10">
             <nav>
               <h6 class="footer-title">Services</h6>
               <a class="link link-hover" href="/catamaran">Catamaran</a>
@@ -139,7 +265,7 @@
             </nav>
           </footer>
           <footer class="footer bg-newlime text-white border-base-300 border-t px-10 py-4">
-            <aside class="grid-flow-col items-center text-black">
+            <aside class="grid-flow-col items-center text-cyan-700">
               <svg
                 width="24"
                 height="24"
@@ -196,7 +322,5 @@
             </nav>
           </footer>
       </div>
-      <script src="{% static 'js/flowbite.min.js' %}"></script>
-      <script src="{% static 'js/menuadapt.js' %}"></script>
-    </body>
+  </body>
 </html>

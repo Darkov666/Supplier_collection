@@ -1,0 +1,55 @@
+[
+    {
+        "model": "collection_app.VehicleType",
+        "pk": 1,
+        "fields": {
+            "name": "Estándar",
+            "description": "Vehículo cómodo y espacioso para transporte regular",
+            "base_price": "1200.00",
+            "image": "vehicles/estandar.jpg"
+        }
+    },
+    {
+        "model": "collection_app.VehicleType",
+        "pk": 2,
+        "fields": {
+            "name": "Lujo",
+            "description": "Vehículo de alta gama con comodidades premium",
+            "base_price": "2000.00",
+            "image": "vehicles/lujo.jpg"
+        }
+    },
+    {
+        "model": "collection_app.Vehicle",
+        "pk": 1,
+        "fields": {
+            "vehicle_type": 1,
+            "name": "Suburban Estándar",
+            "capacity": 6,
+            "description": "Chevrolet Suburban equipada con aire acondicionado y espacio para equipaje",
+            "is_available": true
+        }
+    },
+    {
+        "model": "collection_app.Vehicle",
+        "pk": 2,
+        "fields": {
+            "vehicle_type": 2,
+            "name": "Suburban Lujo",
+            "capacity": 6,
+            "description": "Chevrolet Suburban de lujo con asientos de piel, aire acondicionado, WiFi y bebidas",
+            "is_available": true
+        }
+    },
+    {
+        "model": "collection_app.Vehicle",
+        "pk": 3,
+        "fields": {
+            "vehicle_type": 1,
+            "name": "Van Estándar",
+            "capacity": 9,
+            "description": "Van espaciosa con aire acondicionado y amplio espacio para equipaje",
+            "is_available": true
+        }
+    }
+]

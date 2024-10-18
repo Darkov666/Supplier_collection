@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col sm:flex-row sm:space-x-4 p-4">
+<div class="flex flex-row sm:space-x-4 p-4">
+    
+    <!-- Sección de 25% -->
+    <div class="w-full md:w-1/4 bg-newlimes rounded-lg shadow-lg p-4">
+    
+        <div class="w-full md:w-1/4 bg-newlimes rounded-lg shadow-lg p-4">
+            {% for option in vehicle_options %}
+                {% for vehicle in option.vehicles %}
+                    <div class="card bg-base-100 w-45 shadow-xl mb-4">
+                        <figure>
+                            <img src="{{ vehicle.vehicle_type.image.url }}" alt="{{ vehicle.name }}" />
+                        </figure>
+                        <div class="card-body">
+                            <h2 class="card-title">{{ vehicle.name }}</h2>
+                            <p class="text-sm">{{ vehicle.description }}</p>
+                            <p class="font-bold">Capacidad: {{ vehicle.capacity }} pasajeros</p>
+                            {% if option.vehicles|length > 1 %}
+                                <p class="text-sm text-gray-600">*Este servicio incluye {{ option.vehicles|length }} vehículos</p>
+                            {% endif %}
+                            <div class="card-actions justify-start-0">
+                                <form method="POST" action="{% url 'select_vehicle' transportacion.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="vehicle_option" value="{{ forloop.parentloop.counter0 }}">
+                                    <button type="submit" class="btn btn-primary">Seleccionar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% empty %}
+                <div class="alert alert-warning">
+                    No hay vehículos disponibles para el número de pasajeros especificado.
+                    Por favor, contacte con servicio al cliente, para ofrecerle alternativas más economicas y acordes a sus necesidades.s
+                </div>
+            {% endfor %}
+        </div>
+            <!-- Más tarjetas aquí... -->
+    </div>
+
+
+    <!-- Sección de 75% -->
+    <div class="flex-1 rounded-lg shadow-lg p-4 bg-newlimes">
+        <h1 class="text-5xl text-cyan-700 text-center mb-4 py-2">Detalles de la reservación</h1>
+        <h2 class="text-xl font-bold text-cyan-700 text-center mb-4 py-2">Por favor corrobora la información proporcionada</h2>
+        <p class="font-semibold">Si la información que has proporcionado no es correcta de clic en editar para corregir la información correcta.
+            En caso de que todo este correcto puedes seguir comprando y mandar tu pedido al carrito de compras, o ir directamente a pagar tu reservación.
+        </p>
+        <br>
+        <div class="relative bg-bg-newlimes relative h-full w-full z-[10] h-full w-full">
+    
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        
+            <h2><strong>Reservación para:</strong> {{ transportacion.holder_name }}</h2>
+            <p><strong>Número de adultos:</strong> {{ transportacion.num_adults }}</p>
+            <p><strong>Número de menores:</strong> {{ transportacion.num_children }}</p>
+            <p><strong>Viaje redondo:</strong> {% if transportacion.round_trip %}Sí{% else %}No{% endif %}</p>
+            <p><strong>Fecha de inicio:</strong> {{ transportacion.start_date }}</p>
+            <p><strong>Aerolinea llegada:</strong> {{ transportacion.airline_arrival }}</p>
+            <p><strong>Vuelo de llegada:</strong> {{ transportacion.flight_number_arrival }}</p>
+            <p><strong>terminal de llegada:</strong> {{ transportacion.terminal_arrival }}</p>
+            {% if transportacion.round_trip %}
+            <p><strong>Fecha de regreso:</strong> {{ transportacion.end_date }}</p>
+            <p><strong>Aerolinea de regreso:</strong> {{ transportacion.airline_departure }}</p>
+            <p><strong>Vuelo de regreso:</strong> {{ transportacion.flight_number_departure }}</p>
+            <p><strong>terminal de regreso:</strong> {{ transportacion.terminal_departure }}</p>
+            {% endif %}
+            <p><strong>Lugar de recogida:</strong> {{ transportacion.pickup_start }}</p>
+            
+            <p><strong>Destino:</strong> {{ transportacion.destination_start }}</p>
+            <p><strong>Email:</strong> {{ transportacion.email }}</p>
+            <p><strong>Teléfono de contacto:</strong> {{ transportacion.contact_phone }}</p>
+            <br>
+            <div class="card-actions justify-start-0">
+                <a class="btn btn-primary" href="{% url 'transportacion' %}">Comprar ahora</a>
+                <a class="btn btn-primary" href="{% url 'transportacion' %}">Agregar  al carrito</a>
+            </div>
+            <br>
+            <div class="card-actions justify-start-0">
+                <a class="btn btn-secondary" href="{% url 'home' %}">Seguir comprando </a>
+            </div>
+          
+        </div>
+    </div>
+</div>
+<!-- Termina columna 2 -->
+</div>
+{% endblock %}
+
+

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tailwind',
     'collection_app',
-    'phonenumber_field'
+    'phonenumber_field',
     
 ]
 
@@ -128,6 +129,10 @@ STATICFILES_DIRS = [BASE_DIR / "collection_app" / "static"]
 #    BASE_DIR / "static",
  #   ]
 
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+
 # TailwindCSS and DaisyUI specific settings (optional)
 TAILWIND_CSS_PATH = 'collection_app/static/css/style.css'
 
@@ -138,4 +143,8 @@ TAILWIND_CSS_PATH = 'collection_app/static/css/style.css'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Configuración de Django
+DJANGO_SETTINGS_MODULE = 'collection_app.settings'
 
+# Configuración de la sección de administración
+ADMIN_SITE_HEADER = 'Experience Collections'

@@ -18,14 +18,16 @@ from django.contrib import admin
 from django.shortcuts import render, redirect
 from django.urls import path
 from collection_app import views
-#from .views import Transportacion
+
  
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    path('tours_grupos/', views.tours, name='tours_grupos'),
-    path('transportacion/', views.Transportacion, name='transportacion'),
+    #path('tours_grupos/', views.tours, name='tours_grupos'),    
+    path('transportacion/', views.transportacion, name='transportacion'),
+    path('transportacion/<int:id>/', views.formulario_rev, name='detalle_transportacion'),
     path('contacto/', views.contacto, name='contacto'),
+    #path('formulario_rev/<int:transportacion_id>/', views.formulario_rev, name='formulario_rev'),  # Ruta de la página de éxito
     #path('catamaran/', views.catamaran, name='catamaran'),
     #path('hospedaje/', views.hospedaje, name='hospedaje'),
     #path('nocturna/', views.nocturna, name='nocturna'),

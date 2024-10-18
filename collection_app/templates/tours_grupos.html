@@ -5,7 +5,7 @@
     <!-- Inicia columna 1 -->
     <div class="sm:w-full md:w-1/4 bg-newlimes rounded-lg p-4 mb-4 sm:mb-0">
         <form class="rounded-lg text-black shadow-lg bg-transparent">
-            <h2 class="text-2xl font-bold text-black mb-4 py-5 px-10">Cotizador</h2>
+            <h2 class="text-3xl font-semibold text-cyan-700 font-sans text-center mb-4 py-5 ">Cotizador</h2>
             <div class="mb-4">
                 <label class="block mb-2 font-bold text-black" for="name">Nombre</label>
                 <input type="text" autocomplete="off" id="name" class="input input-bordered shadow-lg bg-transparent text-black w-full" placeholder="Nombre">
@@ -33,9 +33,9 @@
         <div class="mt-8 bg-lime p-6 rounded-lg shadow-lg">
             <h3 class="text-2xl text-black font-bold mb-4">Te puede interesar</h3>
             <ul class="menu rounded-lg font-bold text-xl">
-                <li><a href="/tours_grupos" class="text-white">Enlace 1</a></li>
-                <li><a href="/transportacion" class="text-white">Enlace 2</a></li>
-                <li><a href="#" class="text-white">Enlace 3</a></li>
+                <li><a href="/tours_grupos" class="text-backdrop-blur">Enlace 1</a></li>
+                <li><a href="/transportacion" class="text-backdrop-blur">Enlace 2</a></li>
+                <li><a href="#" class="text-backdrop-blur">Enlace 3</a></li>
             </ul>
         </div>
     </div>
@@ -43,8 +43,8 @@
 
     <!-- Inicia columna 2 -->
     <div class="flex-1 rounded-lg shadow-lg p-4 bg-newlimes">
-        <h1 class="text-5xl font-bold text-black text-center mb-4 py-2">Tu siguiente aventura inicia aquí</h1>
-        <div id="custom-controls-gallery" class="relative h-full w-full" data-carousel="slide">
+        <h1 class="text-5xl font-font-semibold text-cyan-700 text-center mb-4 py-2">Tu siguiente aventura inicia aquí</h1>
+        <div id="custom-controls-gallery" class="relative relative h-full w-full z-[10] h-full w-full" data-carousel="slide">
             <!-- Carousel wrapper -->
             <div class="relative h-56 mb-4 overflow-hidden rounded-lg w-full md:h-96">
                 <!-- Items del carrusel -->
@@ -66,24 +66,62 @@
             </div>
 
             <!-- Galería de imágenes -->
-            <div class="shadow-lg rounded-lg p-6 text-2xl grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="/static/img/flamingos.webp" alt="">
+            <div class="shadow-lg rounded-lg p-0 text-2xl grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="card bg-base-100 w-45 shadow-xl">
+                    <figure>
+                      <img
+                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                        alt="Shoes" />
+                    </figure>
+                    <div class="card-body">
+                      <h2 class="card-title">Shoes!</h2>
+                      <p>If a dog chews shoes whose shoes does he choose?</p>
+                      <div class="card-actions justify-end">
+                        <button class="btn btn-primary">Buy Now</button>
+                      </div>
+                    </div>
                 </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="/static/img/image-3.webp" alt="">
+                <div class="card bg-base-100 w-45 shadow-xl">
+                    <figure>
+                      <img
+                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                        alt="Shoes" />
+                    </figure>
+                    <div class="card-body">
+                      <h2 class="card-title">Shoes!</h2>
+                      <p>If a dog chews shoes whose shoes does he choose?</p>
+                      <div class="card-actions justify-end">
+                        <button class="btn btn-primary">Buy Now</button>
+                      </div>
+                    </div>
                 </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="/static/img/holbox.png" alt="">
+                <div class="card bg-base-100 w-45 shadow-xl">
+                    <figure>
+                      <img
+                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                        alt="Shoes" />
+                    </figure>
+                    <div class="card-body">
+                      <h2 class="card-title">Shoes!</h2>
+                      <p>If a dog chews shoes whose shoes does he choose?</p>
+                      <div class="card-actions justify-end">
+                        <button class="btn btn-primary">Buy Now</button>
+                      </div>
+                    </div>
                 </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="/static/img/holbox2.png" alt="">
-                </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg" alt="">
-                </div>
-                <div>
-                    <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg" alt="">
+                <div class="card bg-base-100 w-45 shadow-xl">
+                    <figure>
+                      <img
+                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                        alt="Shoes" />
+                    </figure>
+                    <div class="card-body">
+                      <h2 class="card-title">Shoes!</h2>
+                      <p>If a dog chews shoes whose shoes does he choose?</p>
+                      <div class="card-actions justify-end">
+                        <button class="btn btn-primary">Buy Now</button>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
