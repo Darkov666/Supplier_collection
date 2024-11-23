@@ -27,6 +27,9 @@ urlpatterns = [
     path('transportacion/', views.transportacion, name='transportacion'),
     path('transportacion/<int:id>/', views.formulario_rev, name='detalle_transportacion'),
     path('contacto/', views.contacto, name='contacto'),
+    path('api/tours/', views.get_tours, name='get_tours'),
+    path('api/service-requests/', views.get_service_specific_fields, name='get_services'),
+
     #path('formulario_rev/<int:transportacion_id>/', views.formulario_rev, name='formulario_rev'),  # Ruta de la página de éxito
     #path('catamaran/', views.catamaran, name='catamaran'),
     #path('hospedaje/', views.hospedaje, name='hospedaje'),

@@ -1,133 +1,679 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div class="flex flex-col sm:flex-row sm:space-x-4 p-4">
-    <!-- Inicia columna 1 -->
-    <div class="sm:w-full md:w-1/4 bg-newlimes rounded-lg p-4 mb-4 sm:mb-0">
-      <form class="rounded-lg text-black bg-newlimes">
-          <h2 class="text-2xl font-bold text-black text-center mb-4 py-5 px-10">Cotizador</h2>
-          <div class="mb-4">
-              <label class="block mb-2 font-bold text-black" for="name">Nombre</label>
-              <input type="text" autocomplete="off" id="name" class="input input-bordered shadow-lg bg-transparent text-black w-full" placeholder="Nombre">
-          </div>
-          <div class="mb-4">
-              <label class="block text-black font-bold mb-2" for="people">Número de personas</label>
-              <input type="number" autocomplete="off" id="people" class="input input-bordered bg-transparent shadow-lg w-full" placeholder="Número de personas">
-          </div>
-          <div class="mb-4">
-              <label class="block text-black font-bold mb-2" for="date">Fecha</label>
-              <input type="datetime-local" autocomplete="off" id="date" class="input bg-transparent shadow-lg input-bordered w-full">
-          </div>
-          <div class="mb-4">
-              <label class="block text-black font-bold mb-2" for="service">Tipo de servicio</label>
-              <select id="service" class="select bg-transparent shadow-lg select-bordered w-full">
-                  <option>Transporte</option>
-                  <option>Tours</option>
-                  <option>Hospedaje</option>
-              </select>
-          </div>
-          <div class="card-actions justify-center">
-          <button class="btn btn-primary">Calcular</button>
-          </div>
-      </form>
-
-        <!-- Otros elementos -->
-        <div class="mt-8 bg-lime p-6 rounded-lg shadow-lg">
-            <h3 class="text-2xl text-black font-bold mb-4">Te puede interesar</h3>
-            <ul class="menu rounded-lg font-bold text-xl">
-                <li><a href="/tours_grupos" class="text-backdrop-blur">Enlace 1</a></li>
-                <li><a href="/transportacion" class="text-backdrop-blur">Enlace 2</a></li>
-                <li><a href="#" class="text-backdrop-blur">Enlace 3</a></li>
-            </ul>
+{% extends 'base.html' %} {% block content %}
+<div class="flex flex-col p-4 sm:flex-row sm:space-x-4">
+  <!-- Inicia columna 1 -->
+  <div class="p-4 mb-4 rounded-lg bg-newlimes sm:w-full md:w-1/4 sm:mb-0">
+    <form id="serviceRequestForm" class="bg-transparent rounded-lg text-cyan-700">
+      <!-- Información básica -->
+      <h2 class="py-5 mb-4 text-2xl font-bold text-center text-cyan-700">
+        Cotiza a tu medida
+      </h2>
+    
+      <div class="mb-4 form-control">
+        <label class="block mb-2 font-bold" for="name">
+          <span class="label-text">Nombre del titular</span>
+        </label>
+        <input
+          type="text"
+          name="holder_name"
+          class="shadow-lg input input-bordered bg-newlimes"
+          required
+        />
+      </div>
+    
+      <div class="mb-4 form-control">
+        <label class="block mb-2 font-bold" for="name">
+          <span class="label-text">Correo electronico</span>
+        </label>
+        <input type="email" name="email" class="shadow-lg input input-bordered bg-newlimes" required />
+      </div>
+    
+      <div class="mb-4 form-control">
+        <label class="block mb-2 font-bold" for="name">
+          <span class="label-text">Número de contacto</span>
+        </label>
+        <input
+          type="tel"
+          name="contact_phone"
+          class="shadow-lg input input-bordered bg-newlimes"
+          required
+        />
+      </div>
+    
+      <!-- Conteo de personas -->
+      <div class="grid grid-cols-1 gap-4 mb-4 font-bold md:grid-cols-2">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Adultos</span>
+          </label>
+          <input
+            type="number"
+            name="total_adults"
+            min="1"
+            class="w-full text-black shadow-lg bg-newlimes input input-bordered"
+            required
+          />
         </div>
-    </div>
-    <!-- Termina columna 1 -->
-
-    <!-- Inicia columna 2 -->
-    <div class="flex-1 rounded-lg shadow-lg p-4 bg-newlimes">
-        <h1 class="text-5xl font-font-semibold text-cyan-700 text-center mb-4 py-2">Tu siguiente aventura inicia aquí</h1>
-        <div id="custom-controls-gallery" class="relative relative h-full w-full z-[10] h-full w-full" data-carousel="slide">
-            <!-- Carousel wrapper -->
-            <div class="relative h-56 mb-4 overflow-hidden rounded-lg w-full md:h-96">
-                <!-- Items del carrusel -->
-                <div class="hidden duration-700 ease-in-out h-full w-full" data-carousel-item>
-                    <img src="/static/img/holbox.png" class="block w-full h-full object-cover" alt="">
-                </div>
-                <div class="hidden duration-700 ease-in-out h-full w-full" data-carousel-item="active">
-                    <img src="/static/img/holbox2.png" class="block w-full h-full object-cover" alt="">
-                </div>
-                <div class="hidden duration-700 ease-in-out h-full w-full" data-carousel-item>
-                    <img src="/static/img/beach.webp" class="block w-full h-full object-cover" alt="">
-                </div>
-                <div class="hidden duration-700 ease-in-out h-full w-full" data-carousel-item>
-                    <img src="/static/img/flamingos.webp" class="block w-full h-full object-cover" alt="">
-                </div>
-                <div class="hidden duration-700 ease-in-out h-full w-full" data-carousel-item>
-                    <img src="/static/img/image-3.webp" class="block w-full h-full object-cover" alt="">
-                </div>
-            </div>
-
-            <!-- Galería de imágenes -->
-            <div class="shadow-lg rounded-lg p-0 text-2xl grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="card bg-base-100 w-45 shadow-xl">
-                    <figure>
-                      <img
-                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                    </figure>
-                    <div class="card-body">
-                      <h2 class="card-title">Shoes!</h2>
-                      <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="card-actions justify-end">
-                        <button class="btn btn-primary">Buy Now</button>
-                      </div>
-                    </div>
-                </div>
-                <div class="card bg-base-100 w-45 shadow-xl">
-                    <figure>
-                      <img
-                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                    </figure>
-                    <div class="card-body">
-                      <h2 class="card-title">Shoes!</h2>
-                      <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="card-actions justify-end">
-                        <button class="btn btn-primary">Buy Now</button>
-                      </div>
-                    </div>
-                </div>
-                <div class="card bg-base-100 w-45 shadow-xl">
-                    <figure>
-                      <img
-                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                    </figure>
-                    <div class="card-body">
-                      <h2 class="card-title">Shoes!</h2>
-                      <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="card-actions justify-end">
-                        <button class="btn btn-primary">Buy Now</button>
-                      </div>
-                    </div>
-                </div>
-                <div class="card bg-base-100 w-45 shadow-xl">
-                    <figure>
-                      <img
-                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                    </figure>
-                    <div class="card-body">
-                      <h2 class="card-title">Shoes!</h2>
-                      <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="card-actions justify-end">
-                        <button class="btn btn-primary">Buy Now</button>
-                      </div>
-                    </div>
-                </div>
-            </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Menores</span>
+          </label>
+          <input
+            type="number"
+            name="total_children"
+            min="0"
+            class="w-full text-black shadow-lg bg-newlimes input input-bordered"
+          />
         </div>
+      </div>
+    
+      <!-- Campos dinámicos para edades -->
+      <div class="grid grid-cols-1 gap-4 mb-4 font-bold md:grid-cols-2">
+        <div id="adultAgesContainer" class="space-y-2"></div>
+        <div id="childrenAgesContainer" class="space-y-2"></div>
+      </div>
+    
+      <!-- Tipo de servicio -->
+      <div class="mb-4 font-bold form-control">
+        <label class="label">
+          <span class="label-text">Tipo de servicio</span>
+        </label>
+        <select
+          name="service_type"
+          class="shadow-lg select select-bordered bg-newlimes"
+          required
+        >
+          <option value="">Seleccione un servicio</option>
+          <option value="TRANSPORT">Transporte</option>
+          <option value="TOUR">Tour</option>
+          <option value="LODGING">Hospedaje</option>
+        </select>
+      </div>
+    
+      <!-- Campos específicos por tipo de servicio -->
+      <div id="transportFields" class="hidden space-y-4 font-bold">
+        <h3 class="text-lg">Detalles del Transporte</h3>
+        <div class="form-control">
+          <label class="shadow-lg label bg-newlimes">
+            <span class="label-text">Tipo de viaje</span>
+          </label>
+          <select name="transport_type" class="shadow-lg select select-bordered bg-newlimes">
+            <option value="ROUND">Redondo</option>
+            <option value="SINGLE">Sencillo</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Origen</span>
+            </label>
+            <input type="text" name="origin" class="shadow-lg input input-bordered bg-newlimes" />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Destino</span>
+            </label>
+            <input
+              type="text"
+              name="destination"
+              class="shadow-lg input input-bordered bg-newlimes"
+            />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Fecha de ida</span>
+            </label>
+            <input type="datetime-local" name="departure_datetime" class="shadow-lg input input-bordered bg-newlimes"/>
+          </div>
+          <div class="form-control" id="returnDateContainer">
+            <label class="label">
+              <span class="label-text">Fecha vuelta</span>
+            </label>
+            <input
+              type="datetime-local"
+              name="return_datetime"
+              class="shadow-lg input input-bordered bg-newlimes"
+            />
+          </div>
+        </div>
+      </div>
+    
+      <div id="tourFields" class="hidden space-y-4">
+        <h3 class="text-lg font-semibold">Detalles del Tour</h3>
+        <div class="form-control">
+          <label class="shadow-lg label bg-newlimes">
+            <span class="label-text">Seleccione un tour existente o escriba uno nuevo</span>
+          </label>
+          <div class="flex flex-col space-y-2">
+            <select id="tourSelect" name="tour" class="shadow-lg select select-bordered bg-newlimes">
+              <option value="">Seleccione un tour o escriba uno nuevo</option>
+              <option value="other">Otro (personalizado)</option>
+              {% for tour in tours %}
+              <option value="{{ tour.id }}">
+                {{ tour.name }} {% if tour.duration %} ({{ tour.duration }}) {% endif %}
+              </option>
+              {% endfor %}
+            </select>
+            <div id="customTourContainer" class="hidden">
+              <input
+                type="text"
+                name="custom_tour_name"
+                placeholder="Escriba el nombre del tour deseado"
+                class="w-full shadow-lg input input-bordered bg-newlimes"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Fecha y hora</span>
+            </label>
+            <input
+              type="datetime-local"
+              name="tour_datetime"
+              class="shadow-lg input input-bordered bg-newlimes"
+            />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">¿Requiere Pick up?</span>
+            </label>
+            <select name="requires_pickup" class="shadow-lg select select-bordered bg-newlimes">
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    
+      <div id="lodgingFields" class="hidden space-y-4">
+        <h3 class="text-lg font-semibold">Detalles del Hospedaje</h3>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Hotel</span>
+            </label>
+            <input type="text" name="hotel_name" class="shadow-lg input input-bordered bg-newlimes" />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Habitaciones</span>
+            </label>
+            <input
+              type="number"
+              name="room_count"
+              min="1"
+              class="shadow-lg input input-bordered bg-newlimes"
+            />
+          </div>
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Ciudad de destino</span>
+          </label>
+          <input
+            type="text"
+            name="lodging_destination"
+            class="shadow-lg input input-bordered bg-newlimes"
+          />
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Fecha de check in</span>
+            </label>
+            <input
+              type="date"
+              name="check_in_date"
+              class="shadow-lg input input-bordered bg-newlimes"
+            />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Fecha de check out</span>
+            </label>
+            <input
+              type="date"
+              name="check_out_date"
+              class="shadow-lg input input-bordered bg-newlimes"
+            />
+          </div>
+        </div>
+      </div>
+    
+      <!-- Notas adicionales -->
+      <div class="mt-4 font-bold form-control">
+        <label class="label">
+          <span class="label-text">Notas adicionales</span>
+        </label>
+        <textarea
+          name="additional_notes"
+          class="h-24 text-black shadow-lg textarea textarea-bordered bg-newlimes"
+        ></textarea>
+      </div>
+    
+      <div class="flex items-center justify-center">
+        <button type="submit" class="mt-6 btn btn-primary">
+          Enviar solicitud
+        </button>
+      </div>  
+    </form>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Referencias únicas a elementos del DOM
+      const form = document.getElementById('serviceRequestForm');
+      const serviceTypeSelect = document.querySelector('select[name="service_type"]');
+      const transportFields = document.getElementById('transportFields');
+      const tourFields = document.getElementById('tourFields');
+      const lodgingFields = document.getElementById('lodgingFields');
+      const tourSelect = document.getElementById('tourSelect');
+      const customTourContainer = document.getElementById('customTourContainer');
+      const adultInput = document.querySelector('input[name="total_adults"]');
+      const childrenInput = document.querySelector('input[name="total_children"]');
+    
+      // Función para manejar la selección de tour personalizado
+      function handleTourSelection() {
+        if (!tourSelect || !customTourContainer) return;
+        
+        if (tourSelect.value === 'other') {
+          customTourContainer.classList.remove('hidden');
+          const customInput = customTourContainer.querySelector('input[name="custom_tour_name"]');
+          if (customInput) {
+            customInput.setAttribute('required', 'required');
+          }
+        } else {
+          customTourContainer.classList.add('hidden');
+          const customInput = customTourContainer.querySelector('input[name="custom_tour_name"]');
+          if (customInput) {
+            customInput.removeAttribute('required');
+          }
+        }
+      }
+    
+      // Función para toggle de campos de servicio
+      function toggleServiceFields() {
+        if (!serviceTypeSelect) return;
+        
+        const serviceType = serviceTypeSelect.value;
+        
+        // Ocultar todos los campos primero
+        [transportFields, tourFields, lodgingFields].forEach(fields => {
+          if (fields) fields.classList.add('hidden');
+        });
+        
+        // Mostrar campos según selección
+        switch(serviceType) {
+          case 'TRANSPORT':
+            if (transportFields) transportFields.classList.remove('hidden');
+            break;
+          case 'TOUR':
+            if (tourFields) tourFields.classList.remove('hidden');
+            if (tourSelect) {
+              tourSelect.value = '';
+              handleTourSelection();
+            }
+            break;
+          case 'LODGING':
+            if (lodgingFields) lodgingFields.classList.remove('hidden');
+            break;
+        }
+      }
+    
+      // Función para generar campos de edad
+      function generateAgeFields(type) {
+        const container = document.getElementById(`${type}AgesContainer`);
+        const input = document.querySelector(`input[name="total_${type}"]`);
+        if (!container || !input) return;
+    
+        const count = parseInt(input.value) || 0;
+        container.innerHTML = ''; // Limpiar contenedor existente
+    
+        for (let i = 0; i < count; i++) {
+          const div = document.createElement('div');
+          div.className = 'form-control';
+          const fieldId = `${type}_age_${i}`;
+          
+          const isAdult = type === 'adults';
+          const label = isAdult ? `Edad adulto ${i + 1}` : `Edad menor ${i + 1}`;
+          const minAge = isAdult ? 18 : 0;
+          const maxAge = isAdult ? 120 : 17;
+    
+          div.innerHTML = `
+            <label class="label" for="${fieldId}">
+              <span class="label-text">${label}</span>
+            </label>
+            <input 
+              type="number" 
+              id="${fieldId}"
+              name="${type}_ages[]"
+              min="${minAge}" 
+              max="${maxAge}" 
+              class="shadow-lg input input-bordered bg-newlimes" 
+              required
+            >
+          `;
+          container.appendChild(div);
+        }
+      }
+    
+      // Función para validar fechas
+      function validateDates(input, referenceDate = null, message = null) {
+        if (!input.value) {
+          input.setCustomValidity('Por favor, ingrese una fecha');
+          return false;
+        }
+      
+        const selectedDate = new Date(input.value);
+        if (isNaN(selectedDate.getTime())) {
+          input.setCustomValidity('Ingrese una fecha válida');
+          return false;
+        }
+      
+        const now = new Date();
+        now.setHours(0, 0, 0, 0); // Reset time part for date comparison
+      
+        if (selectedDate < now) {
+          input.setCustomValidity('La fecha debe ser futura');
+          return false;
+        }
+      
+        if (referenceDate && referenceDate.value) {
+          const referenceDateObj = new Date(referenceDate.value);
+          if (isNaN(referenceDateObj.getTime()) || selectedDate < referenceDateObj) {
+            input.setCustomValidity(message || 'La fecha final debe ser posterior a la fecha inicial');
+            return false;
+          }
+        }
+      
+        input.setCustomValidity('');
+        return true;
+      }
+      
+    
+      // Función auxiliar para obtener el CSRF token
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+    
+      // Manejador del envío del formulario
+        async function handleFormSubmit(event) 
+        {
+        event.preventDefault();
+        
+        // Validar todos los campos requeridos
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+    
+        requiredFields.forEach(field => {
+          if (!field.value.trim()) {
+            field.setCustomValidity('Este campo es requerido');
+            isValid = false;
+          } else {
+            field.setCustomValidity('');
+          }
+        });
+    
+        if (!isValid) {
+          alert('Por favor, complete todos los campos requeridos');
+          return;
+        }
+    
+        // Recolectar datos del formulario
+        const formData = new FormData(form);
+        const data = {
+          ...Object.fromEntries(formData.entries()),
+          adult_ages: [],
+          children_ages: []
+        };
+    
+        // Recolectar edades
+        const adultAges = form.querySelectorAll('input[name="adults_ages[]"]');
+        const childrenAges = form.querySelectorAll('input[name="children_ages[]"]');
+    
+        adultAges.forEach(input => {
+          if (input.value) data.adult_ages.push(parseInt(input.value));
+        });
+    
+        childrenAges.forEach(input => {
+          if (input.value) data.children_ages.push(parseInt(input.value));
+        });
+    
+        try {
+          const response = await fetch('/api/service-requests/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(data)
+          });
+    
+          if (response.ok) {
+            alert('Solicitud enviada con éxito');
+            form.reset();
+            document.getElementById('adultAgesContainer').innerHTML = '';
+            document.getElementById('childrenAgesContainer').innerHTML = '';
+            toggleServiceFields();
+          } else {
+            const errorData = await response.json();
+            alert(`Error: ${errorData.message || 'Error al enviar la solicitud'}`);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error al enviar la solicitud');
+        }
+      }
+    
+      // Configuración de Event Listeners
+      if (form) {
+        // Listeners para cambios en cantidad de adultos y menores
+        if (adultInput) {
+          adultInput.addEventListener('change', () => generateAgeFields('adults'));
+        }
+        if (childrenInput) {
+          childrenInput.addEventListener('change', () => generateAgeFields('children'));
+        }
+    
+        // Listener para cambio de tipo de servicio
+        if (serviceTypeSelect) {
+          serviceTypeSelect.addEventListener('change', toggleServiceFields);
+        }
+    
+        // Listener para selección de tour
+        if (tourSelect) {
+          tourSelect.addEventListener('change', handleTourSelection);
+        }
+    
+        // Listener para el envío del formulario
+        form.addEventListener('submit', handleFormSubmit);
+    
+        // Validación de fechas
+        const dateInputs = form.querySelectorAll('input[type="date"], input[type="datetime-local"]');
+        dateInputs.forEach(input => {
+          input.addEventListener('change', () => {
+            let referenceDate = null;
+            let message = null;
+    
+            if (input.name === 'check_out_date') {
+              referenceDate = form.querySelector('input[name="check_in_date"]');
+              message = 'La fecha de check-out debe ser posterior al check-in';
+            } else if (input.name === 'return_datetime') {
+              referenceDate = form.querySelector('input[name="departure_datetime"]');
+              message = 'La fecha de retorno debe ser posterior a la fecha de salida';
+            }
+    
+            validateDates(input, referenceDate, message);
+          });
+        });
+    
+        // Inicializar el estado de los campos de servicio
+        toggleServiceFields();
+        // En tu función handleFormSubmit:
+        console.log('Datos a enviar:', data);
+      }
+    });
+      </script>
+
+      
+
+    <!-- Otros elementos -->
+    <div class="p-6 mt-8 rounded-lg shadow-lg bg-newlimel">
+      <h3 class="mb-4 text-2xl font-bold text-cyan-700">Te puede interesar</h3>
+      <ul class="font-bold menu text-cyan-700/85">
+        <li class="hover:text-sky-400 text-cyan-500"><a href="/">Enlace 1</a></li>
+        <li class="hover:text-sky-400 text-cyan-500"><a href="/">Enlace 2</a></li>
+        <li class="hover:text-sky-400 text-cyan-500"><a href="#">Enlace 3</a></li>
+      </ul>   
     </div>
-    <!-- Termina columna 2 -->
+    
+  </div>
+  <!-- Termina columna 1 -->
+
+  <!-- Inicia columna 2 -->
+  <div class="flex-1 p-4 rounded-lg shadow-lg bg-newlimes">
+    <h1 class="py-2 mb-4 text-5xl text-center font-font-semibold text-cyan-700">
+      Tu siguiente aventura inicia aquí
+    </h1>
+    <div
+      id="custom-controls-gallery"
+      class="relative h-full w-full z-[10]"
+      data-carousel="slide"
+    >
+      <!-- Carousel wrapper -->
+      <div class="relative w-full h-56 mb-4 overflow-hidden rounded-lg md:h-96">
+        <!-- Items del carrusel -->
+        <div
+          class="hidden w-full h-full duration-700 ease-in-out"
+          data-carousel-item
+        >
+          <img
+            src="/static/img/holbox.png"
+            class="block object-cover w-full h-full"
+            alt=""
+          />
+        </div>
+        <div
+          class="hidden w-full h-full duration-700 ease-in-out"
+          data-carousel-item="active"
+        >
+          <img
+            src="/static/img/holbox2.png"
+            class="block object-cover w-full h-full"
+            alt=""
+          />
+        </div>
+        <div
+          class="hidden w-full h-full duration-700 ease-in-out"
+          data-carousel-item
+        >
+          <img
+            src="/static/img/beach.webp"
+            class="block object-cover w-full h-full"
+            alt=""
+          />
+        </div>
+        <div
+          class="hidden w-full h-full duration-700 ease-in-out"
+          data-carousel-item
+        >
+          <img
+            src="/static/img/flamingos.webp"
+            class="block object-cover w-full h-full"
+            alt=""
+          />
+        </div>
+        <div
+          class="hidden w-full h-full duration-700 ease-in-out"
+          data-carousel-item
+        >
+          <img
+            src="/static/img/image-3.webp"
+            class="block object-cover w-full h-full"
+            alt=""
+          />
+        </div>
+      </div>
+
+      <!-- Galería de imágenes -->
+      <div
+        class="grid grid-cols-2 gap-4 p-0 text-2xl rounded-lg shadow-lg md:grid-cols-4"
+      >
+        <div class="shadow-xl card bg-base-100 w-45">
+          <figure>
+            <img
+              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+              alt="Shoes"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Shoes!</h2>
+            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <div class="justify-end card-actions">
+              <button class="btn btn-primary">Buy Now</button>
+            </div>
+          </div>
+        </div>
+        <div class="shadow-xl card bg-base-100 w-45">
+          <figure>
+            <img
+              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+              alt="Shoes"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Shoes!</h2>
+            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <div class="justify-end card-actions">
+              <button class="btn btn-primary">Buy Now</button>
+            </div>
+          </div>
+        </div>
+        <div class="shadow-xl card bg-base-100 w-45">
+          <figure>
+            <img
+              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+              alt="Shoes"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Shoes!</h2>
+            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <div class="justify-end card-actions">
+              <button class="btn btn-primary">Buy Now</button>
+            </div>
+          </div>
+        </div>
+        <div class="shadow-xl card bg-base-100 w-45">
+          <figure>
+            <img
+              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+              alt="Shoes"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">Shoes!</h2>
+            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <div class="justify-end card-actions">
+              <button class="btn btn-primary">Buy Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Termina columna 2 -->
 </div>
 {% endblock %}

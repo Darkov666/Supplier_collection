@@ -147,4 +147,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DJANGO_SETTINGS_MODULE = 'collection_app.settings'
 
 # Configuración de la sección de administración
-ADMIN_SITE_HEADER = 'Experience Collections'
+ADMIN_SITE_HEADER = 'Experience Collections'
+
+# settings.py
+
+# Configuración de la Política de Seguridad de Contenido (CSP)
+CSP_DEFAULT_SRC = ("'self'", "maps.googleapis.com")
+CSP_SCRIPT_SRC = ("'self'", "maps.googleapis.com")
+CSP_STYLE_SRC = ("'self'", "maps.googleapis.com")
+CSP_IMG_SRC = ("'self'", "maps.googleapis.com")
+CSP_FONT_SRC = ("'self'", "maps.googleapis.com")
+CSP_CONNECT_SRC = ("'self'", "maps.googleapis.com")
+CSP_FRAME_SRC = ("'self'", "maps.googleapis.com")
+CSP_OBJECT_SRC = ("'self'", "maps.googleapis.com")
+CSP_MEDIA_SRC = ("'self'", "maps.googleapis.com")
+CSP_FRAME_ANCESTORS = ("'self'", "maps.googleapis.com")

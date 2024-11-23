@@ -48,3 +48,4 @@ venv.bak/
 *.egg-info/
 dist/
 build/
+"sendgrid.env" 

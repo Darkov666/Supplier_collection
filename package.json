@@ -6,17 +6,26 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "npx tailwindcss -i ./collection_app/static/css/input.css -o ./collection_app/static/css/styles.css --watch"
   },
+  "prettier": {
+    "html.format.wrapAttributes": "preserve"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.14",
+    "alpinejs": "^3.14.3",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.12.10",
     "flowbite": "^2.5.1",
+    "mem": "^4.0.0",
+    "micromatch": "^4.0.8",
     "postcss": "^8.4.40",
-    "tailwindcss": "^2.2.19"
+    "tailwindcss": "^2.2.19",
+    "ws": "^8.18.0",
+    "wsl": "^1.0.0",
+    "yargs-parser": "^21.1.1"
   },
   "description": "",
   "devDependencies": {

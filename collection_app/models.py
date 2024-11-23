@@ -47,6 +47,105 @@ class Transportacion(models.Model):
    # def __str__(self):
     #    return f"Reservation by {self.holder_name} for {self.num_people} people"
 
+class Tour(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    description = models.TextField(blank=True)
+    duration = models.CharField(max_length=100, blank=True)  # ej: "4 horas", "2 días"
+    default_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+class Meta:
+        ordering = ['name']
+    
+class ServiceRequest(models.Model):
+    SERVICE_TYPES = [
+        ('TRANSPORT', 'Transporte'),
+        ('TOUR', 'Tour'),
+        ('LODGING', 'Hospedaje'),
+    ]
+    TRANSPORT_TYPES = [
+        ('ROUND', 'Redondo'),
+        ('SINGLE', 'Sencillo'),
+    ]
+
+    # Campos base
+    created_at = models.DateTimeField(auto_now_add=True)
+    holder_name = models.CharField(max_length=200)
+    total_adults = models.PositiveIntegerField()
+    total_children = models.PositiveIntegerField()
+    additional_notes = models.TextField()
+    service_type = models.CharField(max_length=20, choices=SERVICE_TYPES)
+    email = models.EmailField(max_length=254)  # Campo para el correo electrónico
+    contact_phone = PhoneNumberField(blank=False, null=False, verbose_name="Teléfono de contacto")
+    # Campos para edades
+    adult_ages = models.JSONField(default=list)
+    children_ages = models.JSONField(default=list)
+
+    # Campos para transporte
+    transport_type = models.CharField(max_length=10, choices=TRANSPORT_TYPES, null=True, blank=True)
+    origin = models.CharField(max_length=200, null=True, blank=True)
+    destination = models.CharField(max_length=200, null=True, blank=True)
+    departure_datetime = models.DateTimeField(null=True, blank=True)
+    return_datetime = models.DateTimeField(null=True, blank=True)
+
+    # Campos para tour
+    tour = models.ForeignKey(Tour, on_delete=models.SET_NULL, null=True, blank=True)
+    custom_tour_name = models.CharField(max_length=200, null=True, blank=True)
+    tour_datetime = models.DateTimeField(null=True, blank=True)
+    requires_pickup = models.BooleanField(null=True, blank=True)
+
+    # Campos para hospedaje
+    hotel_name = models.CharField(max_length=200, null=True, blank=True)
+    room_count = models.PositiveIntegerField(null=True, blank=True)
+    lodging_destination = models.CharField(max_length=200, null=True, blank=True)
+    check_in_date = models.DateField(null=True, blank=True)
+    check_out_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.holder_name} - {self.service_type} - {self.created_at}"
+    
+    def clean(self):
+        # Validar que tour_datetim del tour no sea en el pasado
+        date_start_valid = timezone.now() + timedelta(days=0, hours=8)
+        if self.tour_datetime and self.tour_datetime <= date_start_valid:
+            raise ValidationError({'tour_datetim': 'La fecha de recervació debe ser al menos con un día de anticipacion'})
+        
+        # Validar que check_in_date del tourhospedaje no sea en el pasado
+        date_start_valid = timezone.now() + timedelta(days=0, hours=8)
+        if self.check_in_date and self.check_in_date <= date_start_valid:
+            raise ValidationError({'check_in_date': 'La fecha de recervació debe ser al menos con un día de anticipacion'})
+        
+        # Validar que check_out_date sea después de start_date
+        #date_end_valid = timezone.now() + timedelta(days=0, hours=16)
+        if self.check_out_date and self.check_in_date and self.check_out_date <= self.check_in_date:
+            raise ValidationError({'check_out_date': 'La fecha de regreso debe ser posterior a la fecha de inicio.'})
+        
+         # Validar que departure_datetime del tourhospedaje no sea en el pasado
+        date_start_valid = timezone.now() + timedelta(days=0, hours=8)
+        if self.departure_datetime and self.departure_datetime <= date_start_valid:
+            raise ValidationError({'departure_datetime': 'La fecha de recervació debe ser al menos con un día de anticipacion'})
+        
+        # Validar que check_out_date sea después de start_date
+        #date_end_valid = timezone.now() + timedelta(days=0, hours=16)
+        if self.return_datetime and self.departure_datetime and self.return_datetime <= self.departure_datetime:
+            raise ValidationError({'return_datetime': 'La fecha de regreso debe ser posterior a la fecha de inicio.'})
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.holder_name} - {self.start_date} - {self.destination_start}'
+
+    @property
+    def tour_name(self):
+        """Retorna el nombre del tour, sea personalizado o predefinido"""
+        return self.custom_tour_name if self.custom_tour_name else (self.tour.name if self.tour else None)
+
 class VehicleType(models.Model):
     name = models.CharField(max_length=100)  # ej: "Estándar", "Lujo"
     description = models.TextField()
@@ -65,21 +164,6 @@ class Vehicle(models.Model):
     
     def __str__(self):
         return f"{self.name} ({self.vehicle_type.name})"    
-    
-    
-class Tours(models.Model):
-    holder_name = models.CharField(max_length=100)
-    num_people = models.IntegerField()
-    round_trip = models.BooleanField(default=False)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    pickup_start = models.CharField(max_length=100)
-    destination_start = models.CharField(max_length=100)
-    pickup_end = models.CharField(max_length=100)
-    destination_end = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f"Reservation by {self.holder_name} for {self.num_people} people"
     
 class Dashs(models.Model):
     title = models.CharField(max_length=100)
