@@ -23,6 +23,8 @@ from collection_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('submit-service-request/', views.submit_service_request, name='submit_service_request'),
+    path('api/tours/', views.get_tours, name='get_tours'),
     #path('tours_grupos/', views.tours, name='tours_grupos'),    
     path('transportacion/', views.transportacion, name='transportacion'),
     path('transportacion/<int:id>/', views.formulario_rev, name='detalle_transportacion'),

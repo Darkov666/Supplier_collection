@@ -3,8 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import TransportacionForm, ContactForm, HomeForm
-from .models import Dashs, Transportacion, Tour, Contact,Vehicle, VehicleType, ServiceRequest
+from .models import Dashs, Transportacion, Tour, Contact, Vehicle, VehicleType, ServiceRequest
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect, JsonResponse
 from django.db import IntegrityError
 import requests
@@ -18,10 +19,10 @@ from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from django.utils.dateparse import parse_datetime, parse_date
+from django.utils.timezone import is_naive, make_naive, make_aware, now, timedelta
+import pytz
+from datetime import datetime
 
- 
-
-#from django.core.mail import send_mail
 #from django.contrib.auth.models import User, Group
 #from django.contrib.auth import login, logout, authenticate
 #from django.utils import timezone
@@ -129,16 +130,28 @@ def create_service_request(request):
 
             # Crear la solicitud de servicio
             service_request = ServiceRequest.objects.create(
-                holder_name=data.get('holder_name'),
+                holder_name=data.get('holderName'),
                 email=data.get('email'),
-                contact_phone=data.get('contact_phone'),
-                total_adults=total_adults,
-                total_children=total_children,
-                adult_ages=adult_ages,
-                children_ages=children_ages,
-                service_type=data.get('service_type'),
-                additional_notes=data.get('additional_notes', ''),
-                **service_specific_fields
+                contact_phone=data.get('contactPhone'),
+                total_adults=data.get('totalAdults'),
+                total_children=data.get('totalChildren'),
+                child_ages=data.get('childAges'),
+                service_type=data.get('serviceType'),
+                transport_type=data.get('transportType'),
+                origin=data.get('origin'),
+                destination=data.get('destination'),
+                departure_datetime=data.get('departureDatetime'),
+                return_datetime=data.get('returnDatetime'),
+                tour_id=data.get('tourType'),
+                custom_tour_name=data.get('customTourName'),
+                tour_datetime=data.get('tourDatetime'),
+                requires_pickup=data.get('requiresPickup'),
+                hotel_name=data.get('hotelName'),
+                room_count=data.get('roomCount'),
+                lodging_destination=data.get('lodgingDestination'),
+                check_in_date=data.get('checkInDate'),
+                check_out_date=data.get('checkOutDate'),
+                additional_notes=data.get('additionalNotes'),
             )
             
             # Enviar email con SendGrid
@@ -243,6 +256,198 @@ def generate_email_content(service_request):
     content += "\nNos pondremos en contacto con usted pronto."
     
     return content
+
+# Función auxiliar para manejar fechas
+def parse_datetime_field(value, field_name, default=None):
+    try:
+        if value is None:
+            return default
+        if isinstance(value, str):
+            value = value.rstrip('Z')  # Eliminar el sufijo 'Z' si está presente
+            parsed_date = datetime.fromisoformat(value)
+            return make_aware(parsed_date, timezone=pytz.UTC) if is_naive(parsed_date) else parsed_date
+        raise ValueError(f"{field_name} debe ser una cadena o null.")
+    except Exception as e:
+        raise ValueError(f"Error al procesar {field_name}: {str(e)}")
+
+@csrf_exempt
+def submit_service_request(request):
+    if request.method == 'POST':
+        try:
+            # Imprimir el cuerpo de la solicitud para depuración
+            print("Cuerpo de la solicitud:", request.body)
+
+            try:
+
+                data = json.loads(request.body)
+            except json.JSONDecodeError as json_error:
+                print(f"Error al decodificar JSON: {json_error}")
+                return JsonResponse({'error': f'Error al decodificar JSON: {str(json_error)}'}, status=400)
+            
+            # Verificar si data está vacío
+            if not data:
+                print("Los datos están vacíos")
+                return JsonResponse({'error': 'No se recibieron datos'}, status=400)
+
+            # Imprimir los datos recibidos para depuración
+            print("Datos recibidos:", data)
+
+            if data.get('tourType'):
+                try:
+                    selected_tour = Tour.objects.get(id=data['tourType'])
+                except Tour.DoesNotExist:
+                    return JsonResponse({'error': 'El tour seleccionado no existe.'}, status=400)
+            else:
+                selected_tour = None
+
+            # Convertir las fechas Transporte a aware o naive según sea necesario
+            departure_datetime = datetime.fromisoformat(data.get('departureDatetime'))
+            if is_naive(departure_datetime):
+                departure_datetime = make_aware(departure_datetime, timezone=pytz.UTC)
+
+            return_datetime = data.get('returnDatetime')
+            
+            if return_datetime:
+                return_datetime = datetime.fromisoformat(return_datetime)
+                if is_naive(return_datetime):
+                    return_datetime = make_aware(return_datetime, timezone=pytz.UTC)
+
+
+        # Manejar departureDatetime Transporte
+            departure_datetime = data.get('departureDatetime')
+            if departure_datetime:
+                try:
+                    departure_datetime = datetime.fromisoformat(departure_datetime)
+                    if is_naive(departure_datetime):
+                        departure_datetime = make_aware(departure_datetime, timezone=pytz.UTC)
+                except ValueError as ve:
+                    print(f"Error en formato de departureDatetime: {ve}")
+                    return JsonResponse({'error': f'Formato de departureDatetime inválido: {str(ve)}'}, status=400)
+            else:
+                departure_datetime = None
+
+
+            # Manejar returnDatetime
+            return_datetime = data.get('returnDatetime')
+            if return_datetime:
+                try:
+                    return_datetime = datetime.fromisoformat(return_datetime)
+                    if is_naive(return_datetime):
+                        return_datetime = make_aware(return_datetime, timezone=pytz.UTC)
+                except ValueError as ve:
+                    print(f"Error en formato de returnDatetime: {ve}")
+                    return JsonResponse({'error': f'Formato de returnDatetime inválido: {str(ve)}'}, status=400)
+            else:
+                return_datetime = None
+
+            # Manejar returnDatetime
+            return_datetime = data.get('returnDatetime')
+            if return_datetime:
+                try:
+                    if isinstance(return_datetime, str):
+                        return_datetime = datetime.fromisoformat(return_datetime)
+                        if is_naive(return_datetime):
+                            return_datetime = make_aware(return_datetime, timezone=pytz.UTC)
+                    else:
+                        raise ValueError("returnDatetime debe ser una cadena.")
+                except ValueError as ve:
+                    print(f"Error en formato de returnDatetime: {ve}")
+                    return JsonResponse({'error': f'Formato de returnDatetime inválido: {str(ve)}'}, status=400)
+            else:
+                return_datetime = None    
+
+                # Manejar departureDatetime
+                departure_datetime = data.get('departureDatetime')
+                if departure_datetime:
+                    try:
+                        if isinstance(departure_datetime, str):
+                            departure_datetime = datetime.fromisoformat(departure_datetime)
+                            if is_naive(departure_datetime):
+                                departure_datetime = make_aware(departure_datetime, timezone=pytz.UTC)
+                        else:
+                            raise ValueError("departureDatetime debe ser una cadena.")
+                    except ValueError as ve:
+                        print(f"Error en formato de departureDatetime: {ve}")
+                        return JsonResponse({'error': f'Formato de departureDatetime inválido: {str(ve)}'}, status=400)
+                else:
+                    departure_datetime = None
+
+           # Manejar tourDatetime
+            tour_datetime = data.get('tourDatetime')
+            if tour_datetime:
+                try:
+                    if isinstance(tour_datetime, str):
+                        # Eliminar el sufijo 'Z' si está presente
+                        tour_datetime = tour_datetime.rstrip('Z')
+                        # Convertir la fecha y hora a datetime
+                        tour_datetime = datetime.fromisoformat(tour_datetime)
+                        if is_naive(tour_datetime):
+                            tour_datetime = make_aware(tour_datetime, timezone=pytz.UTC)
+                    else:
+                        raise ValueError("tourDatetime debe ser una cadena.")
+                except ValueError as ve:
+                    print(f"Error en formato de tourDatetime: {ve}")
+                    return JsonResponse({'error': f'Formato de tourDatetime inválido: {str(ve)}'}, status=400)
+            else:
+                tour_datetime = None
+
+            # Asegurar que las fechas sean válidas o asignar valores por defecto
+            departure_datetime = parse_datetime_field(data.get('departureDatetime'), 'departureDatetime') or now()
+            return_datetime = parse_datetime_field(data.get('returnDatetime'), 'returnDatetime')
+            tour_datetime = parse_datetime_field(data.get('tourDatetime'), 'tourDatetime') or now()
+            check_in_date = parse_datetime_field(data.get('checkInDate'), 'checkInDate') or now()
+            check_out_date = parse_datetime_field(data.get('checkOutDate'), 'checkOutDate') or (now() + timedelta(days=1))
+
+            # Manejar el campo `tourType` para obtener el objeto Tour
+            selected_tour = None
+            if data.get('tourType') and data['tourType'] != 'other':
+                try:
+                    # Intentar obtener el objeto Tour con el ID proporcionado
+                    selected_tour = Tour.objects.get(id=data['tourType'])
+                except Tour.DoesNotExist:
+                    return JsonResponse({'error': 'El tour seleccionado no existe.'}, status=400)
+                    
+            # Lógica adicional y creación del objeto
+            service_request = ServiceRequest.objects.create(
+                holder_name=data.get('holderName'),
+                email=data.get('email'),
+                contact_phone=data.get('contactPhone'),
+                total_adults=data.get('totalAdults'),
+                total_children=data.get('totalChildren'),
+                child_ages=data.get('childAges'),
+                service_type=data.get('serviceType'),
+                transport_type=data.get('transportType'),
+                origin=data.get('origin'),
+                destination=data.get('destination'),
+                departure_datetime=departure_datetime,
+                return_datetime=return_datetime,
+                tour=selected_tour,
+                custom_tour_name=data.get('customTourName'),
+                tour_datetime=tour_datetime,
+                requires_pickup=data.get('requiresPickup'),
+                hotel_name=data.get('hotelName'),
+                room_count=data.get('roomCount'),
+                lodging_destination=data.get('lodgingDestination'),
+                check_in_date=check_in_date,
+                check_out_date=check_out_date,
+                additional_notes=data.get('additionalNotes'),
+            )
+
+            # Respuesta exitosa
+            return JsonResponse({'message': 'Solicitud creada exitosamente'}, status=201)
+
+        except ValueError as ve:
+            # Manejar específicamente errores de formato de fecha
+            return JsonResponse({'error': f'Error en el formato de fecha: {str(ve)}'}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Error al analizar el JSON enviado.'}, status=400)
+        except Exception as e:
+             print(f"Error inesperado: {e}")
+             return JsonResponse({'error': str(e)}, status=400)
+
+    # Método no permitido
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
 
 def transportacion(request):
     if request.method == 'POST':

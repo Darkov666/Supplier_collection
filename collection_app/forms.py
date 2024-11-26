@@ -37,76 +37,76 @@ class TransportacionForm(forms.ModelForm):
     
         widgets = {
             'holder_name': forms.TextInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': 'Coloca tu nombre'
             }),
             'num_adults': forms.NumberInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': '1'
             }),
             'num_children': forms.NumberInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': '0'
             }),
             'start_date': forms.TextInput(attrs={
                 'type': 'datetime-local',
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
             }),
             'flight_number_arrival': forms.TextInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': 'Vuelo de llegada',
                 'id': 'flight_number_arrival',  
             }),
             'airline_arrival' : forms.TextInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': 'Aerolinea de llegada',
                 'id': 'airline_arrival',  
             }), 
             'terminal_arrival' : forms.TextInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': 'Terminal de llegada',
                 'id': 'terminal_arrival',  
             }), 
             'flight_number_departure': forms.TextInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': 'Vuelo de llegada',
                 'id': 'flight_number_departure',  # ID para autocompletar
             }),
             'airline_departure' : forms.TextInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': 'Aerolinea de salida',
                 'id': 'airline_departure',  
             }),
             'terminal_departure' : forms.TextInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': 'Terminal de salida',
                 'id': 'terminal_departure',  
             }), 
             'round_trip': forms.CheckboxInput(attrs={
-                'class': 'form-checkbox rounded-lg mt-4 mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-checkbox rounded-lg mt-4 mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
             }),
             'end_date': forms.TextInput(attrs={
                 'type': 'datetime-local',
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
             }),
             'pickup_start': forms.TextInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': 'Aeroúerto Internacional de Cancún',
                 'value': 'Aeroúerto Internacional de Cancún',
                 'id': 'pickup_start',
                 'readonly': True,
             }),
             'destination_start': forms.TextInput(attrs={
-                'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                 'placeholder': 'Destino',
                 'id': 'destination_start',  # ID para autocompletar
             }),
             'email': forms.TextInput(attrs={
-                    'class': 'form-control flex rounded-lg mb-4 text-black input input-bordered shadow-lg bg-newlimel',
+                    'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
                     'placeholder': 'example@domain.com'
             }),
             'contact_phone': forms.TextInput(attrs={
-                    'class': 'form-control flex rounded-lg mb-4 text-1xl text-black input input-bordered shadow-lg bg-newlimel',
+                    'class': 'form-control flex rounded-lg mb-6 mt-2 text-1xl input input-bordered shadow-lg bg-newlimel',
                     'placeholder': ' + Lada + Phone',
                     
             }),                     

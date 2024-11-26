@@ -2,532 +2,358 @@
 <div class="flex flex-col p-4 sm:flex-row sm:space-x-4">
   <!-- Inicia columna 1 -->
   <div class="p-4 mb-4 rounded-lg bg-newlimes sm:w-full md:w-1/4 sm:mb-0">
-    <form id="serviceRequestForm" class="bg-transparent rounded-lg text-cyan-700">
+    <form x-data="serviceForm()" @submit.prevent="submitForm" class="py-5 text-center bg-transparent rounded-lg text-cyan-700">
+      <h2 class="mb-4 text-2xl font-bold">Cotiza tu servicio</h2>
+  
       <!-- Información básica -->
-      <h2 class="py-5 mb-4 text-2xl font-bold text-center text-cyan-700">
-        Cotiza a tu medida
-      </h2>
-    
       <div class="mb-4 form-control">
-        <label class="block mb-2 font-bold" for="name">
-          <span class="label-text">Nombre del titular</span>
-        </label>
-        <input
-          type="text"
-          name="holder_name"
-          class="shadow-lg input input-bordered bg-newlimes"
-          required
-        />
-      </div>
-    
-      <div class="mb-4 form-control">
-        <label class="block mb-2 font-bold" for="name">
-          <span class="label-text">Correo electronico</span>
-        </label>
-        <input type="email" name="email" class="shadow-lg input input-bordered bg-newlimes" required />
-      </div>
-    
-      <div class="mb-4 form-control">
-        <label class="block mb-2 font-bold" for="name">
-          <span class="label-text">Número de contacto</span>
-        </label>
-        <input
-          type="tel"
-          name="contact_phone"
-          class="shadow-lg input input-bordered bg-newlimes"
-          required
-        />
-      </div>
-    
-      <!-- Conteo de personas -->
-      <div class="grid grid-cols-1 gap-4 mb-4 font-bold md:grid-cols-2">
-        <div class="form-control">
           <label class="label">
-            <span class="label-text">Adultos</span>
+              <span class="block mb-2 font-bold">Nombre del titular:</span>
           </label>
-          <input
-            type="number"
-            name="total_adults"
-            min="1"
-            class="w-full text-black shadow-lg bg-newlimes input input-bordered"
-            required
-          />
-        </div>
-        <div class="form-control">
+          <input type="text" x-model="holderName" required class="w-full shadow-lg input input-bordered">
+      </div>
+  
+      <div class="mb-4">
           <label class="label">
-            <span class="label-text">Menores</span>
+              <span class="font-bold label-text">Correo electrónico:</span>
           </label>
-          <input
-            type="number"
-            name="total_children"
-            min="0"
-            class="w-full text-black shadow-lg bg-newlimes input input-bordered"
-          />
-        </div>
+          <input type="email" x-model="email" required class="w-full shadow-lg input input-bordered">
       </div>
-    
-      <!-- Campos dinámicos para edades -->
-      <div class="grid grid-cols-1 gap-4 mb-4 font-bold md:grid-cols-2">
-        <div id="adultAgesContainer" class="space-y-2"></div>
-        <div id="childrenAgesContainer" class="space-y-2"></div>
+  
+      <div class="mb-4">
+          <label class="label">
+              <span class="font-bold label-text">Teléfono de contacto:</span>
+          </label>
+          <input type="tel" x-model="contactPhone" required class="w-full shadow-lg input input-bordered">
       </div>
-    
+  
+      <!-- Cantidad de personas -->
+      <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+              <label class="label">
+                  <span class="font-bold label-text">Adultos:</span>
+              </label>
+              <input type="number" min="1" x-model="totalAdults" class="w-full shadow-lg input input-bordered">
+          </div>
+          <div>
+              <label class="label">
+                  <span class="font-bold label-text">Menores:</span>
+              </label>
+              <input type="number" min="0" x-model="totalChildren" @change="updateChildren()" class="w-full shadow-lg input input-bordered">
+          </div>
+      </div>
+  
+      <!-- Campos dinámicos de edades -->
+      <div x-show="childAges.length > 0" class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+              <h3 class="text-lg font-bold">Edades de los menores:</h3>
+              <template x-for="(age, index) in childAges" :key="index">
+                  <div class="mb-2">
+                      <label class="label">
+                          <span class="label-text">Edad menor <span x-text="index + 1"></span>:</span>
+                      </label>
+                      <input type="number" value="0" min="0" max="17" x-model="childAges[index]" required class="w-full shadow-lg input input-bordered">
+                  </div>
+              </template>
+          </div>
+      </div>
+  
       <!-- Tipo de servicio -->
-      <div class="mb-4 font-bold form-control">
-        <label class="label">
-          <span class="label-text">Tipo de servicio</span>
-        </label>
-        <select
-          name="service_type"
-          class="shadow-lg select select-bordered bg-newlimes"
-          required
-        >
-          <option value="">Seleccione un servicio</option>
-          <option value="TRANSPORT">Transporte</option>
-          <option value="TOUR">Tour</option>
-          <option value="LODGING">Hospedaje</option>
+      <div class="mb-4">
+          <label class="label">
+              <span class="font-bold label-text">Tipo de servicio:</span>
+          </label>
+          <select x-model="serviceType" @change="updateServiceFields()" required class="w-full shadow-lg select select-bordered">
+            <option value="">Seleccione un servicio</option>
+            <option value="TRANSPORT">Transporte</option>
+            <option value="TOUR">Tour</option>
+            <option value="LODGING">Hospedaje</option>
         </select>
       </div>
+  
+      <!-- Secciones dinámicas de Transporte, Tour, y Hospedaje -->
+      <div x-show="serviceType === 'TRANSPORT'" class="mb-4">
+        <!-- Campos de Transporte -->
+        <h3 class="text-lg font-bold">Detalles de Transportación</h3>
     
-      <!-- Campos específicos por tipo de servicio -->
-      <div id="transportFields" class="hidden space-y-4 font-bold">
-        <h3 class="text-lg">Detalles del Transporte</h3>
-        <div class="form-control">
-          <label class="shadow-lg label bg-newlimes">
-            <span class="label-text">Tipo de viaje</span>
-          </label>
-          <select name="transport_type" class="shadow-lg select select-bordered bg-newlimes">
-            <option value="ROUND">Redondo</option>
-            <option value="SINGLE">Sencillo</option>
-          </select>
+        <!-- Tipo de viaje -->
+        <div class="mb-4">
+            <label class="label">
+                <span class="label-text">Tipo de viaje:</span>
+            </label>
+            <select x-model="transportType" class="w-full shadow-lg select select-bordered">
+                <option value="">Elige el tipo de viaje</option>
+                <option value="ROUND">Redondo</option>
+                <option value="SINGLE">Sencillo</option>
+            </select>
         </div>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Origen</span>
-            </label>
-            <input type="text" name="origin" class="shadow-lg input input-bordered bg-newlimes" />
-          </div>
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Destino</span>
-            </label>
-            <input
-              type="text"
-              name="destination"
-              class="shadow-lg input input-bordered bg-newlimes"
-            />
-          </div>
-        </div>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Fecha de ida</span>
-            </label>
-            <input type="datetime-local" name="departure_datetime" class="shadow-lg input input-bordered bg-newlimes"/>
-          </div>
-          <div class="form-control" id="returnDateContainer">
-            <label class="label">
-              <span class="label-text">Fecha vuelta</span>
-            </label>
-            <input
-              type="datetime-local"
-              name="return_datetime"
-              class="shadow-lg input input-bordered bg-newlimes"
-            />
-          </div>
-        </div>
-      </div>
     
-      <div id="tourFields" class="hidden space-y-4">
-        <h3 class="text-lg font-semibold">Detalles del Tour</h3>
-        <div class="form-control">
-          <label class="shadow-lg label bg-newlimes">
-            <span class="label-text">Seleccione un tour existente o escriba uno nuevo</span>
-          </label>
-          <div class="flex flex-col space-y-2">
-            <select id="tourSelect" name="tour" class="shadow-lg select select-bordered bg-newlimes">
-              <option value="">Seleccione un tour o escriba uno nuevo</option>
-              <option value="other">Otro (personalizado)</option>
-              {% for tour in tours %}
+        <!-- Origen y Destino -->
+        <div class="mb-4">
+            <label class="label">
+                <span class="label-text">Origen:</span>
+            </label>
+            <input type="text" x-model="origin" placeholder="Origen" class="input input-bordered" x-bind:required="serviceType === 'TRANSPORT'">
+        </div>
+        <div class="mb-4">
+            <label class="label">
+                <span class="label-text">Destino:</span>
+            </label>
+            <input type="text" x-model="destination" placeholder="Destino" class="input input-bordered" x-bind:required="serviceType === 'TRANSPORT'">
+        </div>
+    
+        <!-- Fechas -->
+            <div class="mb-4">
+                <label class="label">
+                    <span class="label-text">Fecha de ida:</span>
+                </label>
+                <input type="datetime-local" x-model="departureDatetime" class="input input-bordered" x-bind:required="serviceType === 'TRANSPORT'">
+            </div>
+            <div x-show="transportType === 'ROUND'" x-cloak>
+                <label class="label">
+                    <span class="label-text">Fecha de regreso:</span>
+                </label>
+                <input type="datetime-local" x-model="returnDatetime" class="input input-bordered" x-bind:required="serviceType === 'TRANSPORT' && transportType === 'ROUND'">
+            </div>
+    </div>
+    
+  
+      <div x-show="serviceType === 'TOUR'" class="mb-4">
+        <!-- Campos de Tour -->
+        <h3 class="text-lg font-bold">Detalles del Tour</h3>
+        
+        <!-- Selección de tour -->
+        <div class="mb-4">
+            <label class="label">
+                <span class="label-text">Seleccione un tour o escriba uno nuevo:</span>
+            </label>
+            <select x-model="tourType" class="select select-bordered" x-bind:required="serviceType === 'TOUR'">
+                <option value="">Seleccione un tour</option>
+                <template x-for="tour in tours" :key="tour.id">
+                    <option :value="tour.id" x-text="tour.name"></option>
+                </template>
+                {% for tour in tours %}
               <option value="{{ tour.id }}">
                 {{ tour.name }} {% if tour.duration %} ({{ tour.duration }}) {% endif %}
               </option>
               {% endfor %}
+                <option value="other">Otro (personalizado)</option>
             </select>
-            <div id="customTourContainer" class="hidden">
-              <input
-                type="text"
-                name="custom_tour_name"
-                placeholder="Escriba el nombre del tour deseado"
-                class="w-full shadow-lg input input-bordered bg-newlimes"
-              />
-            </div>
-          </div>
         </div>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div class="form-control">
+    
+        <!-- Campo de tour personalizado -->
+        <div class="mb-4" x-show="tourType === 'other'">
             <label class="label">
-              <span class="label-text">Fecha y hora</span>
+                <span class="label-text">Nombre del tour personalizado:</span>
             </label>
-            <input
-              type="datetime-local"
-              name="tour_datetime"
-              class="shadow-lg input input-bordered bg-newlimes"
-            />
-          </div>
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">¿Requiere Pick up?</span>
-            </label>
-            <select name="requires_pickup" class="shadow-lg select select-bordered bg-newlimes">
-              <option value="true">Sí</option>
-              <option value="false">No</option>
-            </select>
-          </div>
+            <input type="text" x-model="customTourName" placeholder="Ingrese el nombre del tour" class="input input-bordered" x-bind:required="tourType === 'other'">
         </div>
-      </div>
     
-      <div id="lodgingFields" class="hidden space-y-4">
-        <h3 class="text-lg font-semibold">Detalles del Hospedaje</h3>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div class="form-control">
+        <!-- Fecha y hora -->
+        <div class="mb-4">
             <label class="label">
-              <span class="label-text">Hotel</span>
+                <span class="label-text">Fecha y hora:</span>
             </label>
-            <input type="text" name="hotel_name" class="shadow-lg input input-bordered bg-newlimes" />
-          </div>
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Habitaciones</span>
-            </label>
-            <input
-              type="number"
-              name="room_count"
-              min="1"
-              class="shadow-lg input input-bordered bg-newlimes"
-            />
-          </div>
+            <input type="datetime-local" x-model="tourDatetime" class="input input-bordered" x-bind:required="serviceType === 'TOUR'">
         </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Ciudad de destino</span>
-          </label>
-          <input
-            type="text"
-            name="lodging_destination"
-            class="shadow-lg input input-bordered bg-newlimes"
-          />
+    
+        <!-- Pickup -->
+        <div class="flex mb-4">
+            <label>¿Requiere Pickup?</label>
+            <input type="checkbox" x-model="requiresPickup" class="mx-5 mt-1.5">
         </div>
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Fecha de check in</span>
-            </label>
-            <input
-              type="date"
-              name="check_in_date"
-              class="shadow-lg input input-bordered bg-newlimes"
-            />
-          </div>
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Fecha de check out</span>
-            </label>
-            <input
-              type="date"
-              name="check_out_date"
-              class="shadow-lg input input-bordered bg-newlimes"
-            />
-          </div>
-        </div>
-      </div>
+    </div>
     
-      <!-- Notas adicionales -->
-      <div class="mt-4 font-bold form-control">
-        <label class="label">
-          <span class="label-text">Notas adicionales</span>
-        </label>
-        <textarea
-          name="additional_notes"
-          class="h-24 text-black shadow-lg textarea textarea-bordered bg-newlimes"
-        ></textarea>
-      </div>
-    
-      <div class="flex items-center justify-center">
-        <button type="submit" class="mt-6 btn btn-primary">
-          Enviar solicitud
-        </button>
-      </div>  
-    </form>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Referencias únicas a elementos del DOM
-      const form = document.getElementById('serviceRequestForm');
-      const serviceTypeSelect = document.querySelector('select[name="service_type"]');
-      const transportFields = document.getElementById('transportFields');
-      const tourFields = document.getElementById('tourFields');
-      const lodgingFields = document.getElementById('lodgingFields');
-      const tourSelect = document.getElementById('tourSelect');
-      const customTourContainer = document.getElementById('customTourContainer');
-      const adultInput = document.querySelector('input[name="total_adults"]');
-      const childrenInput = document.querySelector('input[name="total_children"]');
-    
-      // Función para manejar la selección de tour personalizado
-      function handleTourSelection() {
-        if (!tourSelect || !customTourContainer) return;
-        
-        if (tourSelect.value === 'other') {
-          customTourContainer.classList.remove('hidden');
-          const customInput = customTourContainer.querySelector('input[name="custom_tour_name"]');
-          if (customInput) {
-            customInput.setAttribute('required', 'required');
-          }
-        } else {
-          customTourContainer.classList.add('hidden');
-          const customInput = customTourContainer.querySelector('input[name="custom_tour_name"]');
-          if (customInput) {
-            customInput.removeAttribute('required');
-          }
-        }
-      }
-    
-      // Función para toggle de campos de servicio
-      function toggleServiceFields() {
-        if (!serviceTypeSelect) return;
-        
-        const serviceType = serviceTypeSelect.value;
-        
-        // Ocultar todos los campos primero
-        [transportFields, tourFields, lodgingFields].forEach(fields => {
-          if (fields) fields.classList.add('hidden');
-        });
-        
-        // Mostrar campos según selección
-        switch(serviceType) {
-          case 'TRANSPORT':
-            if (transportFields) transportFields.classList.remove('hidden');
-            break;
-          case 'TOUR':
-            if (tourFields) tourFields.classList.remove('hidden');
-            if (tourSelect) {
-              tourSelect.value = '';
-              handleTourSelection();
-            }
-            break;
-          case 'LODGING':
-            if (lodgingFields) lodgingFields.classList.remove('hidden');
-            break;
-        }
-      }
-    
-      // Función para generar campos de edad
-      function generateAgeFields(type) {
-        const container = document.getElementById(`${type}AgesContainer`);
-        const input = document.querySelector(`input[name="total_${type}"]`);
-        if (!container || !input) return;
-    
-        const count = parseInt(input.value) || 0;
-        container.innerHTML = ''; // Limpiar contenedor existente
-    
-        for (let i = 0; i < count; i++) {
-          const div = document.createElement('div');
-          div.className = 'form-control';
-          const fieldId = `${type}_age_${i}`;
-          
-          const isAdult = type === 'adults';
-          const label = isAdult ? `Edad adulto ${i + 1}` : `Edad menor ${i + 1}`;
-          const minAge = isAdult ? 18 : 0;
-          const maxAge = isAdult ? 120 : 17;
-    
-          div.innerHTML = `
-            <label class="label" for="${fieldId}">
-              <span class="label-text">${label}</span>
-            </label>
-            <input 
-              type="number" 
-              id="${fieldId}"
-              name="${type}_ages[]"
-              min="${minAge}" 
-              max="${maxAge}" 
-              class="shadow-lg input input-bordered bg-newlimes" 
-              required
-            >
-          `;
-          container.appendChild(div);
-        }
-      }
-    
-      // Función para validar fechas
-      function validateDates(input, referenceDate = null, message = null) {
-        if (!input.value) {
-          input.setCustomValidity('Por favor, ingrese una fecha');
-          return false;
-        }
-      
-        const selectedDate = new Date(input.value);
-        if (isNaN(selectedDate.getTime())) {
-          input.setCustomValidity('Ingrese una fecha válida');
-          return false;
-        }
-      
-        const now = new Date();
-        now.setHours(0, 0, 0, 0); // Reset time part for date comparison
-      
-        if (selectedDate < now) {
-          input.setCustomValidity('La fecha debe ser futura');
-          return false;
-        }
-      
-        if (referenceDate && referenceDate.value) {
-          const referenceDateObj = new Date(referenceDate.value);
-          if (isNaN(referenceDateObj.getTime()) || selectedDate < referenceDateObj) {
-            input.setCustomValidity(message || 'La fecha final debe ser posterior a la fecha inicial');
-            return false;
-          }
-        }
-      
-        input.setCustomValidity('');
-        return true;
-      }
-      
-    
-      // Función auxiliar para obtener el CSRF token
-      function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-          const cookies = document.cookie.split(';');
-          for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
-            }
-          }
-        }
-        return cookieValue;
-      }
-    
-      // Manejador del envío del formulario
-        async function handleFormSubmit(event) 
-        {
-        event.preventDefault();
-        
-        // Validar todos los campos requeridos
-        const requiredFields = form.querySelectorAll('[required]');
-        let isValid = true;
-    
-        requiredFields.forEach(field => {
-          if (!field.value.trim()) {
-            field.setCustomValidity('Este campo es requerido');
-            isValid = false;
-          } else {
-            field.setCustomValidity('');
-          }
-        });
-    
-        if (!isValid) {
-          alert('Por favor, complete todos los campos requeridos');
-          return;
-        }
-    
-        // Recolectar datos del formulario
-        const formData = new FormData(form);
-        const data = {
-          ...Object.fromEntries(formData.entries()),
-          adult_ages: [],
-          children_ages: []
-        };
-    
-        // Recolectar edades
-        const adultAges = form.querySelectorAll('input[name="adults_ages[]"]');
-        const childrenAges = form.querySelectorAll('input[name="children_ages[]"]');
-    
-        adultAges.forEach(input => {
-          if (input.value) data.adult_ages.push(parseInt(input.value));
-        });
-    
-        childrenAges.forEach(input => {
-          if (input.value) data.children_ages.push(parseInt(input.value));
-        });
-    
-        try {
-          const response = await fetch('/api/service-requests/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify(data)
-          });
-    
-          if (response.ok) {
-            alert('Solicitud enviada con éxito');
-            form.reset();
-            document.getElementById('adultAgesContainer').innerHTML = '';
-            document.getElementById('childrenAgesContainer').innerHTML = '';
-            toggleServiceFields();
-          } else {
-            const errorData = await response.json();
-            alert(`Error: ${errorData.message || 'Error al enviar la solicitud'}`);
-          }
-        } catch (error) {
-          console.error('Error:', error);
-          alert('Error al enviar la solicitud');
-        }
-      }
-    
-      // Configuración de Event Listeners
-      if (form) {
-        // Listeners para cambios en cantidad de adultos y menores
-        if (adultInput) {
-          adultInput.addEventListener('change', () => generateAgeFields('adults'));
-        }
-        if (childrenInput) {
-          childrenInput.addEventListener('change', () => generateAgeFields('children'));
-        }
-    
-        // Listener para cambio de tipo de servicio
-        if (serviceTypeSelect) {
-          serviceTypeSelect.addEventListener('change', toggleServiceFields);
-        }
-    
-        // Listener para selección de tour
-        if (tourSelect) {
-          tourSelect.addEventListener('change', handleTourSelection);
-        }
-    
-        // Listener para el envío del formulario
-        form.addEventListener('submit', handleFormSubmit);
-    
-        // Validación de fechas
-        const dateInputs = form.querySelectorAll('input[type="date"], input[type="datetime-local"]');
-        dateInputs.forEach(input => {
-          input.addEventListener('change', () => {
-            let referenceDate = null;
-            let message = null;
-    
-            if (input.name === 'check_out_date') {
-              referenceDate = form.querySelector('input[name="check_in_date"]');
-              message = 'La fecha de check-out debe ser posterior al check-in';
-            } else if (input.name === 'return_datetime') {
-              referenceDate = form.querySelector('input[name="departure_datetime"]');
-              message = 'La fecha de retorno debe ser posterior a la fecha de salida';
-            }
-    
-            validateDates(input, referenceDate, message);
-          });
-        });
-    
-        // Inicializar el estado de los campos de servicio
-        toggleServiceFields();
-        // En tu función handleFormSubmit:
-        console.log('Datos a enviar:', data);
-      }
-    });
-      </script>
 
-      
+      <!-- Campos específicos de Hospedaje -->
+      <div x-show="serviceType === 'LODGING'" class="mb-4">
+        <h3 class="text-lg font-bold">Detalles del Hospedaje</h3>
+
+        <!-- Hotel y Habitaciones -->
+          <div class="mb-4">
+                <label class="label">
+                    <span class="font-bold label-text">Hotel:</span>
+                </label>
+                <input type="text" x-model="hotelName" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+            </div>
+            <div class="mb-4">
+                <label class="label">
+                    <span class="font-bold label-text">Habitaciones:</span>
+                </label>
+                <input type="number" x-model="roomCount" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+            </div>
+
+        <!-- Ciudad de Destino -->
+        <div class="mb-4">
+            <label class="label">
+                <span class="font-bold label-text">Ciudad de destino:</span>
+            </label>
+            <input type="text" x-model="lodgingDestination" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+        </div>
+
+        <!-- Fechas de Check-in y Check-out -->
+            <div class="mb-4">
+                <label class="label">
+                    <span class="font-bold label-text">Fecha de check-in:</span>
+                </label>
+                <input type="datetime-local" x-model="checkInDate" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+            </div>
+            <div class="mb-4">
+                <label class="label">
+                    <span class="font-bold label-text">Fecha de check-out:</span>
+                </label>
+                <input type="datetime-local" x-model="checkOutDate" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+            </div>
+        </div>
+
+
+  
+      <!-- Notas adicionales -->
+      <div class="mt-4">
+          <label class="label">
+              <span class="font-bold label-text">Notas adicionales:</span>
+          </label>
+          <textarea x-model="additionalNotes" class="w-full shadow-lg textarea textarea-bordered"></textarea>
+      </div>
+  
+      <!-- Botón de envío -->
+      <button type="submit" class="mt-4 btn btn-primary">Enviar solicitud</button>
+  </form>
+
+  <script>
+    function serviceForm() {
+        return {
+            // Información básica
+            holderName: '',
+            email: '',
+            contactPhone: '',
+            totalAdults: 1,
+            totalChildren: 0,
+            childAges: [],
+
+            // Tipo de servicio
+            serviceType: '', // Vacío por defecto
+
+            // Datos de Transporte
+            transportType: '',
+            origin: '',
+            destination: '',
+            departureDatetime: '',
+            returnDatetime: '',
+
+            // Datos de Tour
+            tours: [],  // Lista cargada desde la API
+            tourType: '',
+            customTourName: '',
+            customTour: '',
+            tourDatetime: '',
+            requiresPickup: false,
+
+            // Datos de Hospedaje
+            hotelName: '',
+            roomCount: 1,
+            lodgingDestination: '',
+            checkInDate: '',
+            checkOutDate: '',
+
+            // Notas adicionales
+            additionalNotes: '',
+
+            // Métodos
+            updateChildren() {
+                // Generar un array dinámico basado en el número de menores
+                this.childAges = Array.from({ length: this.totalChildren }, () => '');
+            },
+
+            updateServiceFields() {
+              console.log("Servicio seleccionado:", this.serviceType);
+              // Puedes incluir lógica personalizada aquí según el tipo de servicio
+          },
+
+            async loadTours() {
+                try {
+                    const response = await fetch('/api/tours/');
+                    this.tours = await response.json();
+                } catch (error) {
+                    console.error('Error al cargar los tours:', error);
+                }
+            },
+
+            async submitForm() {
+              try {
+                // Formatear fechas antes de enviar
+                const formatDate = (dateString) => {
+                    if (!dateString) return null; // Si está vacío, devuelve null
+                    const date = new Date(dateString);
+                    if (isNaN(date.getTime())) return null; // Si no es válida, devuelve null
+                    return date.toISOString(); // Asegura un formato ISO válido
+                };
+        
+                // Asignar valores predeterminados a las fechas no visibles
+                if (this.serviceType !== 'TRANSPORT') {
+                    this.departureDatetime = formatDate(new Date()); // Fecha actual
+                    this.returnDatetime = null; // Ninguna fecha de regreso
+                }
+                if (this.serviceType !== 'TOUR') {
+                    this.tourDatetime = formatDate(new Date()); // Fecha actual
+                }
+                if (this.serviceType !== 'LODGING') {
+                    this.checkInDate = formatDate(new Date()); // Fecha actual
+                    this.checkOutDate = formatDate(new Date(Date.now() + 86400000)); // Un día después
+                }
+        
+                const payload = {
+                    holderName: this.holderName,
+                    email: this.email,
+                    contactPhone: this.contactPhone,
+                    totalAdults: this.totalAdults,
+                    totalChildren: this.totalChildren,
+                    childAges: this.childAges,
+                    serviceType: this.serviceType,
+                    transportType: this.transportType,
+                    origin: this.origin,
+                    destination: this.destination,
+                    departureDatetime: formatDate(this.departureDatetime),
+                    returnDatetime: formatDate(this.returnDatetime),
+                    tourType: this.tourType,
+                    customTourName: this.tourType === 'other' ? this.customTourName : '',
+                    tourDatetime: formatDate(this.tourDatetime),
+                    requiresPickup: this.requiresPickup,
+                    hotelName: this.hotelName,
+                    roomCount: this.roomCount,
+                    lodgingDestination: this.lodgingDestination,
+                    checkInDate: formatDate(this.checkInDate),
+                    checkOutDate: formatDate(this.checkOutDate),
+                    additionalNotes: this.additionalNotes,
+                };
+        
+                const response = await fetch('/submit-service-request/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+        
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('Error al enviar el formulario:', errorData);
+                    alert('Error al enviar el formulario: ' + (errorData.error || 'Error desconocido.'));
+                    return;
+                }
+        
+                const responseData = await response.json();
+                alert(responseData.message || 'Formulario enviado con éxito');
+                window.location.reload(); // Recargar la página tras el envío exitoso
+        
+            } catch (error) {
+                console.error('Error inesperado:', error);
+                alert('Ocurrió un error inesperado. Revisa la consola para más detalles.');
+            }
+        }
+      };
+    }
+</script>
+  
+  <!-- Fin del formulario -->
 
     <!-- Otros elementos -->
     <div class="p-6 mt-8 rounded-lg shadow-lg bg-newlimel">

@@ -1,31 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex flex-col sm:flex-row sm:space-x-4 p-4">
+<div class="flex flex-col p-4 sm:flex-row sm:space-x-4">
     <!-- Inicia columna 1 -->
-    <div class="sm:w-full md:w-1/4 bg-newlimes rounded-lg mb-4 sm:mb-0">
-        <form method="POST" class="rounded-lg text-black shadow-lg bg-newlimes">
-            <h2 class="text-2xl font-bold text-black text-center mb-4 py-5">Reservar</h2>
-                    <div class="mb-4 font-bold m-5">
+    <div class="p-4 mb-4 rounded-lg bg-newlimes sm:w-full md:w-1/4 sm:mb-0">
+        <form method="POST" class="py-1 bg-transparent rounded-lg text-cyan-700">
+            <h2 class="py-2 mb-1 text-2xl font-bold text-center text-cyan-700">Reservar</h2>
+                    <div class="mb-4 font-bold form-control">
                         
                       {% csrf_token %}
 
                       {{ form.as_p }}
                 
-                        <div class="flex justify-center items-center">
-                            <button type="submit" class="btn btn-primary mb-8">Reservar</button>
+                        <div class="flex items-center justify-center">
+                            <button type="submit" class="mb-8 btn btn-primary">Reservar</button>
                         </div> 
                   </div>
                 </form>
 
                 {# Ventana emergente #}
                 <div id="infoModal" class="modal">
-                    <div class="modal-box p-0 bg-transparent max-w-2xl"> <!-- Aumentamos el ancho máximo -->
-                        <div class="bg-blue-600 bg-opacity-40 rounded-lg text-center p-6 shadow-lg"> <!-- Usamos bg-opacity-40 y añadimos shadow-lg -->
-                            <h3 class="font-bold text-xl text-white mb-4">Información de Servicio</h3>
-                            <p class="py-2 font-semibold text-lg text-white">El servicio es únicamente Aeropuerto - Hotel y puede ser servicio Redondo.</p>
-                            <p class="py-2 font-semibold text-lg text-white">Si desea un servicio diferente, por favor solicite una cotización en la página de inicio.</p>
-                            <div class="modal-action mt-6">
+                    <div class="max-w-2xl p-0 bg-transparent modal-box"> <!-- Aumentamos el ancho máximo -->
+                        <div class="p-6 text-center bg-blue-600 rounded-lg shadow-lg bg-opacity-40"> <!-- Usamos bg-opacity-40 y añadimos shadow-lg -->
+                            <h3 class="mb-4 text-xl font-bold text-white">Información de Servicio</h3>
+                            <p class="py-2 text-lg font-semibold text-white">El servicio es únicamente Aeropuerto - Hotel y puede ser servicio Redondo.</p>
+                            <p class="py-2 text-lg font-semibold text-white">Si desea un servicio diferente, por favor solicite una cotización en la página de inicio.</p>
+                            <div class="mt-6 modal-action">
                                 <button id="okButton" class="btn btn-primary">OK</button>
                                 <a href="{% url 'home' %}" class="btn btn-secondary">Ir a Inicio</a>
                             </div>
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
                       );
                   }
           
-                  google.maps.event.addDomListener(window, 'load', initAutocomplete);
+            
               </script>
                         
               
@@ -138,9 +138,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 
                   <!-- Otros elementos -->
-        <div class="mt-8 bg-lime p-6 rounded-lg shadow-lg">
-            <h3 class="text-2xl text-black font-bold mb-4">Te puede interesar</h3>
-            <ul class="menu rounded-lg font-bold text-xl">
+        <div class="p-6 mt-8 rounded-lg shadow-lg bg-lime">
+            <h3 class="mb-4 text-2xl font-bold text-black">Te puede interesar</h3>
+            <ul class="text-xl font-bold rounded-lg menu">
                 <li><a href="/tours_grupos" class="text-white">Enlace 1</a></li>
                 <li><a href="/transportacion" class="text-white">Enlace 2</a></li>
                 <li><a href="#" class="text-white">Enlace 3</a></li>
@@ -157,32 +157,32 @@ document.addEventListener('DOMContentLoaded', function() {
            {% endfor %}
        </ul>
        {% endif %}
-    <div class="flex-1 rounded-lg shadow-lg p-4 bg-newlimes">
-        <h1 class="text-5xl font-font-semibold text-cyan-700 text-center mb-4 py-2">Tu siguiente aventura inicia aquí</h1>
+    <div class="flex-1 p-4 rounded-lg shadow-lg bg-newlimes">
+        <h1 class="py-2 mb-4 text-5xl text-center font-font-semibold text-cyan-700">Tu siguiente aventura inicia aquí</h1>
         <div id="custom-controls-gallery" class="bg-bg-newlimes relative h-full w-full z-[10]" data-carousel="slide">
             <!-- Carousel wrapper -->
-            <div class="relative h-56 mb-4 overflow-hidden rounded-lg w-full md:h-96">
+            <div class="relative w-full h-56 mb-4 overflow-hidden rounded-lg md:h-96">
                 <!-- Items del carrusel -->
-                <div class="hidden duration-700 ease-in-out h-full w-full" data-carousel-item>
-                    <img src="/static/img/holbox.png" class="block w-full h-full object-cover" alt="">
+                <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
+                    <img src="/static/img/holbox.png" class="block object-cover w-full h-full" alt="">
                 </div>
-                <div class="hidden duration-700 ease-in-out h-full w-full" data-carousel-item="active">
-                    <img src="/static/img/holbox2.png" class="block w-full h-full object-cover" alt="">
+                <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item="active">
+                    <img src="/static/img/holbox2.png" class="block object-cover w-full h-full" alt="">
                 </div>
-                <div class="hidden duration-700 ease-in-out h-full w-full" data-carousel-item>
-                    <img src="/static/img/beach.webp" class="block w-full h-full object-cover" alt="">
+                <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
+                    <img src="/static/img/beach.webp" class="block object-cover w-full h-full" alt="">
                 </div>
-                <div class="hidden duration-700 ease-in-out h-full w-full" data-carousel-item>
-                    <img src="/static/img/flamingos.webp" class="block w-full h-full object-cover" alt="">
+                <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
+                    <img src="/static/img/flamingos.webp" class="block object-cover w-full h-full" alt="">
                 </div>
-                <div class="hidden duration-700 ease-in-out h-full w-full" data-carousel-item>
-                    <img src="/static/img/image-3.webp" class="block w-full h-full object-cover" alt="">
+                <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
+                    <img src="/static/img/image-3.webp" class="block object-cover w-full h-full" alt="">
                 </div>
             </div>
 
             <!-- Galería de imágenes -->
-            <div class="shadow-lg rounded-lg p-0 text-2xl grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="card bg-base-100 w-45 shadow-xl">
+            <div class="grid grid-cols-2 gap-4 p-0 text-2xl rounded-lg shadow-lg md:grid-cols-4">
+                <div class="shadow-xl card bg-base-100 w-45">
                     <figure>
                       <img
                         src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
@@ -191,12 +191,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-body">
                       <h2 class="card-title">Shoes!</h2>
                       <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="card-actions justify-end">
+                      <div class="justify-end card-actions">
                         <button class="btn btn-primary">Buy Now</button>
                       </div>
                     </div>
                 </div>
-                <div class="card bg-base-100 w-45 shadow-xl">
+                <div class="shadow-xl card bg-base-100 w-45">
                     <figure>
                       <img
                         src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
@@ -205,12 +205,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-body">
                       <h2 class="card-title">Shoes!</h2>
                       <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="card-actions justify-end">
+                      <div class="justify-end card-actions">
                         <button class="btn btn-primary">Buy Now</button>
                       </div>
                     </div>
                 </div>
-                <div class="card bg-base-100 w-45 shadow-xl">
+                <div class="shadow-xl card bg-base-100 w-45">
                     <figure>
                       <img
                         src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
@@ -219,12 +219,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-body">
                       <h2 class="card-title">Shoes!</h2>
                       <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="card-actions justify-end">
+                      <div class="justify-end card-actions">
                         <button class="btn btn-primary">Buy Now</button>
                       </div>
                     </div>
                 </div>
-                <div class="card bg-base-100 w-45 shadow-xl">
+                <div class="shadow-xl card bg-base-100 w-45">
                     <figure>
                       <img
                         src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-body">
                       <h2 class="card-title">Shoes!</h2>
                       <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="card-actions justify-end">
+                      <div class="justify-end card-actions">
                         <button class="btn btn-primary">Buy Now</button>
                       </div>
                     </div>

@@ -8,6 +8,10 @@ class VehicleTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'base_price')
     search_fields = ('name',)
 
+class ServiceRequestAdmin(admin.ModelAdmin):
+    list_display = ['holder_name', 'service_type', 'created_at']  # Incluye 'created_at'
+    list_filter = ['service_type', 'created_at']  # Agrega 'created_at' si es un campo válido
+    date_hierarchy = 'created_at'  # Configura jerarquía de fechas con 'created_at'
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
     list_display = ('name', 'vehicle_type', 'capacity', 'is_available')
@@ -20,14 +24,12 @@ class TourAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description')
     ordering = ('name',)
 
-@admin.register(ServiceRequest)
-class ServiceRequestAdmin(admin.ModelAdmin):
-    list_display = ('holder_name', 'service_type', 'tour_name', 'created_at')
-    list_filter = ('service_type', 'created_at')
-    search_fields = ('holder_name', 'custom_tour_name', 'tour__name')
-    date_hierarchy = 'created_at'
-
 # Register your models here.
 admin.site.register(Dashs, DashAdmin)
 admin.site.register(Transportacion)
 admin.site.register(Contact)
+admin.site.register(ServiceRequest, ServiceRequestAdmin)
+
+
+
+

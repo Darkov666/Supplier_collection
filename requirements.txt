@@ -6,3 +6,4 @@ django-tailwind==3.8.0
 phonenumbers==8.13.42
 sqlparse==0.5.1
 tzdata==2024.1
+pytz ==2024.2

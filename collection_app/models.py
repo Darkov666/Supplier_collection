@@ -4,9 +4,13 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.utils.timezone import localtime
 from datetime import datetime, timedelta
-from django.utils.timezone import now, timedelta
+from django.utils.timezone import now, is_naive, make_aware
+import pytz
 
+def default_check_out_date():
+    return now() + timedelta(days=1)
 # Create your models here.
 class Transportacion(models.Model):
     holder_name = models.CharField(max_length=100)
@@ -62,80 +66,116 @@ class Meta:
         ordering = ['name']
     
 class ServiceRequest(models.Model):
-    SERVICE_TYPES = [
+    # Datos generales
+    created_at = models.DateTimeField(auto_now_add=True)
+    holder_name = models.CharField(max_length=200)
+    email = models.EmailField()
+    contact_phone = models.CharField(max_length=20)
+    total_adults = models.PositiveIntegerField()
+    total_children = models.PositiveIntegerField(default=0)
+    child_ages = models.JSONField(default=list, blank=True)  # Lista de edades de menores
+    service_type = models.CharField(max_length=20, choices=[
         ('TRANSPORT', 'Transporte'),
         ('TOUR', 'Tour'),
         ('LODGING', 'Hospedaje'),
-    ]
-    TRANSPORT_TYPES = [
+    ])
+    
+    # Datos de transporte
+    transport_type = models.CharField(max_length=10, null=True, blank=True, choices=[
         ('ROUND', 'Redondo'),
         ('SINGLE', 'Sencillo'),
-    ]
-
-    # Campos base
-    created_at = models.DateTimeField(auto_now_add=True)
-    holder_name = models.CharField(max_length=200)
-    total_adults = models.PositiveIntegerField()
-    total_children = models.PositiveIntegerField()
-    additional_notes = models.TextField()
-    service_type = models.CharField(max_length=20, choices=SERVICE_TYPES)
-    email = models.EmailField(max_length=254)  # Campo para el correo electrónico
-    contact_phone = PhoneNumberField(blank=False, null=False, verbose_name="Teléfono de contacto")
-    # Campos para edades
-    adult_ages = models.JSONField(default=list)
-    children_ages = models.JSONField(default=list)
-
-    # Campos para transporte
-    transport_type = models.CharField(max_length=10, choices=TRANSPORT_TYPES, null=True, blank=True)
+    ])
     origin = models.CharField(max_length=200, null=True, blank=True)
     destination = models.CharField(max_length=200, null=True, blank=True)
-    departure_datetime = models.DateTimeField(null=True, blank=True)
+    departure_datetime = models.DateTimeField(null=True, blank=True, default=now)
     return_datetime = models.DateTimeField(null=True, blank=True)
 
-    # Campos para tour
-    tour = models.ForeignKey(Tour, on_delete=models.SET_NULL, null=True, blank=True)
+    # Datos de tour
+    tour = models.ForeignKey('Tour', null=True, blank=True, on_delete=models.SET_NULL)
+    tour_datetime = models.DateTimeField(null=True, blank=True, default=now)
     custom_tour_name = models.CharField(max_length=200, null=True, blank=True)
-    tour_datetime = models.DateTimeField(null=True, blank=True)
-    requires_pickup = models.BooleanField(null=True, blank=True)
+    tour_datetime = models.DateTimeField(null=True, blank=True, default=now)
+    requires_pickup = models.BooleanField(default=False)
 
-    # Campos para hospedaje
+    # Datos de hospedaje
     hotel_name = models.CharField(max_length=200, null=True, blank=True)
     room_count = models.PositiveIntegerField(null=True, blank=True)
     lodging_destination = models.CharField(max_length=200, null=True, blank=True)
-    check_in_date = models.DateField(null=True, blank=True)
-    check_out_date = models.DateField(null=True, blank=True)
+    check_in_date = models.DateTimeField(null=True, blank=True, default=now)
+    check_out_date = models.DateTimeField(null=True, blank=True, default=default_check_out_date)    
+    
+    # Notas adicionales
+    additional_notes = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.holder_name} - {self.service_type} - {self.created_at}"
+        return f"{self.holder_name} - {self.service_type}"
     
     def clean(self):
-        # Validar que tour_datetim del tour no sea en el pasado
-        date_start_valid = timezone.now() + timedelta(days=0, hours=8)
-        if self.tour_datetime and self.tour_datetime <= date_start_valid:
-            raise ValidationError({'tour_datetim': 'La fecha de recervació debe ser al menos con un día de anticipacion'})
-        
-        # Validar que check_in_date del tourhospedaje no sea en el pasado
-        date_start_valid = timezone.now() + timedelta(days=0, hours=8)
-        if self.check_in_date and self.check_in_date <= date_start_valid:
-            raise ValidationError({'check_in_date': 'La fecha de recervació debe ser al menos con un día de anticipacion'})
-        
-        # Validar que check_out_date sea después de start_date
-        #date_end_valid = timezone.now() + timedelta(days=0, hours=16)
-        if self.check_out_date and self.check_in_date and self.check_out_date <= self.check_in_date:
-            raise ValidationError({'check_out_date': 'La fecha de regreso debe ser posterior a la fecha de inicio.'})
-        
-         # Validar que departure_datetime del tourhospedaje no sea en el pasado
-        date_start_valid = timezone.now() + timedelta(days=0, hours=8)
-        if self.departure_datetime and self.departure_datetime <= date_start_valid:
-            raise ValidationError({'departure_datetime': 'La fecha de recervació debe ser al menos con un día de anticipacion'})
-        
-        # Validar que check_out_date sea después de start_date
-        #date_end_valid = timezone.now() + timedelta(days=0, hours=16)
-        if self.return_datetime and self.departure_datetime and self.return_datetime <= self.departure_datetime:
-            raise ValidationError({'return_datetime': 'La fecha de regreso debe ser posterior a la fecha de inicio.'})
+        """
+        Validaciones personalizadas para fechas según el tipo de servicio.
+        """
+        if self.total_adults < 1:
+            raise ValidationError('Debe haber al menos un adulto.')
+
+        if self.service_type == 'TRANSPORT' and not self.origin:
+            raise ValidationError('El campo "Origen" es obligatorio para transporte.')
+
+        # Obtener la fecha actual
+        today = now()
+
+        # Validación de transporte
+        if self.service_type == 'TRANSPORT':
+            if not self.departure_datetime:
+                raise ValidationError('Debe ingresar una fecha de ida para el transporte.')
+
+            # Fecha de ida debe estar al menos un día en el futuro
+            if self.departure_datetime < today + timedelta(days=1):
+                raise ValidationError('La fecha de ida debe ser al menos un día despues de la fecha actual.')
+
+            # Si es transporte redondo, validar la fecha de regreso
+            if self.return_datetime:
+                if self.return_datetime <= self.departure_datetime:
+                    raise ValidationError('La fecha de regreso debe ser posterior a la fecha de ida.')
+                if self.return_datetime < self.departure_datetime + timedelta(hours=1):
+                    raise ValidationError('La fecha de regreso debe ser al menos una hora después de la ida.')
+
+        # Validación de hospedaje
+        if self.service_type == 'LODGING':
+            if not self.check_in_date:
+                raise ValidationError('Debe ingresar la fecha de check-in.')
+            if self.check_in_date < today + timedelta(days=1):
+                raise ValidationError('La fecha de check-in debe ser al menos un día despues de la fecha actual.')
+
+            if not self.check_out_date:
+                raise ValidationError('Debe ingresar la fecha de check-out.')
+            if self.check_out_date <= self.check_in_date:
+                raise ValidationError('La fecha de check-out debe ser posterior a la fecha de check-in.')
+            if self.check_out_date < self.check_in_date + timedelta(days=1):
+                raise ValidationError('La fecha de check-out debe ser al menos un día después del check-in.')
+
+        # Validación de tour
+        if self.service_type == 'TOUR':
+            if not self.tour_datetime:
+                raise ValidationError('Debe ingresar una fecha para el tour.')
+            if self.tour_datetime < today + timedelta(days=1):
+                raise ValidationError('La fecha del tour debe ser al con un día de anticipación.')
+            
+        # Asegurarse de que las fechas sean aware
+        if is_naive(self.departure_datetime):
+            self.departure_datetime = make_aware(self.departure_datetime, timezone=pytz.UTC)
+
+        if self.return_datetime:
+            if is_naive(self.return_datetime):
+                self.return_datetime = make_aware(self.return_datetime, timezone=pytz.UTC)
+
+            # Validación adicional: la fecha de regreso debe ser posterior a la de ida
+            if self.return_datetime <= self.departure_datetime:
+                raise ValidationError("La fecha de regreso debe ser posterior a la fecha de ida.")
 
     def save(self, *args, **kwargs):
         self.full_clean()
+        if not self.pk:  # Solo modifica created_at al crear el objeto
+            self.created_at = localtime()
         return super().save(*args, **kwargs)
 
     def __str__(self):
