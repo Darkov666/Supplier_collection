@@ -52,6 +52,17 @@ def home(request):
 
         return render(request, 'home.html', {'form': form, 'tours': tours})
 
+def editar_formulario(request, pk):
+    transportacion = get_object_or_404(Transportacion, id=pk)
+    if request.method == 'POST':
+        form = TransportacionForm(request.POST, instance=transportacion)
+        if form.is_valid():
+            form.save()
+            return redirect('formulario_rev', pk=transportacion.id)
+    else:
+        form = TransportacionForm(instance=transportacion)
+    return render(request, 'editar_formulario.html', {'form': form})
+
 def service_request_form(request):
     if request.method == 'POST':
         form_data = request.POST.dict()
@@ -476,66 +487,74 @@ def formulario_rev(request, id):
 
 def calculate_vehicle_options(num_passengers):
     options = []
-    
+    print(f"Calculando opciones para {num_passengers} pasajeros...")  # Para depuración
+
+    # Filtrar vehículos disponibles por tipo
     if 1 <= num_passengers <= 6:
-        # Buscar vehículos de lujo y estándar con capacidad suficiente
         luxury_vehicles = Vehicle.objects.filter(
             vehicle_type__name='Lujo',
-            capacity__gte=num_passengers
+            capacity__gte=num_passengers,
+            is_available=True
         ).first()
-        
+
         standard_vehicles = Vehicle.objects.filter(
-            vehicle_type__name='Estándar',
-            capacity__gte=num_passengers
+            vehicle_type__name='Estandar',
+            capacity__gte=num_passengers,
+            is_available=True
         ).first()
-        
+
         if luxury_vehicles:
             options.append({
                 'type': 'luxury',
                 'vehicles': [luxury_vehicles],
                 'total_capacity': luxury_vehicles.capacity
             })
-            
+
         if standard_vehicles:
             options.append({
                 'type': 'standard',
                 'vehicles': [standard_vehicles],
                 'total_capacity': standard_vehicles.capacity
             })
-            
+
     elif 7 <= num_passengers <= 9:
-        # Calcular cuántos vehículos se necesitan
         luxury_vehicles = Vehicle.objects.filter(
             vehicle_type__name='Lujo',
-            capacity__gte=5  # Asumiendo que cada vehículo de lujo tiene capacidad de 5
+            capacity__gte=5,
+            is_available=True
         )[:2]
-        
+
         standard_vehicles = Vehicle.objects.filter(
             vehicle_type__name='Estándar',
-            capacity__gte=5  # Asumiendo que cada vehículo estándar tiene capacidad de 5
+            capacity__gte=5,
+            is_available=True
         )[:2]
-        
-        if len(luxury_vehicles) == 2:
+
+        if len(luxury_vehicles) > 0:
             options.append({
                 'type': 'luxury',
                 'vehicles': list(luxury_vehicles),
                 'total_capacity': sum(v.capacity for v in luxury_vehicles)
             })
-            
-        if len(standard_vehicles) == 2:
+
+        if len(standard_vehicles) > 0:
             options.append({
                 'type': 'standard',
                 'vehicles': list(standard_vehicles),
                 'total_capacity': sum(v.capacity for v in standard_vehicles)
             })
-    
+
+    print(f"Opciones calculadas: {options}")  # Para depuración
     return options
+
 
 def transportacion_review(request, transportacion_id):
     transportacion = Transportacion.objects.get(id=transportacion_id)
     total_passengers = transportacion.num_adults + transportacion.num_children
     vehicle_options = calculate_vehicle_options(total_passengers)
-    
+
+    print(f"Opciones de vehículos para {total_passengers} pasajeros: {vehicle_options}")  # Depuración
+
     context = {
         'transportacion': transportacion,
         'vehicle_options': vehicle_options,

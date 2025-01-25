@@ -10,9 +10,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        newlime: '#dee720', 
+        newlime: '#dee720',
         newlimel: '#f8ffdf',
         newlimes: '#f7febe',
+        azulsunny: '#0e7490d9'
       },
     },
   },
@@ -33,36 +34,6 @@ module.exports = {
     themes: [
       "light",
       "dark",
-      "cupcake",
-      "bumblebee",
-      "emerald",
-      "corporate",
-      "synthwave",
-      "retro",
-      "cyberpunk",
-      "valentine",
-      "halloween",
-      "garden",
-      "forest",
-      "aqua",
-      "lofi",
-      "pastel",
-      "fantasy",
-      "wireframe",
-      "black",
-      "luxury",
-      "dracula",
-      "cmyk",
-      "autumn",
-      "business",
-      "acid",
-      "lemonade",
-      "night",
-      "coffee",
-      "winter",
-      "dim",
-      "nord",
-      "sunset",
-    ]    
+    ]
   },
 };

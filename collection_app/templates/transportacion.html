@@ -3,8 +3,361 @@
 {% block content %}
 <div class="flex flex-col p-4 sm:flex-row sm:space-x-4">
     <!-- Inicia columna 1 -->
-    <div class="p-4 mb-4 rounded-lg bg-newlimes sm:w-full md:w-1/4 sm:mb-0">
-        <form method="POST" class="py-1 bg-transparent rounded-lg text-cyan-700">
+    <div class="p-4 mb-4 bg-white rounded-lg bg-opacity-40 sm:w-full md:w-1/4 sm:mb-0">
+        <form x-data="serviceForm()" @submit.prevent="submitForm" class="py-5 text-center bg-transparent rounded-lg text-cyan-700">
+            <h2 class="mb-4 text-2xl font-bold">Cotiza tu servicio</h2>
+        
+            <!-- Información básica -->
+            <div class="mb-4 form-control">
+                <label class="label">
+                    <span class="block mb-2 font-bold">Nombre del titular:</span>
+                </label>
+                <input type="text" x-model="holderName" required class="w-full shadow-lg input input-bordered">
+            </div>
+        
+            <div class="mb-4">
+                <label class="label">
+                    <span class="font-bold label-text">Correo electrónico:</span>
+                </label>
+                <input type="email" x-model="email" required class="w-full shadow-lg input input-bordered">
+            </div>
+        
+            <div class="mb-4">
+                <label class="label">
+                    <span class="font-bold label-text">Teléfono de contacto:</span>
+                </label>
+                <input type="tel" x-model="contactPhone" required class="w-full shadow-lg input input-bordered">
+            </div>
+        
+            <!-- Cantidad de personas -->
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="label">
+                        <span class="font-bold label-text">Adultos:</span>
+                    </label>
+                    <input type="number" min="1" x-model="totalAdults" class="w-full shadow-lg input input-bordered">
+                </div>
+                <div>
+                    <label class="label">
+                        <span class="font-bold label-text">Menores:</span>
+                    </label>
+                    <input type="number" min="0" x-model="totalChildren" @change="updateChildren()" class="w-full shadow-lg input input-bordered">
+                </div>
+            </div>
+        
+            <!-- Campos dinámicos de edades -->
+            <div x-show="childAges.length > 0" class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <h3 class="text-lg font-bold">Edades de los menores:</h3>
+                    <template x-for="(age, index) in childAges" :key="index">
+                        <div class="mb-2">
+                            <label class="label">
+                                <span class="label-text">Edad menor <span x-text="index + 1"></span>:</span>
+                            </label>
+                            <input type="number" value="0" min="0" max="17" x-model="childAges[index]" required class="w-full shadow-lg input input-bordered">
+                        </div>
+                    </template>
+                </div>
+            </div>
+        
+            <!-- Tipo de servicio -->
+            <div class="mb-4">
+                <label class="label">
+                    <span class="font-bold label-text">Tipo de servicio:</span>
+                </label>
+                <select x-model="serviceType" @change="updateServiceFields()" required class="w-full shadow-lg select select-bordered">
+                  <option value="">Seleccione un servicio</option>
+                  <option value="TRANSPORT">Transporte</option>
+                  <option value="TOUR">Tour</option>
+                  <option value="LODGING">Hospedaje</option>
+              </select>
+            </div>
+        
+            <!-- Secciones dinámicas de Transporte, Tour, y Hospedaje -->
+            <div x-show="serviceType === 'TRANSPORT'" class="mb-4">
+              <!-- Campos de Transporte -->
+              <h3 class="text-lg font-bold">Detalles de Transportación</h3>
+          
+              <!-- Tipo de viaje -->
+              <div class="mb-4">
+                  <label class="label">
+                      <span class="label-text">Tipo de viaje:</span>
+                  </label>
+                  <select x-model="transportType" class="w-full shadow-lg select select-bordered">
+                      <option value="">Elige el tipo de viaje</option>
+                      <option value="ROUND">Redondo</option>
+                      <option value="SINGLE">Sencillo</option>
+                  </select>
+              </div>
+          
+              <!-- Origen y Destino -->
+              <div class="mb-4">
+                  <label class="label">
+                      <span class="label-text">Origen:</span>
+                  </label>
+                  <input type="text" x-model="origin" placeholder="Origen" class="input input-bordered" x-bind:required="serviceType === 'TRANSPORT'">
+              </div>
+              <div class="mb-4">
+                  <label class="label">
+                      <span class="label-text">Destino:</span>
+                  </label>
+                  <input type="text" x-model="destination" placeholder="Destino" class="input input-bordered" x-bind:required="serviceType === 'TRANSPORT'">
+              </div>
+          
+              <!-- Fechas -->
+                  <div class="mb-4">
+                      <label class="label">
+                          <span class="label-text">Fecha de ida:</span>
+                      </label>
+                      <input type="datetime-local" x-model="departureDatetime" class="input input-bordered" x-bind:required="serviceType === 'TRANSPORT'">
+                  </div>
+                  <div x-show="transportType === 'ROUND'" x-cloak>
+                      <label class="label">
+                          <span class="label-text">Fecha de regreso:</span>
+                      </label>
+                      <input type="datetime-local" x-model="returnDatetime" class="input input-bordered" x-bind:required="serviceType === 'TRANSPORT' && transportType === 'ROUND'">
+                  </div>
+          </div>
+          
+        
+            <div x-show="serviceType === 'TOUR'" class="mb-4">
+              <!-- Campos de Tour -->
+              <h3 class="text-lg font-bold">Detalles del Tour</h3>
+              
+              <!-- Selección de tour -->
+              <div class="mb-4">
+                  <label class="label">
+                      <span class="label-text">Seleccione un tour o escriba uno nuevo:</span>
+                  </label>
+                  <select x-model="tourType" class="select select-bordered" x-bind:required="serviceType === 'TOUR'">
+                      <option value="">Seleccione un tour</option>
+                      <template x-for="tour in tours" :key="tour.id">
+                          <option :value="tour.id" x-text="tour.name"></option>
+                      </template>
+                      {% for tour in tours %}
+                    <option value="{{ tour.id }}">
+                      {{ tour.name }} {% if tour.duration %} ({{ tour.duration }}) {% endif %}
+                    </option>
+                    {% endfor %}
+                      <option value="other">Otro (personalizado)</option>
+                  </select>
+              </div>
+          
+              <!-- Campo de tour personalizado -->
+              <div class="mb-4" x-show="tourType === 'other'">
+                  <label class="label">
+                      <span class="label-text">Nombre del tour personalizado:</span>
+                  </label>
+                  <input type="text" x-model="customTourName" placeholder="Ingrese el nombre del tour" class="input input-bordered" x-bind:required="tourType === 'other'">
+              </div>
+          
+              <!-- Fecha y hora -->
+              <div class="mb-4">
+                  <label class="label">
+                      <span class="label-text">Fecha y hora:</span>
+                  </label>
+                  <input type="datetime-local" x-model="tourDatetime" class="input input-bordered" x-bind:required="serviceType === 'TOUR'">
+              </div>
+          
+              <!-- Pickup -->
+              <div class="flex mb-4">
+                  <label>¿Requiere Pickup?</label>
+                  <input type="checkbox" x-model="requiresPickup" class="mx-5 mt-1.5">
+              </div>
+          </div>
+          
+      
+            <!-- Campos específicos de Hospedaje -->
+            <div x-show="serviceType === 'LODGING'" class="mb-4">
+              <h3 class="text-lg font-bold">Detalles del Hospedaje</h3>
+      
+              <!-- Hotel y Habitaciones -->
+                <div class="mb-4">
+                      <label class="label">
+                          <span class="font-bold label-text">Hotel:</span>
+                      </label>
+                      <input type="text" x-model="hotelName" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+                  </div>
+                  <div class="mb-4">
+                      <label class="label">
+                          <span class="font-bold label-text">Habitaciones:</span>
+                      </label>
+                      <input type="number" x-model="roomCount" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+                  </div>
+      
+              <!-- Ciudad de Destino -->
+              <div class="mb-4">
+                  <label class="label">
+                      <span class="font-bold label-text">Ciudad de destino:</span>
+                  </label>
+                  <input type="text" x-model="lodgingDestination" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+              </div>
+      
+              <!-- Fechas de Check-in y Check-out -->
+                  <div class="mb-4">
+                      <label class="label">
+                          <span class="font-bold label-text">Fecha de check-in:</span>
+                      </label>
+                      <input type="datetime-local" x-model="checkInDate" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+                  </div>
+                  <div class="mb-4">
+                      <label class="label">
+                          <span class="font-bold label-text">Fecha de check-out:</span>
+                      </label>
+                      <input type="datetime-local" x-model="checkOutDate" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+                  </div>
+              </div>
+      
+      
+        
+            <!-- Notas adicionales -->
+            <div class="mt-4">
+                <label class="label">
+                    <span class="font-bold label-text">Notas adicionales:</span>
+                </label>
+                <textarea x-model="additionalNotes" class="w-full shadow-lg textarea textarea-bordered"></textarea>
+            </div>
+        
+            <!-- Botón de envío -->
+            <button type="submit" class="mt-4 btn btn-primary">Enviar solicitud</button>
+        </form>
+      
+        <script>
+          function serviceForm() {
+              return {
+                  // Información básica
+                  holderName: '',
+                  email: '',
+                  contactPhone: '',
+                  totalAdults: 1,
+                  totalChildren: 0,
+                  childAges: [],
+      
+                  // Tipo de servicio
+                  serviceType: '', // Vacío por defecto
+      
+                  // Datos de Transporte
+                  transportType: '',
+                  origin: '',
+                  destination: '',
+                  departureDatetime: '',
+                  returnDatetime: '',
+      
+                  // Datos de Tour
+                  tours: [],  // Lista cargada desde la API
+                  tourType: '',
+                  customTourName: '',
+                  customTour: '',
+                  tourDatetime: '',
+                  requiresPickup: false,
+      
+                  // Datos de Hospedaje
+                  hotelName: '',
+                  roomCount: 1,
+                  lodgingDestination: '',
+                  checkInDate: '',
+                  checkOutDate: '',
+      
+                  // Notas adicionales
+                  additionalNotes: '',
+      
+                  // Métodos
+                  updateChildren() {
+                      // Generar un array dinámico basado en el número de menores
+                      this.childAges = Array.from({ length: this.totalChildren }, () => '');
+                  },
+      
+                  updateServiceFields() {
+                    console.log("Servicio seleccionado:", this.serviceType);
+                    // Puedes incluir lógica personalizada aquí según el tipo de servicio
+                },
+      
+                  async loadTours() {
+                      try {
+                          const response = await fetch('/api/tours/');
+                          this.tours = await response.json();
+                      } catch (error) {
+                          console.error('Error al cargar los tours:', error);
+                      }
+                  },
+      
+                  async submitForm() {
+                    try {
+                      // Formatear fechas antes de enviar
+                      const formatDate = (dateString) => {
+                          if (!dateString) return null; // Si está vacío, devuelve null
+                          const date = new Date(dateString);
+                          if (isNaN(date.getTime())) return null; // Si no es válida, devuelve null
+                          return date.toISOString(); // Asegura un formato ISO válido
+                      };
+              
+                      // Asignar valores predeterminados a las fechas no visibles
+                      if (this.serviceType !== 'TRANSPORT') {
+                          this.departureDatetime = formatDate(new Date()); // Fecha actual
+                          this.returnDatetime = null; // Ninguna fecha de regreso
+                      }
+                      if (this.serviceType !== 'TOUR') {
+                          this.tourDatetime = formatDate(new Date()); // Fecha actual
+                      }
+                      if (this.serviceType !== 'LODGING') {
+                          this.checkInDate = formatDate(new Date()); // Fecha actual
+                          this.checkOutDate = formatDate(new Date(Date.now() + 86400000)); // Un día después
+                      }
+              
+                      const payload = {
+                          holderName: this.holderName,
+                          email: this.email,
+                          contactPhone: this.contactPhone,
+                          totalAdults: this.totalAdults,
+                          totalChildren: this.totalChildren,
+                          childAges: this.childAges,
+                          serviceType: this.serviceType,
+                          transportType: this.transportType,
+                          origin: this.origin,
+                          destination: this.destination,
+                          departureDatetime: formatDate(this.departureDatetime),
+                          returnDatetime: formatDate(this.returnDatetime),
+                          tourType: this.tourType,
+                          customTourName: this.tourType === 'other' ? this.customTourName : '',
+                          tourDatetime: formatDate(this.tourDatetime),
+                          requiresPickup: this.requiresPickup,
+                          hotelName: this.hotelName,
+                          roomCount: this.roomCount,
+                          lodgingDestination: this.lodgingDestination,
+                          checkInDate: formatDate(this.checkInDate),
+                          checkOutDate: formatDate(this.checkOutDate),
+                          additionalNotes: this.additionalNotes,
+                      };
+              
+                      const response = await fetch('/submit-service-request/', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify(payload),
+                      });
+              
+                      if (!response.ok) {
+                          const errorData = await response.json();
+                          console.error('Error al enviar el formulario:', errorData);
+                          alert('Error al enviar el formulario: ' + (errorData.error || 'Error desconocido.'));
+                          return;
+                      }
+              
+                      const responseData = await response.json();
+                      alert(responseData.message || 'Formulario enviado con éxito');
+                      window.location.reload(); // Recargar la página tras el envío exitoso
+              
+                  } catch (error) {
+                      console.error('Error inesperado:', error);
+                      alert('Ocurrió un error inesperado. Revisa la consola para más detalles.');
+                  }
+              }
+            };
+          }
+      </script>
+        
+        <!-- Fin del formulario -->
+      
+        <!--form method="POST" class="py-1 bg-transparent rounded-lg text-cyan-700">
             <h2 class="py-2 mb-1 text-2xl font-bold text-center text-cyan-700">Reservar</h2>
                     <div class="mb-4 font-bold form-control">
                         
@@ -16,7 +369,7 @@
                             <button type="submit" class="mb-8 btn btn-primary">Reservar</button>
                         </div> 
                   </div>
-                </form>
+                </form-->
 
                 {# Ventana emergente #}
                 <div id="infoModal" class="modal">
@@ -157,11 +510,11 @@ document.addEventListener('DOMContentLoaded', function() {
            {% endfor %}
        </ul>
        {% endif %}
-    <div class="flex-1 p-4 rounded-lg shadow-lg bg-newlimes">
+       <div class="flex-1 bg-white rounded-lg shadow-lg bg-opacity-40">
         <h1 class="py-2 mb-4 text-5xl text-center font-font-semibold text-cyan-700">Tu siguiente aventura inicia aquí</h1>
         <div id="custom-controls-gallery" class="bg-bg-newlimes relative h-full w-full z-[10]" data-carousel="slide">
             <!-- Carousel wrapper -->
-            <div class="relative w-full h-56 mb-4 overflow-hidden rounded-lg md:h-96">
+            <div class="relative w-full h-56 mb-4 overflow-hidden border-4 border-blue-200 rounded-lg shadow-lg md:h-96">
                 <!-- Items del carrusel -->
                 <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
                     <img src="/static/img/holbox.png" class="block object-cover w-full h-full" alt="">
@@ -180,67 +533,73 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
 
-            <!-- Galería de imágenes -->
-            <div class="grid grid-cols-2 gap-4 p-0 text-2xl rounded-lg shadow-lg md:grid-cols-4">
-                <div class="shadow-xl card bg-base-100 w-45">
-                    <figure>
-                      <img
-                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                    </figure>
-                    <div class="card-body">
-                      <h2 class="card-title">Shoes!</h2>
-                      <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="justify-end card-actions">
-                        <button class="btn btn-primary">Buy Now</button>
-                      </div>
-                    </div>
-                </div>
-                <div class="shadow-xl card bg-base-100 w-45">
-                    <figure>
-                      <img
-                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                    </figure>
-                    <div class="card-body">
-                      <h2 class="card-title">Shoes!</h2>
-                      <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="justify-end card-actions">
-                        <button class="btn btn-primary">Buy Now</button>
-                      </div>
-                    </div>
-                </div>
-                <div class="shadow-xl card bg-base-100 w-45">
-                    <figure>
-                      <img
-                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                    </figure>
-                    <div class="card-body">
-                      <h2 class="card-title">Shoes!</h2>
-                      <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="justify-end card-actions">
-                        <button class="btn btn-primary">Buy Now</button>
-                      </div>
-                    </div>
-                </div>
-                <div class="shadow-xl card bg-base-100 w-45">
-                    <figure>
-                      <img
-                        src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                        alt="Shoes" />
-                    </figure>
-                    <div class="card-body">
-                      <h2 class="card-title">Shoes!</h2>
-                      <p>If a dog chews shoes whose shoes does he choose?</p>
-                      <div class="justify-end card-actions">
-                        <button class="btn btn-primary">Buy Now</button>
-                      </div>
-                    </div>
-                </div>
+  <!-- Galería de imágenes -->
+        <div class="grid grid-cols-2 gap-4 p-0 px-4 text-2xl rounded-lg shadow-lg md:grid-cols-4">
+        <div class="shadow-xl card bg-base-100 w-45">
+            <figure>
+            <img
+                src="/static/img/tours/cozumel.png"
+                alt="Shoes"
+            />
+            </figure>
+            <div class="card-body">
+            <h2 class="card-title text-cyan-700">El cielo cozumel!</h2>
+            <p class="text-cyan-800">Conoce una de las maravillas del caribe Mexicano.
+            </p>
+            <div class="justify-end card-actions">
+                <button class="btn btn-primary">Cotizar ahora</button>
+            </div>
             </div>
         </div>
-    </div>
-    <!-- Termina columna 2 -->
-</div>
+        <div class="shadow-xl card bg-base-100 w-45">
+            <figure>
+            <img
+                src="/static/img/tours/cenotes.png"
+                alt="Shoes"
+            />
+            </figure>
+            <div class="card-body">
+            <h2 class="card-title text-cyan-700">Cenotes!</h2>
+            <p class="text-cyan-800">Tour Oasis Maya, conoce los cuatro tipos de cenotes.</p>
+            <div class="justify-end card-actions">
+                <button class="btn btn-primary">Cotizar ahora</button>
+            </div>
+            </div>
+        </div>
+        <div class="shadow-xl card bg-base-100 w-45">
+            <figure>
+            <img
+                src="/static/img/tours/chichen.png"
+                alt="Shoes"
+            />
+            </figure>
+            <div class="card-body">
+            <h2 class="card-title text-cyan-700">Chichen Itza!</h2>
+            <p class="text-cyan-800">Conoce Chichén Itzá con la versión de lujo del tour
+                Xichén.</p>
+            <div class="justify-end card-actions">
+                <button class="btn btn-primary">Cotizar ahora</button>
+            </div>
+            </div>
+        </div>
+        <div class="shadow-xl card bg-base-100 w-45">
+            <figure>
+            <img
+                src="/static/img/tours/catamaran.png"
+                alt="Shoes"
+            />
+            </figure>
+            <div class="card-body">
+            <h2 class="text-cyan-700 card-title">Catamaran!</h2>
+            <p class="text-cyan-800">Vive una experiencia inolvidable con nuestros tours.</p>
+            <div class="justify-end card-actions">
+                <button class="btn btn-primary">Cotizar ahora</button>
+            </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <!-- Termina columna 2 -->
+        </div>
 {% endblock %}

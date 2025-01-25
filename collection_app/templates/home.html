@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <div class="flex flex-col p-4 sm:flex-row sm:space-x-4">
   <!-- Inicia columna 1 -->
-  <div class="p-4 mb-4 rounded-lg bg-newlimes sm:w-full md:w-1/4 sm:mb-0">
+  <div class="p-4 mb-4 bg-white rounded-lg bg-opacity-40 sm:w-full md:w-1/4 sm:mb-0">
     <form x-data="serviceForm()" @submit.prevent="submitForm" class="py-5 text-center bg-transparent rounded-lg text-cyan-700">
       <h2 class="mb-4 text-2xl font-bold">Cotiza tu servicio</h2>
   
@@ -356,7 +356,7 @@
   <!-- Fin del formulario -->
 
     <!-- Otros elementos -->
-    <div class="p-6 mt-8 rounded-lg shadow-lg bg-newlimel">
+    <div class="p-6 mt-8 bg-white rounded-lg shadow-lg bg-opacity-40">
       <h3 class="mb-4 text-2xl font-bold text-cyan-700">Te puede interesar</h3>
       <ul class="font-bold menu text-cyan-700/85">
         <li class="hover:text-sky-400 text-cyan-500"><a href="/">Enlace 1</a></li>
@@ -369,50 +369,53 @@
   <!-- Termina columna 1 -->
 
   <!-- Inicia columna 2 -->
-  <div class="flex-1 p-4 rounded-lg shadow-lg bg-newlimes">
+  <div class="flex-1 bg-white rounded-lg shadow-lg bg-opacity-40">
+   
     <h1 class="py-2 mb-4 text-5xl text-center font-font-semibold text-cyan-700">
       Tu siguiente aventura inicia aquí
     </h1>
+
     <div
       id="custom-controls-gallery"
       class="relative h-full w-full z-[10]"
       data-carousel="slide"
     >
       <!-- Carousel wrapper -->
-      <div class="relative w-full h-56 mb-4 overflow-hidden rounded-lg md:h-96">
+      <div class="relative w-full h-56 mb-4 overflow-hidden border-4 border-blue-200 rounded-lg shadow-lg md:h-96">
         <!-- Items del carrusel -->
         <div
-          class="hidden w-full h-full duration-700 ease-in-out"
+          class="hidden w-full h-full ease-in-out duration-900"
           data-carousel-item
         >
           <img
-            src="/static/img/holbox.png"
+            src="/static/img/Galery/holbox.jpg"
             class="block object-cover w-full h-full"
             alt=""
           />
         </div>
+
         <div
-          class="hidden w-full h-full duration-700 ease-in-out"
+          class="hidden w-full h-full ease-in-out duration-900"
           data-carousel-item="active"
         >
           <img
-            src="/static/img/holbox2.png"
+            src="/static/img/Galery/tulum.jpg"
             class="block object-cover w-full h-full"
             alt=""
           />
         </div>
         <div
-          class="hidden w-full h-full duration-700 ease-in-out"
+          class="hidden w-full h-full ease-in-out duration-900"
           data-carousel-item
         >
           <img
-            src="/static/img/beach.webp"
+            src="/static/img/Galery/cancun.jpg"
             class="block object-cover w-full h-full"
             alt=""
           />
         </div>
         <div
-          class="hidden w-full h-full duration-700 ease-in-out"
+          class="hidden w-full h-full ease-in-out duration-900"
           data-carousel-item
         >
           <img
@@ -422,11 +425,11 @@
           />
         </div>
         <div
-          class="hidden w-full h-full duration-700 ease-in-out"
+          class="hidden w-full h-full ease-in-out duration-900"
           data-carousel-item
         >
           <img
-            src="/static/img/image-3.webp"
+            src="/static/img/Galery/cozumel.webp"
             class="block object-cover w-full h-full"
             alt=""
           />
@@ -435,65 +438,67 @@
 
       <!-- Galería de imágenes -->
       <div
-        class="grid grid-cols-2 gap-4 p-0 text-2xl rounded-lg shadow-lg md:grid-cols-4"
+        class="grid grid-cols-2 gap-4 p-0 px-4 text-2xl rounded-lg shadow-lg md:grid-cols-4"
       >
         <div class="shadow-xl card bg-base-100 w-45">
           <figure>
             <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+              src="/static/img/tours/cozumel.png"
               alt="Shoes"
             />
           </figure>
           <div class="card-body">
-            <h2 class="card-title">Shoes!</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <h2 class="card-title text-cyan-700">El cielo cozumel!</h2>
+            <p class="text-cyan-800">Conoce una de las maravillas del caribe Mexicano.
+             </p>
             <div class="justify-end card-actions">
-              <button class="btn btn-primary">Buy Now</button>
+              <button class="btn btn-primary">Cotizar ahora</button>
             </div>
           </div>
         </div>
         <div class="shadow-xl card bg-base-100 w-45">
           <figure>
             <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+              src="/static/img/tours/cenotes.png"
               alt="Shoes"
             />
           </figure>
           <div class="card-body">
-            <h2 class="card-title">Shoes!</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <h2 class="card-title text-cyan-700">Cenotes!</h2>
+            <p class="text-cyan-800">Tour Oasis Maya, conoce los cuatro tipos de cenotes.</p>
             <div class="justify-end card-actions">
-              <button class="btn btn-primary">Buy Now</button>
+              <button class="btn btn-primary">Cotizar ahora</button>
             </div>
           </div>
         </div>
         <div class="shadow-xl card bg-base-100 w-45">
           <figure>
             <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+              src="/static/img/tours/chichen.png"
               alt="Shoes"
             />
           </figure>
           <div class="card-body">
-            <h2 class="card-title">Shoes!</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <h2 class="card-title text-cyan-700">Chichen Itza!</h2>
+            <p class="text-cyan-800">Conoce Chichén Itzá con la versión de lujo del tour
+              Xichén.</p>
             <div class="justify-end card-actions">
-              <button class="btn btn-primary">Buy Now</button>
+              <button class="btn btn-primary">Cotizar ahora</button>
             </div>
           </div>
         </div>
         <div class="shadow-xl card bg-base-100 w-45">
           <figure>
             <img
-              src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+              src="/static/img/tours/catamaran.png"
               alt="Shoes"
             />
           </figure>
           <div class="card-body">
-            <h2 class="card-title">Shoes!</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <h2 class="text-cyan-700 card-title">Catamaran!</h2>
+            <p class="text-cyan-800">Vive una experiencia inolvidable con nuestros tours.</p>
             <div class="justify-end card-actions">
-              <button class="btn btn-primary">Buy Now</button>
+              <button class="btn btn-primary">Cotizar ahora</button>
             </div>
           </div>
         </div>

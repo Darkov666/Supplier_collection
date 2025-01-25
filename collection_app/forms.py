@@ -46,7 +46,8 @@ class TransportacionForm(forms.ModelForm):
             }),
             'num_children': forms.NumberInput(attrs={
                 'class': 'form-control flex rounded-lg mb-6 mt-2 input input-bordered shadow-lg bg-newlimel',
-                'placeholder': '0'
+                'placeholder': '0',
+                'min': '0'
             }),
             'start_date': forms.TextInput(attrs={
                 'type': 'datetime-local',

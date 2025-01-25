@@ -1,97 +1,140 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex flex-col sm:flex-row sm:space-x-4 p-4">
-<div class="flex flex-row sm:space-x-4 p-4">
-    
-    <!-- Sección de 25% -->
-    <div class="w-full md:w-1/4 bg-newlimes rounded-lg shadow-lg p-4">
-    
-        <div class="w-full md:w-1/4 bg-newlimes rounded-lg shadow-lg p-4">
-            {% for option in vehicle_options %}
-                {% for vehicle in option.vehicles %}
-                    <div class="card bg-base-100 w-45 shadow-xl mb-4">
-                        <figure>
-                            <img src="{{ vehicle.vehicle_type.image.url }}" alt="{{ vehicle.name }}" />
-                        </figure>
-                        <div class="card-body">
-                            <h2 class="card-title">{{ vehicle.name }}</h2>
-                            <p class="text-sm">{{ vehicle.description }}</p>
-                            <p class="font-bold">Capacidad: {{ vehicle.capacity }} pasajeros</p>
-                            {% if option.vehicles|length > 1 %}
-                                <p class="text-sm text-gray-600">*Este servicio incluye {{ option.vehicles|length }} vehículos</p>
-                            {% endif %}
-                            <div class="card-actions justify-start-0">
-                                <form method="POST" action="{% url 'select_vehicle' transportacion.id %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="vehicle_option" value="{{ forloop.parentloop.counter0 }}">
-                                    <button type="submit" class="btn btn-primary">Seleccionar</button>
-                                </form>
+<div class="flex flex-col p-4 sm:flex-row sm:space-x-4">
+    <div class="flex flex-row p-4 sm:space-x-4">
+        
+        <!-- Sección de 25% -->
+        <div class="w-full p-4 rounded-lg shadow-lg md:w-1/4 bg-newlimes">
+        
+            <div class="w-full p-4 rounded-lg shadow-lg md:w-1/4 bg-newlimes">
+                {% for option in vehicle_options %}
+                    {% for vehicle in option.vehicles %}
+                        <div class="mb-4 shadow-xl card bg-base-100 w-45">
+                            <figure>
+                                <img src="{{ vehicle.vehicle_type.image.url }}" alt="{{ vehicle.name }}" />
+                            </figure>
+                            <div class="card-body">
+                                <h2 class="card-title">{{ vehicle.name }}</h2>
+                                <p class="text-sm">{{ vehicle.description }}</h2>
+                                <p class="font-bold">Capacidad: {{ vehicle.capacity }} pasajeros</h2>
+                                {% if option.vehicles|length > 1 %}
+                                    <p class="text-sm text-gray-600">*Este servicio incluye {{ option.vehicles|length }} vehículos</h2>
+                                {% endif %}
+                                <div class="card-actions justify-start-0">
+                                    <form method="POST" action="{% url 'select_vehicle' transportacion.id %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="vehicle_option" value="{{ forloop.parentloop.counter0 }}">
+                                        <button type="submit" class="btn btn-primary">Seleccionar</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
+                    {% endfor %}
+                {% empty %}
+                    <div class="alert alert-warning">
+                        No hay vehículos disponibles para el número de pasajeros especificado.
+                        Por favor, contacte con servicio al cliente, para ofrecerle alternativas más economicas y acordes a sus necesidades.s
                     </div>
                 {% endfor %}
-            {% empty %}
-                <div class="alert alert-warning">
-                    No hay vehículos disponibles para el número de pasajeros especificado.
-                    Por favor, contacte con servicio al cliente, para ofrecerle alternativas más economicas y acordes a sus necesidades.s
-                </div>
-            {% endfor %}
+            </div>
+                <!-- Más tarjetas aquí... -->
         </div>
-            <!-- Más tarjetas aquí... -->
-    </div>
 
 
-    <!-- Sección de 75% -->
-    <div class="flex-1 rounded-lg shadow-lg p-4 bg-newlimes">
-        <h1 class="text-5xl text-cyan-700 text-center mb-4 py-2">Detalles de la reservación</h1>
-        <h2 class="text-xl font-bold text-cyan-700 text-center mb-4 py-2">Por favor corrobora la información proporcionada</h2>
-        <p class="font-semibold">Si la información que has proporcionado no es correcta de clic en editar para corregir la información correcta.
-            En caso de que todo este correcto puedes seguir comprando y mandar tu pedido al carrito de compras, o ir directamente a pagar tu reservación.
-        </p>
-        <br>
-        <div class="relative bg-bg-newlimes relative h-full w-full z-[10] h-full w-full">
-    
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        
-            <h2><strong>Reservación para:</strong> {{ transportacion.holder_name }}</h2>
-            <p><strong>Número de adultos:</strong> {{ transportacion.num_adults }}</p>
-            <p><strong>Número de menores:</strong> {{ transportacion.num_children }}</p>
-            <p><strong>Viaje redondo:</strong> {% if transportacion.round_trip %}Sí{% else %}No{% endif %}</p>
-            <p><strong>Fecha de inicio:</strong> {{ transportacion.start_date }}</p>
-            <p><strong>Aerolinea llegada:</strong> {{ transportacion.airline_arrival }}</p>
-            <p><strong>Vuelo de llegada:</strong> {{ transportacion.flight_number_arrival }}</p>
-            <p><strong>terminal de llegada:</strong> {{ transportacion.terminal_arrival }}</p>
-            {% if transportacion.round_trip %}
-            <p><strong>Fecha de regreso:</strong> {{ transportacion.end_date }}</p>
-            <p><strong>Aerolinea de regreso:</strong> {{ transportacion.airline_departure }}</p>
-            <p><strong>Vuelo de regreso:</strong> {{ transportacion.flight_number_departure }}</p>
-            <p><strong>terminal de regreso:</strong> {{ transportacion.terminal_departure }}</p>
-            {% endif %}
-            <p><strong>Lugar de recogida:</strong> {{ transportacion.pickup_start }}</p>
+        <!-- Sección de 75% -->
+        <div class="flex-1 p-4 rounded-lg shadow-lg bg-newlimes">
+            <h1 class="py-2 mt-4 mb-4 text-5xl text-center text-cyan-700">Detalles de la reservación</h1>
+            <!--h2 class="py-2 mb-4 text-xl font-bold text-center text-cyan-700">Por favor corrobora la información proporcionada</h2-->
+            <p class="font-semibold text-justify">Este es el resumen de tu reservación, puedes elegir
+                seguir comprando y mandar tu pedido al carrito de compras, o ir directamente a pagar tu reservación.
+            </p>
+            <p class="mt-2 font-semibold text-justify">Una ves concluida la transacción te enviaremos un correo electrónico con la informacón de tu reserva,
+                las instrucciones necesarias para que tu experiencia sea memorable y los terminos y condiciones del servicio.
+            </p>
             
-            <p><strong>Destino:</strong> {{ transportacion.destination_start }}</p>
-            <p><strong>Email:</strong> {{ transportacion.email }}</p>
-            <p><strong>Teléfono de contacto:</strong> {{ transportacion.contact_phone }}</p>
-            <br>
-            <div class="card-actions justify-start-0">
-                <a class="btn btn-primary" href="{% url 'transportacion' %}">Comprar ahora</a>
-                <a class="btn btn-primary" href="{% url 'transportacion' %}">Agregar  al carrito</a>
+            <div class="relative bg-bg-newlimes h-full w-full z-[10]">
+        
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                
+                    {% csrf_token %}  
+                <div class="flex flex-row gap-x-4 card">
+                    <div class="w-1/2 card-body">
+                        <h1 class="text-xl text-center"><strong>Información personal</strong></h1>   
+                        <h2><strong>Reservación para:</strong></h2>
+                        <input type="text" name="holder_name" value="{{ transportacion.holder_name }}" readonly class="input input-bordered" required>
+
+                        <h2><strong>Número de adultos:</strong></h2>
+                        <input type="number" name="num_adults" value="{{ transportacion.num_adults }}" min="1" readonly class="input input-bordered" required>
+
+                        <h2><strong>Número de menores:</strong></h2>
+                        <input type="number" name="num_children" value="{{ transportacion.num_children }}" min="0" readonly class="input input-bordered">
+
+                        <h2><strong>Email:</strong></h2>
+                        <input type="text" name="email" value="{{ transportacion.email }}" readonly class="input input-bordered">
+
+                        <h2><strong>Teléfono de contacto:</strong></h2>
+                        <input type="text" name="contact_phone" value="{{ transportacion.contact_phone }}" readonly class="input input-bordered">
+                    </div> 
+                    
+                    <div class="w-1/2 card-body"> 
+                        <h1 class="text-xl text-center"><strong>Información del servicio</strong></h1>                   
+                        <h2><strong>Viaje redondo:</strong></h2>
+                        <select name="round_trip" readonly class="select select-bordered">
+                            <option value="True" {% if transportacion.round_trip %}selected{% endif %}>Sí</option>
+                            <option value="False" {% if not transportacion.round_trip %}selected{% endif %}>No</option>
+                        </select>
+
+                        <h2><strong>Fecha de inicio:</strong></h2>
+                        <input type="datetime-local" name="start_date" value="{{ transportacion.start_date|date:'Y-m-d\TH:i' }}" readonly class="input input-bordered" required>
+
+                        <h2><strong>Aerolinea llegada:</strong></h2>
+                        <input type="text" name="airline_arrival" value="{{ transportacion.airline_arrival }}" readonly class="input input-bordered">
+
+                        <h2><strong>Vuelo de llegada:</strong></h2>
+                        <input type="text" name="flight_number_arrival" value="{{ transportacion.flight_number_arrival }}" readonly class="input input-bordered">
+
+                        <h2><strong>terminal de llegada:</strong></h2>
+                        <input type="text" name="terminal_arrival" value="{{ transportacion.terminal_arrival }}" readonly class="input input-bordered">
+
+                        {% if transportacion.round_trip %}
+                        <h2><strong>Fecha de regreso:</strong></h2>
+                        <input type="datetime-local" name="end_date" value="{{ transportacion.end_date|date:'Y-m-d\TH:i' }}" readonly class="input input-bordered">
+
+                        <h2><strong>Aerolinea de regreso:</strong></h2>
+                        <input type="text" name="airline_departure" value="{{ transportacion.airline_departure }}" readonly class="input input-bordered">
+
+                        <h2><strong>Vuelo de regreso:</strong></h2>
+                        <input type="text" name="flight_number_departure" value="{{ transportacion.flight_number_departure }}" readonly class="input input-bordered">
+
+                        <h2><strong>terminal de regreso:</strong></h2>
+                        <input type="text" name="terminal_departure" value="{{ transportacion.terminal_departure }}" readonly class="input input-bordered">
+                        {% endif %}
+
+                        <h2><strong>Lugar de recogida:</strong></h2>
+                        <input type="text" name="pickup_start" value="{{ transportacion.pickup_start }}" readonly class="input input-bordered">
+                        
+                        <h2><strong>Destino:</strong></h2>
+                        <input type="text" name="destination_start" value="{{ transportacion.destination_start }}" readonly class="input input-bordered">
+                    </div>   
+                </div>
+                <div class="justify-center mt-5 card-actions">
+                    <a class="btn btn-primary" href="{% url 'transportacion' %}">Comprar ahora</a>
+                    <a class="btn btn-primary" href="{% url 'transportacion' %}">Agregar  al carrito</a>
+                </div>
+                <!--div class="card-actions justify-start-0">
+                <a class="btn btn-secondary" href="{% url 'transportacion' %}">Editar</a>
+                </div-->
             </div>
-            <br>
-            <div class="card-actions justify-start-0">
-                <a class="btn btn-secondary" href="{% url 'home' %}">Seguir comprando </a>
-            </div>
-          
         </div>
     </div>
-</div>
 <!-- Termina columna 2 -->
 </div>
 {% endblock %}
