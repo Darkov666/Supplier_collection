@@ -1,46 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="items-center w-full px-52">
-<div class="p-4 bg-white rounded-lg bg-opacity-70">
-    <h1 class="py-2 mb-4 text-5xl text-center font-font-bold text-cyan-700">Contactanos</h1>
-                <form method="post" class="font-semibold text-black bg-transparent rounded-lg shadow-lg card card-body">
-                    {% csrf_token %}
-                    <div class="px-10 text-center form-control mr-96">
-                        <label for="contact_name" class="label">Nombre:</label>
-                        <input type="text" name="contact_name" id="contact_namename" 
-                        class="form-control" placeholder="Escribe tu nombre"></input>
-                    </div>
-                    
-                    <div class="px-10 text-center form-control mr-96">                             
-                        <label for="email" class="label">Correo electronico:</label>
-                        <input type="text" name="email" id="email" 
-                        class="form-control" placeholder="correo@domain.com"></input>
-                        
-                    </div>
+<div class="flex justify-center w-full px-4 md:px-10">
+    <div class="w-full max-w-screen-lg p-6 bg-white rounded-lg shadow-lg bg-opacity-70">
+        <h1 class="py-2 mb-6 text-3xl font-bold text-center md:text-5xl text-cyan-700">Contáctanos</h1>
 
-                    <div class="px-10 text-center form-control mr-96">
-                        <label for="phone_number" class="label">Numero telefonico:</label>
-                        <input type="text" name="phone_number" id="phone_number" 
-                        class="form-control" placeholder="Escribe tu numero telefonico"></textarea>
-                    </div>
-                    
-                    <div class="px-10 text-center form-control">
-                        <label for="message" class="label">mensage:</label>
-                        <textarea type="text-are" name="message" id="message" 
-                        class="w-full form-control textarea textarea-bordered" rows="10" placeholder="Escribe tu mensage"></textarea>
-                    </div>
+        <form method="post" class="font-semibold text-black bg-transparent">
+            {% csrf_token %}
 
-                    <div class="px-10 text-center form-control">
-                        <!--label for="newss_later" class="label">Quieres recibir notificaciones?:</label>
-                        <input type="checkbox" name="newss_later" id="newss_later" class="form-control checkbox checkbox-primary"></checkbox-->
-                        <div>
-                            <button type="submit" class="btn btn-primary">Enviar</button>
-                        </div>
-                    </div>  
-                </div> 
-                </form>
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                
+                <!-- Nombre -->
+                <div class="form-control">
+                    <label for="contact_name" class="label text-cyan-700">Nombre:</label>
+                    <input type="text" name="contact_name" id="contact_name" 
+                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" 
+                        placeholder="Escribe tu nombre" required />
+                </div>
 
-</div>     <!-- termina columna 1-->      
-</div>         
+                <!-- Correo Electrónico -->
+                <div class="form-control">
+                    <label for="email" class="label text-cyan-700">Correo electrónico:</label>
+                    <input type="email" name="email" id="email" 
+                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" 
+                        placeholder="correo@domain.com" required />
+                </div>
+
+                <!-- Número Telefónico -->
+                <div class="form-control">
+                    <label for="phone_number" class="label text-cyan-700">Número telefónico:</label>
+                    <input type="tel" name="phone_number" id="phone_number" 
+                        class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" 
+                        placeholder="Escribe tu número telefónico" required />
+                </div>
+
+                <!-- Mensaje -->
+                <div class="col-span-1 form-control md:col-span-2">
+                    <label for="message" class="label text-cyan-700">Mensaje:</label>
+                    <textarea name="message" id="message" 
+                        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" 
+                        rows="5" placeholder="Escribe tu mensaje" required></textarea>
+                </div>
+            </div>
+
+            <!-- Botón Enviar -->
+            <div class="flex justify-center mt-6">
+                <button type="submit" class="px-6 py-2 text-white transition rounded-lg btn btn-primary bg-cyan-600 hover:bg-cyan-700">
+                    Enviar
+                </button>
+            </div>
+            
+        </form>
+    </div>
+</div>
 {% endblock %}
