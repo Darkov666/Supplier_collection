@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="flex flex-col p-4 sm:flex-row sm:space-x-4">
+   
     <!-- Inicia columna 1 -->
     <div class="p-4 mb-4 bg-white rounded-lg bg-opacity-40 sm:w-full md:w-1/4 sm:mb-0">
         <form x-data="serviceForm()" @submit.prevent="submitForm" class="py-5 text-center bg-transparent rounded-lg text-cyan-700">
@@ -117,7 +118,7 @@
                       </label>
                       <input type="datetime-local" x-model="returnDatetime" class="input input-bordered" x-bind:required="serviceType === 'TRANSPORT' && transportType === 'ROUND'">
                   </div>
-          </div>
+            </div>
           
         
             <div x-show="serviceType === 'TOUR'" class="mb-4">
@@ -164,7 +165,7 @@
                   <label>¿Requiere Pickup?</label>
                   <input type="checkbox" x-model="requiresPickup" class="mx-5 mt-1.5">
               </div>
-          </div>
+            </div>
           
       
             <!-- Campos específicos de Hospedaje -->
@@ -185,28 +186,28 @@
                       <input type="number" x-model="roomCount" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
                   </div>
       
-              <!-- Ciudad de Destino -->
-              <div class="mb-4">
-                  <label class="label">
-                      <span class="font-bold label-text">Ciudad de destino:</span>
-                  </label>
-                  <input type="text" x-model="lodgingDestination" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
-              </div>
+                    <!-- Ciudad de Destino -->
+                <div class="mb-4">
+                   <label class="label">
+                          <span class="font-bold label-text">Ciudad de destino:</span>
+                      </label>
+                     <input type="text" x-model="lodgingDestination" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+                </div>
       
-              <!-- Fechas de Check-in y Check-out -->
-                  <div class="mb-4">
-                      <label class="label">
-                          <span class="font-bold label-text">Fecha de check-in:</span>
-                      </label>
-                      <input type="datetime-local" x-model="checkInDate" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
-                  </div>
-                  <div class="mb-4">
-                      <label class="label">
-                          <span class="font-bold label-text">Fecha de check-out:</span>
-                      </label>
-                      <input type="datetime-local" x-model="checkOutDate" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
-                  </div>
-              </div>
+                     <!-- Fechas de Check-in y Check-out -->
+                <div class="mb-4">
+                    <label class="label">
+                        <span class="font-bold label-text">Fecha de check-in:</span>
+                    </label>
+                    <input type="datetime-local" x-model="checkInDate" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+                </div>
+                <div class="mb-4">
+                    <label class="label">
+                        <span class="font-bold label-text">Fecha de check-out:</span>
+                    </label>
+                    <input type="datetime-local" x-model="checkOutDate" class="input input-bordered" x-bind:required="serviceType === 'LODGING'">
+                </div>
+            </div>
       
       
         
@@ -353,7 +354,7 @@
               }
             };
           }
-      </script>
+        </script>
         
         <!-- Fin del formulario -->
       
@@ -386,31 +387,31 @@
                     </div>
                 </div>
 
-{% block extra_js %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const pickupStartField = document.getElementById('pickup_start');
-  const modal = document.getElementById('infoModal');
-  const okButton = document.getElementById('okButton');
+                {% block extra_js %}
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                const pickupStartField = document.getElementById('pickup_start');
+                const modal = document.getElementById('infoModal');
+                const okButton = document.getElementById('okButton');
 
-  pickupStartField.addEventListener('focus', function(event) {
-      event.preventDefault();
-      modal.classList.add('modal-open');
-  });
+                pickupStartField.addEventListener('focus', function(event) {
+                    event.preventDefault();
+                    modal.classList.add('modal-open');
+                });
 
-  okButton.addEventListener('click', function() {
-      modal.classList.remove('modal-open');
-  });
+                okButton.addEventListener('click', function() {
+                    modal.classList.remove('modal-open');
+                });
 
-  // Cerrar el modal si se hace clic fuera de él
-  window.addEventListener('click', function(event) {
-      if (event.target == modal) {
-          modal.classList.remove('modal-open');
-      }
-  });
-});
-</script>
-{% endblock %}
+                // Cerrar el modal si se hace clic fuera de él
+                window.addEventListener('click', function(event) {
+                    if (event.target == modal) {
+                        modal.classList.remove('modal-open');
+                    }
+                });
+                });
+                </script>
+                {% endblock %}
                 <!-- Script de la api de google-->
                 <script>
                   function initAutocomplete() {
@@ -486,21 +487,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Ejecutar la función al cargar la página
                     toggleFields();
                 }
-            });
-                </script>
+                });
+            </script>
                 
                 
                   <!-- Otros elementos -->
-        <div class="p-6 mt-8 rounded-lg shadow-lg bg-lime">
-            <h3 class="mb-4 text-2xl font-bold text-black">Te puede interesar</h3>
-            <ul class="text-xl font-bold rounded-lg menu">
-                <li><a href="/tours_grupos" class="text-white">Enlace 1</a></li>
-                <li><a href="/transportacion" class="text-white">Enlace 2</a></li>
-                <li><a href="#" class="text-white">Enlace 3</a></li>
-            </ul>
-        </div>
+            <div class="p-6 mt-8 rounded-lg shadow-lg bg-lime">
+                <h3 class="mb-4 text-2xl font-bold text-black">Te puede interesar</h3>
+                <ul class="text-xl font-bold rounded-lg menu">
+                    <li><a href="/tours_grupos" class="text-white">Enlace 1</a></li>
+                    <li><a href="/transportacion" class="text-white">Enlace 2</a></li>
+                    <li><a href="#" class="text-white">Enlace 3</a></li>
+                </ul>
+            </div>
     </div>
-    <!-- Termina columna 1 -->
+     <!-- Termina columna 1 -->
 
        <!-- Inicia columna 2 -->
        {% if messages %}
@@ -510,96 +511,110 @@ document.addEventListener('DOMContentLoaded', function() {
            {% endfor %}
        </ul>
        {% endif %}
-       <div class="flex-1 bg-white rounded-lg shadow-lg bg-opacity-40">
-        <h1 class="py-2 mb-4 text-5xl text-center font-font-semibold text-cyan-700">Tu siguiente aventura inicia aquí</h1>
-        <div id="custom-controls-gallery" class="bg-bg-newlimes relative h-full w-full z-[10]" data-carousel="slide">
-            <!-- Carousel wrapper -->
-            <div class="relative w-full h-56 mb-4 overflow-hidden border-4 border-blue-200 rounded-lg shadow-lg md:h-96">
-                <!-- Items del carrusel -->
-                <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
-                    <img src="/static/img/holbox.png" class="block object-cover w-full h-full" alt="">
-                </div>
-                <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item="active">
-                    <img src="/static/img/holbox2.png" class="block object-cover w-full h-full" alt="">
-                </div>
-                <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
-                    <img src="/static/img/beach.webp" class="block object-cover w-full h-full" alt="">
-                </div>
-                <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
-                    <img src="/static/img/flamingos.webp" class="block object-cover w-full h-full" alt="">
-                </div>
-                <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
-                    <img src="/static/img/image-3.webp" class="block object-cover w-full h-full" alt="">
-                </div>
-            </div>
+    <div class="flex-1 bg-white rounded-lg shadow-lg bg-opacity-40">
+    
+        <h1 class="py-2 mb-4 text-5xl text-center font-font-semibold text-cyan-700">Transportación terreste.</h1>
+    
+        
+             <div id="custom-controls-gallery" class="bg-bg-newlimes relative h-full w-full z-[10]" data-carousel="slide">
+            
+                <!-- Carousel wrapper -->
+                <div class="relative w-full h-56 mb-4 overflow-hidden border-4 border-blue-200 rounded-lg shadow-lg md:h-96">
+                    <!-- Items del carrusel -->
+                    <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
+                        <img src="/static/img/Galery/holbox.jpg" class="block object-cover w-full h-full" alt="">
+                    </div>
 
-  <!-- Galería de imágenes -->
-        <div class="grid grid-cols-2 gap-4 p-0 px-4 text-2xl rounded-lg shadow-lg md:grid-cols-4">
-        <div class="shadow-xl card bg-base-100 w-45">
-            <figure>
-            <img
-                src="/static/img/tours/cozumel.png"
-                alt="Shoes"
-            />
-            </figure>
-            <div class="card-body">
-            <h2 class="card-title text-cyan-700">El cielo cozumel!</h2>
-            <p class="text-cyan-800">Conoce una de las maravillas del caribe Mexicano.
-            </p>
-            <div class="justify-end card-actions">
-                <button class="btn btn-primary">Cotizar ahora</button>
-            </div>
+                    <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item="active">
+                        <img src="/static/img/Galery/tulum.jpg" class="block object-cover w-full h-full" alt="">
+                    </div>
+
+                    <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
+                        <img src="/static/img/Galery/holbox.jpg" class="block object-cover w-full h-full" alt="">
+                    </div>
+
+                    <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
+                        <img src="/static/img/Galery/tulum.jpg" class="block object-cover w-full h-full" alt="">
+                    </div>
+
+                    <div class="hidden w-full h-full duration-700 ease-in-out" data-carousel-item>
+                        <img src="/static/img/Galery/holbox.jpg" class="block object-cover w-full h-full" alt="">
+                    </div>
+
+                </div>
+
+                                    <!-- Galería de imágenes -->
+                <div class="grid grid-cols-2 gap-4 p-0 px-4 text-2xl rounded-lg shadow-lg md:grid-cols-4">
+                    <div class="shadow-xl card bg-base-100 w-45">
+                        <figure>
+                        <img
+                            src="/static/img/tours/cozumel.png"
+                            alt="Shoes"
+                        />
+                        </figure>
+                        <div class="card-body">
+
+                            <h2 class="card-title text-cyan-700">Zona hotelera</h2>
+                            <p class="text-cyan-800">Conoce una de las maravillas del caribe Mexicano.
+                            </p>
+                            <div class="justify-end card-actions">
+                                <button class="btn btn-primary">Cotizar ahora</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shadow-xl card bg-base-100 w-45">
+                        <figure>
+                        <img
+                            src="/static/img/tours/cenotes.png"
+                            alt="Shoes"
+                        />
+                        </figure>
+                        <div class="card-body">
+                       
+                            <h2 class="card-title text-cyan-700">Puerto Juarez</h2>
+                             <p class="text-cyan-800">Tour Oasis Maya, conoce los cuatro tipos de cenotes.</p>
+                            <div class="justify-end card-actions">
+                                <button class="btn btn-primary">Cotizar ahora</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="shadow-xl card bg-base-100 w-45">
+                        <figure>
+                        <img
+                            src="/static/img/tours/chichen.png"
+                            alt="Shoes"
+                        />
+                        </figure>
+                        <div class="card-body">
+                            <h2 class="card-title text-cyan-700">Playa Mujeres</h2>
+                            <p class="text-cyan-800">Conoce Chichén Itzá con la versión de lujo del tour
+                            Xichén.</p>
+                            <div class="justify-end card-actions">
+                                <button class="btn btn-primary">Cotizar ahora</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="shadow-xl card bg-base-100 w-45">
+                        <figure>
+                        <img
+                            src="/static/img/tours/catamaran.png"
+                            alt="Shoes"
+                        />
+                        </figure>
+                        <div class="card-body">
+                            <h2 class="text-cyan-700 card-title">Costa Mujeres</h2>
+                            <p class="text-cyan-800">Vive una experiencia inolvidable con nuestros tours.</p>
+                            <div class="justify-end card-actions">
+                                <button class="btn btn-primary">Cotizar ahora</button>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-        <div class="shadow-xl card bg-base-100 w-45">
-            <figure>
-            <img
-                src="/static/img/tours/cenotes.png"
-                alt="Shoes"
-            />
-            </figure>
-            <div class="card-body">
-            <h2 class="card-title text-cyan-700">Cenotes!</h2>
-            <p class="text-cyan-800">Tour Oasis Maya, conoce los cuatro tipos de cenotes.</p>
-            <div class="justify-end card-actions">
-                <button class="btn btn-primary">Cotizar ahora</button>
-            </div>
-            </div>
-        </div>
-        <div class="shadow-xl card bg-base-100 w-45">
-            <figure>
-            <img
-                src="/static/img/tours/chichen.png"
-                alt="Shoes"
-            />
-            </figure>
-            <div class="card-body">
-            <h2 class="card-title text-cyan-700">Chichen Itza!</h2>
-            <p class="text-cyan-800">Conoce Chichén Itzá con la versión de lujo del tour
-                Xichén.</p>
-            <div class="justify-end card-actions">
-                <button class="btn btn-primary">Cotizar ahora</button>
-            </div>
-            </div>
-        </div>
-        <div class="shadow-xl card bg-base-100 w-45">
-            <figure>
-            <img
-                src="/static/img/tours/catamaran.png"
-                alt="Shoes"
-            />
-            </figure>
-            <div class="card-body">
-            <h2 class="text-cyan-700 card-title">Catamaran!</h2>
-            <p class="text-cyan-800">Vive una experiencia inolvidable con nuestros tours.</p>
-            <div class="justify-end card-actions">
-                <button class="btn btn-primary">Cotizar ahora</button>
-            </div>
-            </div>
-        </div>
-        </div>
-        </div>
-        </div>
+    </div>
         <!-- Termina columna 2 -->
         </div>
 {% endblock %}

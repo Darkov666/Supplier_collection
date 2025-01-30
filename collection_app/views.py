@@ -589,7 +589,17 @@ def contacto(request):
 
         return render(request, 'contacto.html', {'form': form})
     
+def aboutus(request):
+    return render(request, 'aboutus.html')
 
+def privacidad(request):
+    return render(request, 'aviso_privacidad.html')
+
+def politicas_cookies(request):
+    return render(request, 'politicas_cookies.html')
+
+def legal(request):
+    return render(request, 'legal.html')
         
 """    
 def catamaran(request):
@@ -604,19 +614,9 @@ def nocturna(request):
 def parques(request):
     return render(request, 'parques.html')
 
-def aboutus(request):
-    return render(request, 'aboutus.html')
-
-def privacidad(request):
-    return render(request, 'aviso_privacidad.html')
-
-def contacto(request):
-    return render(request, 'contacto.html')
-
 def legal(request):
     return render(request, 'legal.html')
 
-def politicas_cookies(request):
-    return render(request, 'politicas_cookies.html')
+
 
 """

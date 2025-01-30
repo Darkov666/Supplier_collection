@@ -7,3 +7,10 @@ phonenumbers==8.13.42
 sqlparse==0.5.1
 tzdata==2024.1
 pytz ==2024.2
+sendgrid
+request
+pillow
+python-dotenv
+django-phonenumber-field[phonenumberslite]
+django-phonenumber-field 
+

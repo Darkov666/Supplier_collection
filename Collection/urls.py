@@ -31,16 +31,20 @@ urlpatterns = [
     path('contacto/', views.contacto, name='contacto'),
     path('api/tours/', views.get_tours, name='get_tours'),
     path('api/service-requests/', views.get_service_specific_fields, name='get_services'),
+    path('aboutus/', views.aboutus, name='about_us'),
+    path('aviso_privacidad/', views.privacidad, name='aviso_privacidad'),
+    path('politicas_cookies/', views.politicas_cookies, name='politicas_cookies'),
+    path('legal/', views.legal, name='legal'),
 
     #path('formulario_rev/<int:transportacion_id>/', views.formulario_rev, name='formulario_rev'),  # Ruta de la página de éxito
     #path('catamaran/', views.catamaran, name='catamaran'),
     #path('hospedaje/', views.hospedaje, name='hospedaje'),
     #path('nocturna/', views.nocturna, name='nocturna'),
     #path('parques/', views.parques, name='parques'),
-    #path('aboutus/', views.aboutus, name='about_us'),
+    
     #path('aviso_privacidad/', views.privacidad, name='aviso_privacidad'),
     #path('contacto/gracias', views.contacto, name='contacto'),
-    #path('legal/', views.legal, name='legal'),
-    #path('politicas_cookies/', views.politicas_cookies, name='politicas_cookies'),
+    
+    
     #path('exito_transp/', lambda request: render(request, 'exito_transportacion.html'), name='exito_transp'),  # Vista de éxito simple 
     ] 

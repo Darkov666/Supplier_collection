@@ -1,10 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<main class= "container mx-auto py-10 px-10 sm:px-10 max-w-7xl lg:px-8">
-    <section class="card bg-dark shadow-lg rounded-lg p-6">
-        <h1 class="text-5xl font-bold text-center mb-4 py-2">Politicas sobre el uso de Cookies</h1> 
-            <p>{% lorem 1 b random %}</p>
-           </section>
-</main>
+<div class="items-center w-full px-52">
+<div class="p-4 bg-white rounded-lg bg-opacity-70">
+        <h1 class="py-2 mb-4 text-5xl font-bold text-center text-cyan-700">Uso de Cookies</h1> 
+            <p class="mb-4 font-semibold text-justify text-cyan-700">1. Uso de Cookies.</p>
+                
+              <p class="mb-4 ml-6 text-cyan-700">  •	Utilizamos cookies para mejorar su experiencia de navegación.
+                <br><br>
+                •	Las cookies nos ayudan a entender cómo interactúa con nuestro sitio web.
+                <br><br>
+                •	Algunas cookies son necesarias para el funcionamiento básico del sitio.
+              </p>
+                
+           <p class="mb-2 font-bold text-justify text-cyan-700">2. Tipos de Cookies que Utilizamos.</p>
+         
+            <p class="mb-4 ml-6 text-cyan-700">  •	Cookies esenciales: necesarias para el funcionamiento del sitio.
+                <br><br>
+                •	Cookies de rendimiento: analizan el comportamiento del usuario.
+                <br><br>
+                •	Cookies de funcionalidad: recuerdan sus preferencias.
+                <br><br>
+                •	Cookies de publicidad: personalizan los anuncios según sus intereses.
+            </p>
+
+           <p class="mb-2 font-bold text-justify text-cyan-700">3. Control de Cookies.</p>
+
+           <p class="mb-4 ml-6 text-cyan-700"> •	Puede gestionar las preferencias de cookies desde su navegador.
+            <br><br>
+            •	Tiene la opción de rechazar las cookies no esenciales.
+            <br><br>
+            •	Rechazar cookies puede limitar algunas funcionalidades del sitio.
+        </p>
+</div>
+</div>
 {% endblock %}

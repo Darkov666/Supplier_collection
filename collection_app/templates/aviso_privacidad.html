@@ -1,10 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<main class= "container mx-auto py-10 px-10 sm:px-10 max-w-7xl lg:px-8">
-    <section class="card bg-dark shadow-lg rounded-lg p-6">
-        <h1 class="text-5xl font-bold text-center mb-4 py-2">Aviso de privacidad</h1> 
-            <p>{% lorem 1 b random %}</p>
-           </section>
-</main>
+<div class="items-center w-full px-52">
+<div class="p-4 bg-white rounded-lg bg-opacity-70">
+        <h1 class="py-2 mb-4 text-5xl font-bold text-center text-cyan-700">Política de Privacidad</h1> 
+            <p class="mb-4 font-semibold text-justify text-cyan-700">1. Recopilación y Uso de Información.</p>
+                
+              <p class="mb-4 ml-6 text-cyan-700">  •	Recopilamos información personal necesaria para procesar reservaciones y 
+                brindar nuestros servicios.
+                <br><br>
+                •	La información incluye: nombre, información de contacto, detalles de pago y preferencias de viaje.
+                <br><br>
+                •	Utilizamos esta información exclusivamente para: procesar reservas, comunicarnos con nuestros clientes 
+                y mejorar nuestros servicios.
+              </p>
+                
+           <p class="mb-2 font-bold text-justify text-cyan-700">2. Protección de Datos.</p>
+         
+            <p class="mb-4 ml-6 text-cyan-700">  •	Implementamos medidas de seguridad robustas para proteger su información.
+                <br><br>
+                •	No compartimos información personal con terceros sin su consentimiento expreso.
+                <br><br>
+                •	Mantenemos su información solo durante el tiempo necesario para cumplir con nuestras obligaciones legales y de servicio.
+            </p>
+
+           <p class="mb-2 font-bold text-justify text-cyan-700">3. Derechos del Usuario</p>
+
+           <p class="mb-4 ml-6 text-cyan-700"> •	Tiene derecho a acceder, corregir o eliminar su información personal.
+            <br><br>
+            •	Puede solicitar una copia de su información personal en nuestros registros.
+            <br><br>
+            •	Puede retirar su consentimiento para el procesamiento de datos en cualquier momento.
+        </p>
+</div>
+</div>
 {% endblock %}

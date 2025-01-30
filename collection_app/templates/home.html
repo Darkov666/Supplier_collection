@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <div class="flex flex-col p-4 sm:flex-row sm:space-x-4">
   <!-- Inicia columna 1 -->
-  <div class="p-4 mb-4 bg-white rounded-lg bg-opacity-40 sm:w-full md:w-1/4 sm:mb-0">
+  <div class="p-4 mb-4 bg-white rounded-lg bg-opacity-70 sm:w-full md:w-1/4 sm:mb-0">
     <form x-data="serviceForm()" @submit.prevent="submitForm" class="py-5 text-center bg-transparent rounded-lg text-cyan-700">
       <h2 class="mb-4 text-2xl font-bold">Cotiza tu servicio</h2>
   
@@ -356,7 +356,7 @@
   <!-- Fin del formulario -->
 
     <!-- Otros elementos -->
-    <div class="p-6 mt-8 bg-white rounded-lg shadow-lg bg-opacity-40">
+    <div class="p-6 mt-8 bg-white rounded-lg shadow-lg bg-opacity-70">
       <h3 class="mb-4 text-2xl font-bold text-cyan-700">Te puede interesar</h3>
       <ul class="font-bold menu text-cyan-700/85">
         <li class="hover:text-sky-400 text-cyan-500"><a href="/">Enlace 1</a></li>
@@ -369,9 +369,9 @@
   <!-- Termina columna 1 -->
 
   <!-- Inicia columna 2 -->
-  <div class="flex-1 bg-white rounded-lg shadow-lg bg-opacity-40">
+  <div class="flex-1 bg-white rounded-lg shadow-lg bg-opacity-70">
    
-    <h1 class="py-2 mb-4 text-5xl text-center font-font-semibold text-cyan-700">
+    <h1 class="py-6 mb-4 text-5xl text-center font-font-semibold text-cyan-700">
       Tu siguiente aventura inicia aquí
     </h1>
 
@@ -409,7 +409,7 @@
           data-carousel-item
         >
           <img
-            src="/static/img/Galery/cancun.jpg"
+            src="/static/img/Galery/holbox.jpg"
             class="block object-cover w-full h-full"
             alt=""
           />
@@ -419,7 +419,7 @@
           data-carousel-item
         >
           <img
-            src="/static/img/flamingos.webp"
+            src="/static/img/Galery/tulum.jpg"
             class="block object-cover w-full h-full"
             alt=""
           />
@@ -429,17 +429,92 @@
           data-carousel-item
         >
           <img
-            src="/static/img/Galery/cozumel.webp"
+            src="/static/img/Galery/holbox.jpg"
             class="block object-cover w-full h-full"
             alt=""
           />
         </div>
       </div>
 
-      <!-- Galería de imágenes -->
+      <!-- Galería de imágenes Transportación-->
+
       <div
-        class="grid grid-cols-2 gap-4 p-0 px-4 text-2xl rounded-lg shadow-lg md:grid-cols-4"
+        class="grid grid-cols-2 gap-4 px-2 rounded-lg shadow-lg md:grid-cols-4"
       >
+
+      <div class="shadow-xl card bg-base-100 w-45">
+        <figure>
+          <img
+            src="/static/img/tours/cozumel.png"
+            alt="Transportacion terrestre Zona Hotelera"
+          />
+        </figure>
+        <div class="card-body">
+          <h1 class="font-mono text-2xl font-bold text-center text-cyan-700">Transportación</h1>
+          <h2 class="font-semibold text-center text-cyan-700">Zona hotelera</h2>
+          <p class="text-cyan-800">Conoce una de las maravillas del caribe Mexicano.
+          </p>
+          <div class="justify-end card-actions">
+            <button class="btn btn-primary">Cotizar ahora</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shadow-xl card bg-base-100 w-45">
+        <figure>
+          <img
+            src="/static/img/tours/cenotes.png"
+            alt="Shoes"
+          />
+        </figure>
+        <div class="card-body">
+          <h1 class="font-mono text-2xl font-bold text-center text-cyan-700">Transportación</h1>
+          <h2 class="font-semibold text-center text-cyan-700">Playa del Carmen</h2>
+          <p class="text-cyan-800">Tour Oasis Maya, conoce los cuatro tipos de cenotes.</p>
+          <div class="justify-end card-actions">
+            <button class="btn btn-primary">Cotizar ahora</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shadow-xl card bg-base-100 w-45">
+        <figure>
+          <img
+            src="/static/img/tours/chichen.png"
+            alt="Shoes"
+          />
+        </figure>
+        <div class="card-body">
+          <h1 class="font-mono text-2xl font-bold text-center text-cyan-700">Transportación</h1>
+          <h2 class="font-semibold text-center text-cyan-700">Tulum</h2>
+          <p class="text-cyan-800">Conoce Chichén Itzá con la versión de lujo del tour
+            Xichén.</p>
+          <div class="justify-end card-actions">
+            <button class="btn btn-primary">Cotizar ahora</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shadow-xl card bg-base-100 w-45">
+        <figure>
+          <img
+            src="/static/img/tours/catamaran.png"
+            alt="Shoes"
+          />
+        </figure>
+        <div class="card-body">
+          <h1 class="font-mono text-2xl font-bold text-center text-cyan-700">Transportación</h1>
+          <h2 class="font-semibold text-center text-cyan-700">Costa Mujeres</h2>
+          <p class="text-cyan-800">Conoce Chichén Itzá con la versión de lujo del tour
+            Xichén.</p>
+          <div class="justify-end card-actions">
+            <button class="btn btn-primary">Cotizar ahora</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna: 1 Fila: 2 Galeria torurs-->
+
         <div class="shadow-xl card bg-base-100 w-45">
           <figure>
             <img
@@ -448,7 +523,8 @@
             />
           </figure>
           <div class="card-body">
-            <h2 class="card-title text-cyan-700">El cielo cozumel!</h2>
+            <h1 class="font-mono text-2xl font-bold text-center text-cyan-700">Tour</h1>
+            <h2 class="font-semibold text-center text-cyan-700">Cozumel</h2>
             <p class="text-cyan-800">Conoce una de las maravillas del caribe Mexicano.
              </p>
             <div class="justify-end card-actions">
@@ -464,7 +540,8 @@
             />
           </figure>
           <div class="card-body">
-            <h2 class="card-title text-cyan-700">Cenotes!</h2>
+            <h1 class="font-mono text-2xl font-bold text-center text-cyan-700">Tour</h1>
+          <h2 class="font-semibold text-center text-cyan-700">Cenotes</h2>
             <p class="text-cyan-800">Tour Oasis Maya, conoce los cuatro tipos de cenotes.</p>
             <div class="justify-end card-actions">
               <button class="btn btn-primary">Cotizar ahora</button>
@@ -479,7 +556,8 @@
             />
           </figure>
           <div class="card-body">
-            <h2 class="card-title text-cyan-700">Chichen Itza!</h2>
+            <h1 class="font-mono text-2xl font-bold text-center text-cyan-700">Tour</h1>
+          <h2 class="font-semibold text-center text-cyan-700">Chichen Itza</h2>
             <p class="text-cyan-800">Conoce Chichén Itzá con la versión de lujo del tour
               Xichén.</p>
             <div class="justify-end card-actions">
@@ -495,7 +573,8 @@
             />
           </figure>
           <div class="card-body">
-            <h2 class="text-cyan-700 card-title">Catamaran!</h2>
+            <h1 class="font-mono text-2xl font-bold text-center text-cyan-700">Tour</h1>
+          <h2 class="font-semibold text-center text-cyan-700">Catamaran</h2>
             <p class="text-cyan-800">Vive una experiencia inolvidable con nuestros tours.</p>
             <div class="justify-end card-actions">
               <button class="btn btn-primary">Cotizar ahora</button>

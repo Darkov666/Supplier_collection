@@ -1,61 +1,46 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex flex-col sm:flex-row sm:space-x-4 p-4">
-    <!-- Inicia columna 1 -->
-    <div class="sm:w-full md:w-1/4 bg-newlimes rounded-lg p-4 mb-4 sm:mb-0">
-        <!-- Otros elementos -->
-        <div class="mt-8 bg-lime p-6 rounded-lg shadow-lg">
-            <h3 class="text-2xl text-black font-bold mb-4">Te puede interesar</h3>
-            <ul class="menu rounded-lg font-bold text-xl">
-                <li><a href="/tours_grupos" class="text-backdrop-blur">Enlace 1</a></li>
-                <li><a href="/transportacion" class="text-backdrop-blur">Enlace 2</a></li>
-                <li><a href="#" class="text-backdrop-blur">Enlace 3</a></li>
-            </ul>
-        </div>
-    </div>
-    <!-- Termina columna 1 -->
-
-    <!--inicia columna 1-->
-    <div class="flex-1 rounded-lg shadow-lg p-4 bg-newlimes">
-        <h1 class="text-5xl font-font-bold text-cyan-700 text-center mb-4 py-2">Contactanos</h1>
-                    <form method="post" class="card card-body rounded-lg text-black font-semibold shadow-lg bg-transparent">
-                        {% csrf_token %}
-                        <div class="form-control text-center px-10 mr-96">
-                            <label for="contact_name" class="label">Nombre:</label>
-                            <input type="text" name="contact_name" id="contact_namename" 
-                            class="form-control" placeholder="Escribe tu nombre"></input>
-                        </div>
+<div class="items-center w-full px-52">
+<div class="p-4 bg-white rounded-lg bg-opacity-70">
+    <h1 class="py-2 mb-4 text-5xl text-center font-font-bold text-cyan-700">Contactanos</h1>
+                <form method="post" class="font-semibold text-black bg-transparent rounded-lg shadow-lg card card-body">
+                    {% csrf_token %}
+                    <div class="px-10 text-center form-control mr-96">
+                        <label for="contact_name" class="label">Nombre:</label>
+                        <input type="text" name="contact_name" id="contact_namename" 
+                        class="form-control" placeholder="Escribe tu nombre"></input>
+                    </div>
+                    
+                    <div class="px-10 text-center form-control mr-96">                             
+                        <label for="email" class="label">Correo electronico:</label>
+                        <input type="text" name="email" id="email" 
+                        class="form-control" placeholder="correo@domain.com"></input>
                         
-                        <div class="form-control text-center px-10 mr-96">                             
-                            <label for="email" class="label">Correo electronico:</label>
-                            <input type="text" name="email" id="email" 
-                            class="form-control" placeholder="correo@domain.com"></input>
-                            
-                        </div>
+                    </div>
 
-                        <div class="form-control text-center px-10 mr-96">
-                            <label for="phone_number" class="label">Numero telefonico:</label>
-                            <input type="text" name="phone_number" id="phone_number" 
-                            class="form-control" placeholder="Escribe tu numero telefonico"></textarea>
-                        </div>
-                        
-                        <div class="form-control text-center px-10">
-                            <label for="message" class="label">mensage:</label>
-                            <textarea type="text-are" name="message" id="message" 
-                            class="form-control textarea textarea-bordered w-full" rows="10" placeholder="Escribe tu mensage"></textarea>
-                        </div>
+                    <div class="px-10 text-center form-control mr-96">
+                        <label for="phone_number" class="label">Numero telefonico:</label>
+                        <input type="text" name="phone_number" id="phone_number" 
+                        class="form-control" placeholder="Escribe tu numero telefonico"></textarea>
+                    </div>
+                    
+                    <div class="px-10 text-center form-control">
+                        <label for="message" class="label">mensage:</label>
+                        <textarea type="text-are" name="message" id="message" 
+                        class="w-full form-control textarea textarea-bordered" rows="10" placeholder="Escribe tu mensage"></textarea>
+                    </div>
 
-                        <div class="form-control text-center px-10">
-                            <!--label for="newss_later" class="label">Quieres recibir notificaciones?:</label>
-                            <input type="checkbox" name="newss_later" id="newss_later" class="form-control checkbox checkbox-primary"></checkbox-->
-                            <div>
-                                <button type="submit" class="btn btn-primary">Enviar</button>
-                            </div>
-                        </div>  
-                    </div> 
-                    </form>
+                    <div class="px-10 text-center form-control">
+                        <!--label for="newss_later" class="label">Quieres recibir notificaciones?:</label>
+                        <input type="checkbox" name="newss_later" id="newss_later" class="form-control checkbox checkbox-primary"></checkbox-->
+                        <div>
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </div>  
+                </div> 
+                </form>
 
-    </div>     <!-- termina columna 1-->               
-<div>
+</div>     <!-- termina columna 1-->      
+</div>         
 {% endblock %}
