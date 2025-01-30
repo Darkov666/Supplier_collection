@@ -17,6 +17,7 @@ module.exports = {
         nunito: ["Nunito", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
         caveat: ["Caveat", "cursive"],
+        caveat: ["Static", "cursive"],
       },
       colors: {
         newlime: "#dee720",
